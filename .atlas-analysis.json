@@ -1,0 +1,162 @@
+{
+  "projectType": "general",
+  "projectName": "Awesome LLM Apps",
+  "projectDescription": "A curated collection of production-ready LLM applications with RAG, AI Agents, Multi-agent Teams, MCP, and Voice Agents using OpenAI, Anthropic, Gemini, and open-source models",
+  "theme": "palm",
+  "primaryColor": "#8557a0",
+  "lightColor": "#bfb8d2",
+  "darkColor": "#b5549d",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "installation"
+            ]
+          },
+          {
+            "group": "AI Agents",
+            "pages": [
+              "ai-agents/overview",
+              "ai-agents/starter-agents",
+              "ai-agents/advanced-agents",
+              "ai-agents/multi-agent-teams",
+              "ai-agents/voice-agents",
+              "ai-agents/mcp-agents",
+              "ai-agents/game-playing-agents"
+            ]
+          },
+          {
+            "group": "RAG Applications",
+            "pages": [
+              "rag/overview",
+              "rag/basic-rag",
+              "rag/agentic-rag",
+              "rag/advanced-techniques",
+              "rag/local-rag"
+            ]
+          },
+          {
+            "group": "Advanced Concepts",
+            "pages": [
+              "advanced/memory-management",
+              "advanced/chat-with-x",
+              "advanced/llm-optimization",
+              "advanced/fine-tuning"
+            ]
+          },
+          {
+            "group": "Agent Skills",
+            "pages": [
+              "agent-skills/overview",
+              "agent-skills/coding-skills",
+              "agent-skills/research-skills",
+              "agent-skills/writing-skills",
+              "agent-skills/planning-skills",
+              "agent-skills/creating-skills"
+            ]
+          },
+          {
+            "group": "Framework Guides",
+            "pages": [
+              "frameworks/overview",
+              "frameworks/google-adk",
+              "frameworks/openai-sdk"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Examples",
+        "groups": [
+          {
+            "group": "Starter Examples",
+            "pages": [
+              "examples/ai-travel-agent",
+              "examples/ai-research-agent",
+              "examples/ai-data-analysis",
+              "examples/ai-music-generator",
+              "examples/web-scraping-agent"
+            ]
+          },
+          {
+            "group": "Advanced Examples",
+            "pages": [
+              "examples/deep-research-agent",
+              "examples/finance-agent-team",
+              "examples/legal-agent-team",
+              "examples/game-design-team",
+              "examples/mental-wellbeing-agent"
+            ]
+          },
+          {
+            "group": "RAG Examples",
+            "pages": [
+              "examples/basic-rag-chain",
+              "examples/corrective-rag",
+              "examples/autonomous-rag",
+              "examples/vision-rag",
+              "examples/knowledge-graph-rag"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Common Patterns",
+            "pages": [
+              "api/agent-patterns",
+              "api/rag-patterns",
+              "api/tool-integration",
+              "api/memory-patterns"
+            ]
+          },
+          {
+            "group": "Configuration",
+            "pages": [
+              "api/environment-setup",
+              "api/api-keys",
+              "api/model-configuration"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "100+ production-ready LLM application examples",
+    "Multi-agent systems with specialized agent teams",
+    "RAG implementations with multiple retrieval strategies",
+    "Voice AI agents with audio processing",
+    "MCP (Model Context Protocol) integrations",
+    "Support for OpenAI, Anthropic, Gemini, and open-source models",
+    "Framework crash courses (Google ADK, OpenAI SDK)",
+    "Reusable agent skills following AgentSkills.io specification",
+    "Local and cloud deployment options",
+    "Memory management and optimization techniques"
+  ],
+  "publicApiSurface": [
+    "AI Travel Agent - Personalized itinerary generation with calendar export",
+    "AI Research Agent - Deep web research with citations and synthesis",
+    "Finance Agent Team - Multi-agent financial analysis with YFinance integration",
+    "Legal Agent Team - Document analysis and legal research coordination",
+    "Agentic RAG - Autonomous retrieval with reasoning and self-correction",
+    "Corrective RAG (CRAG) - Self-evaluating retrieval with fallback strategies",
+    "Voice RAG Agent - Audio-based conversational retrieval",
+    "MCP Agents - Browser, GitHub, and Notion integrations via MCP",
+    "Agent Skills - Modular capabilities: code-reviewer, deep-research, python-expert, etc.",
+    "Google ADK Framework - Model-agnostic agent development with tools and memory",
+    "OpenAI Agents SDK - Swarm orchestration and multi-agent patterns",
+    "LLM Optimization - Token optimization (TOON) and context compression (Headroom)",
+    "Knowledge Graph RAG - Graph-based retrieval with citation tracking",
+    "Autonomous Game Playing - Chess, Tic-Tac-Toe, and 3D game agents",
+    "Mental Wellbeing Agent - Multi-agent therapeutic conversation system"
+  ]
+}
