@@ -1,0 +1,739 @@
+---
+title: 'Multi-Agent Teams'
+description: 'Coordinated teams of specialized agents working together on complex workflows'
+icon: 'users'
+---
+
+## Overview
+
+Multi-agent teams consist of specialized agents that collaborate to solve complex problems. Each agent has specific expertise and tools, working together under coordination to deliver comprehensive solutions that would be difficult for a single agent to achieve.
+
+<Note>
+Multi-agent systems excel at complex workflows requiring diverse expertise, parallel processing, and specialized knowledge domains.
+</Note>
+
+## Business & Finance Teams
+
+### AI Finance Agent Team
+
+A team of financial analysts that work together to provide comprehensive financial insights combining web research and real-time market data.
+
+**Agent Roles:**
+<CardGroup cols={3}>
+  <Card title="Web Agent" icon="globe">
+    General internet research using DuckDuckGo for market news and trends
+  </Card>
+  
+  <Card title="Finance Agent" icon="chart-line">
+    Detailed financial analysis with YFinance for real-time stock data
+  </Card>
+  
+  <Card title="Team Agent" icon="users">
+    Coordinates between agents and synthesizes insights
+  </Card>
+</CardGroup>
+
+```python
+# Agent team coordination (20 lines of code!)
+from phi.agent import Agent
+from phi.model.openai import OpenAIChat
+from phi.tools.yfinance import YFinanceTools
+from phi.tools.duckduckgo import DuckDuckGoTools
+from phi.storage.agent.sqlite import SqliteAgentStorage
+
+# Web research agent
+web_agent = Agent(
+    name="Web Agent",
+    role="Search the web for information",
+    tools=[DuckDuckGoTools()],
+    storage=SqliteAgentStorage()
+)
+
+# Financial analysis agent
+finance_agent = Agent(
+    name="Finance Agent",
+    role="Get financial data and analysis",
+    tools=[YFinanceTools()],
+    storage=SqliteAgentStorage()
+)
+
+# Coordinating team lead
+team_agent = Agent(
+    team=[web_agent, finance_agent],
+    model=OpenAIChat(id="gpt-4o"),
+    show_tool_calls=True,
+    markdown=True
+)
+```
+
+```bash
+cd advanced_ai_agents/multi_agent_apps/agent_teams/ai_finance_agent_team
+pip install -r requirements.txt
+export OPENAI_API_KEY='your-api-key-here'
+python3 finance_agent_team.py
+```
+
+**Features:**
+- Real-time financial data access
+- Web search for market context
+- Persistent storage of interactions
+- Coordinated multi-source analysis
+- Interactive playground interface
+
+### AI Recruitment Agent Team
+
+A full-service recruitment team that automates the entire hiring process from resume screening to interview scheduling.
+
+**Specialized Agents:**
+
+<Tabs>
+  <Tab title="Technical Recruiter">
+    **Responsibilities:**
+    - Resume analysis and parsing
+    - Technical skills evaluation
+    - Experience verification
+    - Role-specific assessment
+    - Selection decision making
+    
+    **Tools:**
+    - PDF processing (PyPDF2)
+    - Skills matching algorithms
+    - Keyword extraction
+  </Tab>
+  
+  <Tab title="Communication Agent">
+    **Responsibilities:**
+    - Professional email drafting
+    - Candidate notifications
+    - Feedback communication
+    - Follow-up management
+    
+    **Tools:**
+    - EmailTools from Phidata
+    - Gmail SMTP integration
+    - Template generation
+  </Tab>
+  
+  <Tab title="Scheduling Coordinator">
+    **Responsibilities:**
+    - Zoom meeting creation
+    - Calendar management
+    - Timezone handling
+    - Reminder system
+    
+    **Tools:**
+    - Zoom API integration
+    - Meeting link generation
+    - Calendar coordination
+  </Tab>
+</Tabs>
+
+**End-to-End Workflow:**
+```
+Candidate Upload Resume
+    ↓
+Technical Recruiter Agent
+├─ Parse resume
+├─ Extract skills & experience
+├─ Match with job requirements
+└─ Make selection decision
+    ↓
+Communication Agent
+├─ Draft personalized email
+├─ Include decision & feedback
+└─ Send via Gmail
+    ↓
+Scheduling Coordinator (if selected)
+├─ Create Zoom meeting
+├─ Generate meeting link
+└─ Include in email
+    ↓
+Candidate Receives Complete Response
+```
+
+```bash
+cd advanced_ai_agents/multi_agent_apps/agent_teams/ai_recruitment_agent_team
+pip install -r requirements.txt
+streamlit run ai_recruitment_agent_team.py
+```
+
+**Prerequisites:**
+<Warning>
+**Important Setup Steps:**
+
+1. **Gmail Configuration:**
+   - Create/use a Gmail account for recruiter
+   - Enable 2-Step Verification
+   - Generate App Password (16-digit code)
+   - Get it from [Google App Password](https://support.google.com/accounts/answer/185833?hl=en)
+   - Format: 'afec wejf awoj fwrv' (use without spaces)
+
+2. **Zoom API:**
+   - Go to [Zoom Marketplace](https://marketplace.zoom.us)
+   - Create Server-to-Server OAuth app
+   - Get Client ID, Client Secret, Account ID
+   - Add required scopes:
+     - `meeting:write:invite_links:admin`
+     - `meeting:write:meeting:admin`
+     - `meeting:write:meeting:master`
+     - `meeting:write:invite_links:master`
+     - `meeting:write:open_app:admin`
+     - `user:read:email:admin`
+     - `user:read:list_users:admin`
+</Warning>
+
+**Technical Stack:**
+- Framework: Phidata
+- Model: OpenAI GPT-4o
+- PDF Processing: PyPDF2
+- Time Management: pytz
+- State Management: Streamlit Session State
+
+<Note>
+**Disclaimer:** This tool assists in recruitment but should not replace human judgment in hiring decisions. All automated decisions should be reviewed by human recruiters.
+</Note>
+
+## Legal & Professional Services
+
+### AI Legal Agent Team
+
+A comprehensive legal team that analyzes documents and provides thorough legal insights through specialized agent collaboration.
+
+**Team Structure:**
+
+<CardGroup cols={2}>
+  <Card title="Legal Researcher" icon="magnifying-glass">
+    **Tools:** DuckDuckGo search
+    
+    **Capabilities:**
+    - Find relevant legal cases and precedents
+    - Cite sources and references
+    - Research legal frameworks
+    - Reference specific document sections
+  </Card>
+  
+  <Card title="Contract Analyst" icon="file-contract">
+    **Specialization:** Contract review
+    
+    **Capabilities:**
+    - Identify key terms and obligations
+    - Detect potential issues
+    - Reference specific clauses
+    - Analyze contractual relationships
+  </Card>
+  
+  <Card title="Legal Strategist" icon="chess">
+    **Focus:** Strategy development
+    
+    **Capabilities:**
+    - Develop legal strategies
+    - Provide actionable recommendations
+    - Consider risks and opportunities
+    - Long-term planning
+  </Card>
+  
+  <Card title="Team Lead" icon="gavel">
+    **Role:** Coordination
+    
+    **Capabilities:**
+    - Coordinate analysis between agents
+    - Ensure comprehensive responses
+    - Verify proper sourcing
+    - Quality control
+  </Card>
+</CardGroup>
+
+**Document Analysis Types:**
+
+| Analysis Type | Primary Agent | Supporting Agents | Output |
+|--------------|---------------|-------------------|--------|
+| Contract Review | Contract Analyst | Legal Strategist | Clause-by-clause analysis |
+| Legal Research | Legal Researcher | Team Lead | Case law and precedents |
+| Risk Assessment | Legal Strategist | Contract Analyst | Risk matrix and mitigation |
+| Compliance Check | All Agents | Team Lead | Compliance report |
+| Custom Queries | Team Lead | All Agents | Comprehensive analysis |
+
+```bash
+cd advanced_ai_agents/multi_agent_apps/agent_teams/ai_legal_agent_team
+pip install -r requirements.txt
+streamlit run legal_agent_team.py
+```
+
+**Usage Flow:**
+<Steps>
+  <Step title="Upload Document">
+    Upload legal document (PDF format)
+  </Step>
+  
+  <Step title="Select Analysis Type">
+    Choose from:
+    - Contract Review
+    - Legal Research
+    - Risk Assessment
+    - Compliance Check
+    - Custom Query
+  </Step>
+  
+  <Step title="Add Custom Query">
+    Optionally add specific questions or focus areas
+  </Step>
+  
+  <Step title="Team Analysis">
+    Agents collaborate to analyze document:
+    - Legal Researcher finds precedents
+    - Contract Analyst reviews terms
+    - Legal Strategist develops recommendations
+    - Team Lead coordinates and synthesizes
+  </Step>
+  
+  <Step title="Review Results">
+    Comprehensive analysis with:
+    - Key findings
+    - Source citations
+    - Specific clause references
+    - Strategic recommendations
+  </Step>
+</Steps>
+
+**Technical Details:**
+- Uses GPT-4o for analysis
+- Text-embedding-3-small for embeddings
+- Qdrant vector database for document search
+- Supports PDF documents only
+- Requires stable internet connection
+
+<Warning>
+For educational purposes. Not a substitute for professional legal advice. Consult qualified attorneys for legal decisions.
+</Warning>
+
+## Travel & Lifestyle
+
+### TripCraft AI - Travel Planner Agent Team
+
+A sophisticated multi-agent system that turns simple inputs into complete travel itineraries.
+
+**Goal:** Make travel planning effortless and personal - no stress, no endless research, just plans crafted specifically for you.
+
+**Specialized Agents:**
+
+<CardGroup cols={3}>
+  <Card title="Destination Explorer" icon="landmark">
+    Researches attractions, landmarks, and experiences using advanced search tools.
+  </Card>
+  
+  <Card title="Hotel Search Agent" icon="hotel">
+    Finds accommodations based on location, budget, and amenity preferences.
+  </Card>
+  
+  <Card title="Dining Agent" icon="utensils">
+    Recommends restaurants and culinary experiences matching your tastes.
+  </Card>
+  
+  <Card title="Budget Agent" icon="dollar-sign">
+    Handles cost optimization and financial planning for the entire trip.
+  </Card>
+  
+  <Card title="Flight Search Agent" icon="plane">
+    Plans air travel routes and provides comparison options.
+  </Card>
+  
+  <Card title="Itinerary Specialist" icon="calendar">
+    Creates detailed day-by-day schedules with optimal timing.
+  </Card>
+</CardGroup>
+
+**How It Works:**
+
+```
+Input Your Vision
+├─ Destination and dates
+├─ Budget constraints
+├─ Travel style preferences
+└─ Special interests
+    ↓
+AI Agents Collaborate (Parallel Processing)
+├─ Flight Search Agent → Best flight options
+├─ Hotel Search Agent → Accommodation recommendations
+├─ Destination Explorer → Attractions and activities
+├─ Dining Agent → Restaurant suggestions
+├─ Budget Agent → Cost optimization
+└─ All feed into ↓
+    ↓
+Itinerary Specialist
+├─ Day-by-day schedule
+├─ Booking recommendations
+├─ Cost breakdown
+└─ Hidden gem discoveries
+    ↓
+Complete Travel Itinerary
+```
+
+**Key Features:**
+- **Personalized Planning** - Tailored to travel style and interests
+- **Hidden Gems Discovery** - Beyond typical tourist spots
+- **Smart Optimization** - Balances cost, time, and experience
+- **Complete Packages** - Flights to dining recommendations
+
+**Tech Stack:**
+- **Frontend:** Next.js, React, TypeScript
+- **Backend:** Python, FastAPI, PostgreSQL
+- **AI:** Agno (coordination), Gemini (LLM), Exa (search), Firecrawl (web scraping)
+- **APIs:** Google Flights, Kayak
+
+**Demo:** [Watch on YouTube](https://youtu.be/eTll7EdQyY8)
+
+**Built by:** Amit Wani [@mtwn105](https://github.com/mtwn105)
+
+## Development & Coding Teams
+
+### Multimodal AI Coding Agent Team
+
+An AI-powered coding assistant that can process images of coding problems and generate optimal solutions with execution.
+
+**Multi-Agent Architecture:**
+
+<Tabs>
+  <Tab title="Vision Agent">
+    **Model:** Gemini-2.0-flash
+    
+    **Responsibilities:**
+    - Extract problem from uploaded images
+    - Process screenshots of coding problems
+    - Support PNG, JPG, JPEG formats
+    - Automatic OCR and understanding
+    
+    **Capabilities:**
+    - Text extraction from images
+    - Diagram understanding
+    - Code snippet recognition
+    - Problem statement parsing
+  </Tab>
+  
+  <Tab title="Coding Agent">
+    **Model:** OpenAI o3-mini
+    
+    **Responsibilities:**
+    - Generate optimal solutions
+    - Best time/space complexity
+    - Clean, documented code
+    - Type hints and proper documentation
+    - Edge case handling
+    
+    **Output Quality:**
+    ```python
+    def solution(nums: List[int], target: int) -> List[int]:
+        """
+        Find two numbers that sum to target.
+        
+        Time Complexity: O(n)
+        Space Complexity: O(n)
+        
+        Args:
+            nums: List of integers
+            target: Target sum
+            
+        Returns:
+            Indices of two numbers that sum to target
+        """
+        seen = {}
+        for i, num in enumerate(nums):
+            complement = target - num
+            if complement in seen:
+                return [seen[complement], i]
+            seen[num] = i
+        return []
+    ```
+  </Tab>
+  
+  <Tab title="Execution Agent">
+    **Model:** OpenAI GPT-4o
+    
+    **Responsibilities:**
+    - Execute code in E2B sandbox
+    - Analyze execution results
+    - Handle errors and exceptions
+    - 30-second timeout protection
+    
+    **Security:**
+    - Isolated sandbox environment
+    - No access to local system
+    - Resource limits
+    - Automatic cleanup
+  </Tab>
+</Tabs>
+
+**Features:**
+<CardGroup cols={2}>
+  <Card title="Multi-Modal Input" icon="image">
+    - Upload problem images
+    - Type in natural language
+    - Automatic extraction
+    - Interactive processing
+  </Card>
+  
+  <Card title="Intelligent Generation" icon="code">
+    - Optimal algorithms
+    - Clean Python code
+    - Full documentation
+    - Edge case handling
+  </Card>
+  
+  <Card title="Secure Execution" icon="shield">
+    - E2B sandbox
+    - Real-time results
+    - Error explanations
+    - Timeout protection
+  </Card>
+  
+  <Card title="Complete Workflow" icon="workflow">
+    - Problem → Solution → Execution
+    - All in one interface
+    - Streamlit UI
+    - Result analysis
+  </Card>
+</CardGroup>
+
+```bash
+cd advanced_ai_agents/multi_agent_apps/agent_teams/multimodal_coding_agent_team
+pip install -r requirements.txt
+streamlit run ai_coding_agent_o3.py
+```
+
+**Required API Keys:**
+- OpenAI (for o3-mini and GPT-4o)
+- Google (for Gemini 2.0 Flash)
+- E2B (for sandbox execution)
+
+**Usage:**
+1. Upload image of coding problem OR type description
+2. Click "Generate & Execute Solution"
+3. View generated solution with documentation
+4. See execution results and output files
+5. Review any errors or timeout messages
+
+## Research & Content Teams
+
+### OpenAI Research Agent Team
+
+A coordinated team that conducts comprehensive research using OpenAI's Agents SDK.
+
+**Agent Coordination:**
+```python
+from openai import OpenAI
+from agents import Agent, Runner
+
+# Triage agent plans the research
+triage_agent = Agent(
+    name="Triage",
+    instructions="Plan research approach and coordinate workflow",
+    model="gpt-4o"
+)
+
+# Research agent gathers information
+research_agent = Agent(
+    name="Researcher",
+    instructions="Search web and gather relevant information",
+    tools=[web_search_tool],
+    model="gpt-4o"
+)
+
+# Editor compiles the final report
+editor_agent = Agent(
+    name="Editor",
+    instructions="Compile collected facts into comprehensive report",
+    model="gpt-4o"
+)
+
+# Runner orchestrates the workflow
+runner = Runner(
+    agents=[triage_agent, research_agent, editor_agent],
+    handoffs=True
+)
+```
+
+**Research Workflow:**
+<Steps>
+  <Step title="Topic Input">
+    User enters research topic or selects example
+  </Step>
+  
+  <Step title="Triage Planning">
+    Triage agent analyzes topic and creates research plan:
+    - Identify key areas to research
+    - Determine search strategies
+    - Plan report structure
+  </Step>
+  
+  <Step title="Information Gathering">
+    Research agent executes plan:
+    - Search web for relevant sources
+    - Collect important facts
+    - Track source attribution
+    - Verify information
+  </Step>
+  
+  <Step title="Report Compilation">
+    Editor agent creates final report:
+    - Organize collected facts
+    - Add titles and outlines
+    - Include source citations
+    - Structure for readability
+  </Step>
+  
+  <Step title="Results Display">
+    View in Streamlit interface:
+    - Real-time process tracking
+    - Final report with citations
+    - Download capability
+  </Step>
+</Steps>
+
+```bash
+cd starter_ai_agents/openai_research_agent
+pip install -r requirements.txt
+export OPENAI_API_KEY='your-api-key-here'
+streamlit run openai_researcher_agent.py
+```
+
+## Support & Recovery Teams
+
+### Breakup Recovery Agent Team
+
+Multi-agent emotional support system built with Gemini 2.0 Flash for helping users recover from breakups.
+
+**Agent Specializations:**
+
+<CardGroup cols={2}>
+  <Card title="Therapist Agent" icon="heart">
+    **Approach:** Empathetic and supportive
+    
+    **Provides:**
+    - Coping strategies
+    - Emotional validation
+    - Research-backed advice (DuckDuckGo)
+    - Professional therapeutic techniques
+  </Card>
+  
+  <Card title="Closure Agent" icon="envelope">
+    **Purpose:** Cathartic release
+    
+    **Writes:**
+    - Unsent emotional messages
+    - Heartfelt expressions
+    - Authentic feelings
+    - Messages users shouldn't actually send
+  </Card>
+  
+  <Card title="Routine Planner" icon="calendar">
+    **Focus:** Structure and healing
+    
+    **Creates:**
+    - Daily recovery routines
+    - Balanced activities
+    - Self-reflection time
+    - Social interaction plans
+    - Healthy distractions
+  </Card>
+  
+  <Card title="Brutal Honesty Agent" icon="comment-exclamation">
+    **Style:** Direct and objective
+    
+    **Delivers:**
+    - No-nonsense feedback
+    - Factual observations
+    - Reality checks
+    - Unvarnished truth
+  </Card>
+</CardGroup>
+
+**Features:**
+- Chat screenshot analysis
+- Parallel execution mode
+- Coordinated agent responses
+- Team leader synthesis
+- Secure API key management
+
+```bash
+cd starter_ai_agents/ai_breakup_recovery_agent
+pip install -r requirements.txt
+streamlit run ai_breakup_recovery_agent.py
+```
+
+**Usage Flow:**
+1. Describe your feelings in text area
+2. Optionally upload chat screenshot (PNG, JPG, JPEG)
+3. Click "Get Recovery Support"
+4. View individual agent responses
+5. Read final coordinated summary
+
+## Multi-Agent Design Patterns
+
+### Hierarchical Coordination
+```python
+# Team lead coordinates specialist agents
+team_lead = Agent(
+    name="Team Lead",
+    team=[specialist_1, specialist_2, specialist_3],
+    instructions="Coordinate team and synthesize results"
+)
+```
+
+### Parallel Processing
+```python
+# Agents work simultaneously
+results = await asyncio.gather(
+    agent_1.run_async(task_1),
+    agent_2.run_async(task_2),
+    agent_3.run_async(task_3)
+)
+```
+
+### Sequential Handoffs
+```python
+# Agents pass work in sequence
+runner = Runner(
+    agents=[triage, research, analysis, editor],
+    handoffs=True
+)
+```
+
+### Specialist Collaboration
+```python
+# Specialists collaborate on complex tasks
+analyst = Agent(role="Data Analyst", tools=[...])
+researcher = Agent(role="Researcher", tools=[...])
+strategist = Agent(role="Strategist", tools=[...])
+
+team = AgentTeam(
+    agents=[analyst, researcher, strategist],
+    collaboration_mode="consensus"
+)
+```
+
+<Tip>
+**Choosing the Right Pattern:**
+- **Hierarchical:** When you need central coordination
+- **Parallel:** For independent tasks that can run simultaneously
+- **Sequential:** When output of one agent feeds the next
+- **Collaborative:** For complex problems requiring diverse expertise
+</Tip>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Voice Agent Teams" icon="microphone" href="/ai-agents/voice-agents">
+    Add voice capabilities to multi-agent systems
+  </Card>
+  
+  <Card title="MCP Integration" icon="plug" href="/ai-agents/mcp-agents">
+    Connect agent teams to external services
+  </Card>
+  
+  <Card title="Game Playing" icon="gamepad" href="/ai-agents/game-playing-agents">
+    Build adversarial multi-agent systems
+  </Card>
+  
+  <Card title="Starter Agents" icon="rocket" href="/ai-agents/starter-agents">
+    Review single-agent fundamentals
+  </Card>
+</CardGroup>

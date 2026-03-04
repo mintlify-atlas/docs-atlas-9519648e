@@ -1,0 +1,729 @@
+---
+title: Installation Guide
+description: Comprehensive installation instructions for all Awesome LLM Apps project types
+---
+
+This guide covers detailed installation steps for different types of applications in the Awesome LLM Apps repository.
+
+## System Requirements
+
+<CardGroup cols={2}>
+  <Card title="Python" icon="python">
+    **Version:** 3.8 or higher
+    
+    Recommended: 3.10+
+  </Card>
+  
+  <Card title="Memory" icon="memory">
+    **Minimum:** 4GB RAM
+    
+    Recommended: 8GB+ for local models
+  </Card>
+  
+  <Card title="Storage" icon="hard-drive">
+    **Minimum:** 2GB free space
+    
+    Additional space needed for local models
+  </Card>
+  
+  <Card title="Internet" icon="wifi">
+    **Required** for cloud APIs
+    
+    Optional for local-only setups
+  </Card>
+</CardGroup>
+
+## Installation Methods
+
+<Tabs>
+  <Tab title="Quick Install">
+    For most users, this is the fastest way to get started:
+
+    ```bash
+    # Clone the repository
+    git clone https://github.com/Shubhamsaboo/awesome-llm-apps.git
+    cd awesome-llm-apps
+
+    # Navigate to your chosen project
+    cd starter_ai_agents/ai_travel_agent
+
+    # Install dependencies
+    pip install -r requirements.txt
+
+    # Run the application
+    streamlit run travel_agent.py
+    ```
+  </Tab>
+
+  <Tab title="Virtual Environment">
+    Recommended for development and avoiding package conflicts:
+
+    ```bash
+    # Clone the repository
+    git clone https://github.com/Shubhamsaboo/awesome-llm-apps.git
+    cd awesome-llm-apps
+
+    # Create virtual environment
+    python -m venv venv
+
+    # Activate virtual environment
+    source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+    # Navigate to your project
+    cd starter_ai_agents/ai_travel_agent
+
+    # Install dependencies
+    pip install -r requirements.txt
+
+    # Run the application
+    streamlit run travel_agent.py
+    ```
+
+    <Tip>
+    Always activate your virtual environment before running applications:
+    ```bash
+    source venv/bin/activate  # Linux/Mac
+    venv\Scripts\activate     # Windows
+    ```
+    </Tip>
+  </Tab>
+
+  <Tab title="Conda Environment">
+    If you use Anaconda or Miniconda:
+
+    ```bash
+    # Clone the repository
+    git clone https://github.com/Shubhamsaboo/awesome-llm-apps.git
+    cd awesome-llm-apps
+
+    # Create conda environment
+    conda create -n llm-apps python=3.10
+    conda activate llm-apps
+
+    # Navigate to your project
+    cd starter_ai_agents/ai_travel_agent
+
+    # Install dependencies
+    pip install -r requirements.txt
+
+    # Run the application
+    streamlit run travel_agent.py
+    ```
+  </Tab>
+</Tabs>
+
+## Project-Specific Installation
+
+### Starter AI Agents
+
+Basic agents with minimal dependencies. Perfect for beginners.
+
+<Steps>
+  <Step title="Navigate to Agent Directory">
+    ```bash
+    cd starter_ai_agents/<agent-name>
+    ```
+
+    Popular starter agents:
+    - `ai_travel_agent` - Travel planning agent
+    - `ai_data_analysis_agent` - Data analysis with AI
+    - `openai_research_agent` - Multi-agent research system
+    - `ai_music_generator_agent` - Music generation
+  </Step>
+
+  <Step title="Install Dependencies">
+    Most starter agents use these core libraries:
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+    Common dependencies:
+    ```txt
+    streamlit
+    agno>=2.2.10
+    openai
+    python-dotenv
+    ```
+  </Step>
+
+  <Step title="Configure API Keys">
+    Set environment variables:
+    ```bash
+    export OPENAI_API_KEY='sk-...'
+    export SERPAPI_KEY='your-serpapi-key'  # If using search
+    ```
+  </Step>
+
+  <Step title="Run the Application">
+    ```bash
+    streamlit run <agent-name>.py
+    ```
+  </Step>
+</Steps>
+
+### RAG (Retrieval Augmented Generation) Applications
+
+RAG applications require additional dependencies for vector databases and embeddings.
+
+<Steps>
+  <Step title="Navigate to RAG Project">
+    ```bash
+    cd rag_tutorials/<project-name>
+    ```
+
+    Examples:
+    - `ai_blog_search` - Agentic RAG with LangGraph
+    - `corrective_rag` - CRAG implementation
+    - `local_rag_agent` - Local RAG with open-source models
+  </Step>
+
+  <Step title="Install Dependencies">
+    RAG applications typically include:
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+    Common RAG dependencies:
+    ```txt
+    langchain
+    langgraph
+    langchain-community
+    langchain-google-genai
+    langchain-qdrant
+    langchain-text-splitters
+    tiktoken
+    beautifulsoup4
+    python-dotenv
+    ```
+  </Step>
+
+  <Step title="Set Up Vector Database">
+    Some RAG apps use Qdrant or ChromaDB:
+
+    **For Qdrant (cloud):**
+    ```bash
+    export QDRANT_URL='your-qdrant-url'
+    export QDRANT_API_KEY='your-qdrant-key'
+    ```
+
+    **For ChromaDB (local):**
+    ```bash
+    # No additional setup needed - runs locally
+    ```
+  </Step>
+
+  <Step title="Run the Application">
+    ```bash
+    streamlit run app.py
+    ```
+  </Step>
+</Steps>
+
+### MCP (Model Context Protocol) Agents
+
+MCP agents require Docker and additional setup for protocol servers.
+
+<Steps>
+  <Step title="Install Docker">
+    MCP agents use Docker containers for protocol servers.
+
+    <Tabs>
+      <Tab title="macOS">
+        Download from [docker.com](https://www.docker.com/products/docker-desktop)
+        ```bash
+        # Verify installation
+        docker --version
+        docker ps
+        ```
+      </Tab>
+
+      <Tab title="Linux">
+        ```bash
+        # Ubuntu/Debian
+        sudo apt-get update
+        sudo apt-get install docker.io
+        sudo systemctl start docker
+
+        # Verify installation
+        docker --version
+        ```
+      </Tab>
+
+      <Tab title="Windows">
+        Download from [docker.com](https://www.docker.com/products/docker-desktop)
+        
+        Requires WSL2 for Windows 10/11
+      </Tab>
+    </Tabs>
+
+    <Warning>
+    Make sure Docker is running before starting MCP agents:
+    ```bash
+    docker ps
+    ```
+    </Warning>
+  </Step>
+
+  <Step title="Navigate to MCP Agent">
+    ```bash
+    cd mcp_ai_agents/<agent-name>
+    ```
+
+    Available MCP agents:
+    - `github_mcp_agent` - GitHub repository analysis
+    - `browser_mcp_agent` - Browser automation
+    - `notion_mcp_agent` - Notion integration
+  </Step>
+
+  <Step title="Install Python Dependencies">
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+    MCP-specific dependencies:
+    ```txt
+    openai
+    streamlit
+    mcp
+    anthropic
+    python-dotenv
+    ```
+  </Step>
+
+  <Step title="Configure API Keys">
+    MCP agents typically need multiple API keys:
+
+    **For GitHub MCP Agent:**
+    ```bash
+    export OPENAI_API_KEY='your-openai-key'
+    export GITHUB_TOKEN='your-github-token'
+    ```
+
+    <Note>
+    Create a GitHub Personal Access Token at [github.com/settings/tokens](https://github.com/settings/tokens) with `repo` scope.
+    </Note>
+  </Step>
+
+  <Step title="Run the Agent">
+    ```bash
+    streamlit run github_agent.py
+    ```
+
+    The agent will automatically manage Docker containers for MCP servers.
+  </Step>
+</Steps>
+
+### Advanced Multi-Agent Teams
+
+Multi-agent systems may have additional dependencies for coordination and orchestration.
+
+<Steps>
+  <Step title="Navigate to Agent Team">
+    ```bash
+    cd advanced_ai_agents/multi_agent_apps/agent_teams/<team-name>
+    ```
+
+    Examples:
+    - `ai_finance_agent_team` - Financial analysis team
+    - `ai_legal_agent_team` - Legal research team
+    - `multimodal_coding_agent_team` - Code generation team
+  </Step>
+
+  <Step title="Install Framework Dependencies">
+    Different teams use different frameworks:
+
+    <CodeGroup>
+      ```bash AG2/AutoGen
+      pip install ag2
+      pip install pyautogen
+      ```
+
+      ```bash CrewAI
+      pip install crewai
+      pip install crewai-tools
+      ```
+
+      ```bash LangGraph
+      pip install langgraph
+      pip install langchain
+      ```
+    </CodeGroup>
+  </Step>
+
+  <Step title="Install All Dependencies">
+    ```bash
+    pip install -r requirements.txt
+    ```
+  </Step>
+
+  <Step title="Run the Team">
+    ```bash
+    streamlit run <team-app>.py
+    ```
+  </Step>
+</Steps>
+
+### Voice AI Agents
+
+Voice agents require audio processing libraries.
+
+<Steps>
+  <Step title="System Audio Libraries">
+    Install system-level audio dependencies:
+
+    <Tabs>
+      <Tab title="macOS">
+        ```bash
+        brew install portaudio
+        ```
+      </Tab>
+
+      <Tab title="Linux">
+        ```bash
+        # Ubuntu/Debian
+        sudo apt-get install portaudio19-dev python3-pyaudio
+        ```
+      </Tab>
+
+      <Tab title="Windows">
+        Audio libraries are typically included with Python installation.
+      </Tab>
+    </Tabs>
+  </Step>
+
+  <Step title="Install Python Packages">
+    ```bash
+    cd voice_ai_agents/<agent-name>
+    pip install -r requirements.txt
+    ```
+
+    Common voice dependencies:
+    ```txt
+    openai
+    streamlit
+    sounddevice
+    soundfile
+    numpy
+    ```
+  </Step>
+
+  <Step title="Run Voice Agent">
+    ```bash
+    streamlit run voice_agent.py
+    ```
+  </Step>
+</Steps>
+
+## Local Model Setup (Ollama)
+
+Many applications support local models via Ollama for privacy and cost savings.
+
+<Steps>
+  <Step title="Install Ollama">
+    Download and install from [ollama.ai](https://ollama.ai)
+
+    <Tabs>
+      <Tab title="macOS">
+        ```bash
+        brew install ollama
+        ```
+      </Tab>
+
+      <Tab title="Linux">
+        ```bash
+        curl -fsSL https://ollama.ai/install.sh | sh
+        ```
+      </Tab>
+
+      <Tab title="Windows">
+        Download the installer from [ollama.ai](https://ollama.ai)
+      </Tab>
+    </Tabs>
+  </Step>
+
+  <Step title="Pull Your Model">
+    Download models you want to use:
+
+    ```bash
+    ollama pull llama3.1
+    ollama pull mistral
+    ollama pull qwen2.5
+    ```
+
+    <Tip>
+    Use smaller models for faster responses:
+    ```bash
+    ollama pull llama3.1:7b   # 7B parameter model
+    ollama pull gemma2:2b     # 2B parameter model
+    ```
+    </Tip>
+  </Step>
+
+  <Step title="Start Ollama Service">
+    ```bash
+    ollama serve
+    ```
+
+    Verify it's running:
+    ```bash
+    curl http://localhost:11434/api/tags
+    ```
+  </Step>
+
+  <Step title="Run Local Applications">
+    Applications with local support typically have separate files:
+    ```bash
+    streamlit run local_<app-name>.py
+    ```
+
+    Example:
+    ```bash
+    cd starter_ai_agents/ai_travel_agent
+    streamlit run local_travel_agent.py
+    ```
+  </Step>
+</Steps>
+
+## Environment Variables
+
+Manage your API keys securely using environment variables.
+
+### Using .env Files
+
+Many projects include `.env.example` files:
+
+```bash
+# Copy the example file
+cp .env.example .env
+
+# Edit with your keys
+nano .env
+```
+
+Example `.env` file:
+```bash
+OPENAI_API_KEY=sk-...
+GOOGLE_API_KEY=AI...
+ANTHROPIC_API_KEY=sk-ant-...
+SERPAPI_KEY=...
+```
+
+### System Environment Variables
+
+<Tabs>
+  <Tab title="Linux/macOS">
+    Add to `~/.bashrc` or `~/.zshrc`:
+    ```bash
+    export OPENAI_API_KEY='sk-...'
+    export GOOGLE_API_KEY='AI...'
+    ```
+
+    Reload your shell:
+    ```bash
+    source ~/.bashrc
+    ```
+  </Tab>
+
+  <Tab title="Windows">
+    **Command Prompt:**
+    ```cmd
+    setx OPENAI_API_KEY "sk-..."
+    ```
+
+    **PowerShell:**
+    ```powershell
+    [Environment]::SetEnvironmentVariable("OPENAI_API_KEY", "sk-...", "User")
+    ```
+  </Tab>
+</Tabs>
+
+<Warning>
+**Security Best Practices:**
+- Never commit `.env` files to Git
+- Use different API keys for development and production
+- Rotate your API keys regularly
+- Add `.env` to your `.gitignore` file
+</Warning>
+
+## Framework-Specific Setup
+
+### OpenAI Agents SDK
+
+```bash
+pip install openai-agents
+pip install openai
+pip install streamlit
+pip install pydantic
+pip install python-dotenv
+```
+
+Required environment variable:
+```bash
+export OPENAI_API_KEY='sk-...'
+```
+
+### Google ADK (Agent Development Kit)
+
+```bash
+pip install google-genai-adk
+pip install google-generativeai
+```
+
+Configuration:
+```bash
+# For Google AI Studio
+export GOOGLE_GENAI_USE_VERTEXAI=False
+export GOOGLE_API_KEY='AI...'
+
+# For Vertex AI
+export GOOGLE_GENAI_USE_VERTEXAI=True
+```
+
+### LangChain & LangGraph
+
+```bash
+pip install langchain
+pip install langgraph
+pip install langchain-community
+pip install langchain-openai
+pip install langchain-google-genai
+pip install langchain-anthropic
+```
+
+### CrewAI
+
+```bash
+pip install crewai
+pip install crewai-tools
+```
+
+## Troubleshooting
+
+### Common Installation Issues
+
+<AccordionGroup>
+  <Accordion title="ModuleNotFoundError: No module named 'X'">
+    **Solution:**
+    ```bash
+    # Upgrade pip
+    pip install --upgrade pip
+
+    # Reinstall requirements
+    pip install -r requirements.txt --force-reinstall
+    ```
+  </Accordion>
+
+  <Accordion title="Permission Denied on macOS/Linux">
+    **Solution:**
+    ```bash
+    # Don't use sudo with pip
+    # Instead, use --user flag
+    pip install --user -r requirements.txt
+
+    # Or use a virtual environment
+    python -m venv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+    ```
+  </Accordion>
+
+  <Accordion title="Docker connection refused">
+    **Solution:**
+    ```bash
+    # Ensure Docker is running
+    docker ps
+
+    # On macOS, start Docker Desktop
+    # On Linux
+    sudo systemctl start docker
+    ```
+  </Accordion>
+
+  <Accordion title="Streamlit command not found">
+    **Solution:**
+    ```bash
+    # Ensure streamlit is installed
+    pip install streamlit
+
+    # If still not working, run via python
+    python -m streamlit run app.py
+    ```
+  </Accordion>
+
+  <Accordion title="API rate limit errors">
+    **Solution:**
+    - Check your API usage and billing
+    - Use smaller models or reduce request frequency
+    - Consider using local models via Ollama
+  </Accordion>
+</AccordionGroup>
+
+## Verification
+
+Verify your installation:
+
+```bash
+# Check Python version
+python --version
+
+# Check pip
+pip --version
+
+# Check installed packages
+pip list | grep streamlit
+pip list | grep openai
+
+# Test Streamlit
+streamlit hello
+
+# Check Docker (if needed)
+docker --version
+docker ps
+```
+
+## Updating Dependencies
+
+Keep your installations up to date:
+
+```bash
+# Update all packages
+pip install -r requirements.txt --upgrade
+
+# Update specific package
+pip install --upgrade streamlit
+
+# Update Ollama
+curl -fsSL https://ollama.ai/install.sh | sh
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Quick Start" icon="rocket" href="/quickstart">
+    Run your first AI agent in minutes
+  </Card>
+  
+  <Card title="AI Agents" icon="robot" href="/ai-agents">
+    Explore starter and advanced agents
+  </Card>
+  
+  <Card title="RAG Tutorials" icon="database" href="/rag-tutorials">
+    Build retrieval augmented generation apps
+  </Card>
+  
+  <Card title="Configuration" icon="gear" href="/configuration">
+    Advanced configuration options
+  </Card>
+</CardGroup>
+
+## Additional Resources
+
+- [GitHub Repository](https://github.com/Shubhamsaboo/awesome-llm-apps)
+- [Python Virtual Environments](https://docs.python.org/3/tutorial/venv.html)
+- [Docker Documentation](https://docs.docker.com/get-started/)
+- [Streamlit Documentation](https://docs.streamlit.io/)
+- [Ollama Documentation](https://github.com/ollama/ollama/blob/main/README.md)
+
+<Note>
+For project-specific installation instructions, always refer to the README.md file in each project directory.
+</Note>

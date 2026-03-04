@@ -1,0 +1,75 @@
+---
+title: Autonomous RAG
+description: Self-directed retrieval agent with reasoning and adaptive retrieval strategies
+---
+
+# Autonomous RAG
+
+Autonomous RAG systems make intelligent decisions about when and how to retrieve information, using reasoning to guide the retrieval process.
+
+## Overview
+
+Autonomous RAG features:
+- **Self-directed retrieval**: Agent decides when to retrieve
+- **Reasoning integration**: Think through queries before retrieval
+- **Adaptive strategies**: Adjust retrieval based on context
+- **Tool orchestration**: Combine multiple retrieval tools
+
+<CardGroup cols={2}>
+  <Card title="Reasoning Agent" icon="brain">
+    Uses ReAct pattern for step-by-step reasoning
+  </Card>
+  <Card title="PgVector Integration" icon="database">
+    PostgreSQL vector extension for scalable retrieval
+  </Card>
+  <Card title="Query Planning" icon="route">
+    Plans retrieval strategy before execution
+  </Card>
+  <Card title="Self-Correction" icon="arrows-rotate">
+    Validates and refines retrieval results
+  </Card>
+</CardGroup>
+
+## Implementation
+
+See the [Agentic RAG](/rag/agentic-rag) page for complete implementation details including Agno framework integration and autonomous retrieval patterns.
+
+## Key Features
+
+### ReAct Pattern
+
+```python
+# Agent reasons about retrieval needs
+agent = Agent(
+    model=OpenAI(id="gpt-4o"),
+    tools=[retrieval_tool, search_tool],
+    reasoning=True,
+    markdown=True
+)
+
+# Agent decides when to retrieve
+response = agent.run("Analyze the impact of climate change")
+```
+
+### Adaptive Retrieval
+
+The agent adapts its retrieval strategy based on:
+- Query complexity
+- Initial result quality
+- Context requirements
+- Tool availability
+
+<Tip>
+  Autonomous RAG excels at complex queries requiring multi-step reasoning.
+</Tip>
+
+## Related Examples
+
+<CardGroup cols={2}>
+  <Card title="Agentic RAG" icon="robot" href="/rag/agentic-rag">
+    Complete autonomous RAG implementation
+  </Card>
+  <Card title="Corrective RAG" icon="shield-check" href="/examples/corrective-rag">
+    Add self-correction to your RAG system
+  </Card>
+</CardGroup>

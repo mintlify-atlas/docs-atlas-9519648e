@@ -1,80 +1,268 @@
 ---
-title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+title: Quick Start
+description: Get up and running with Awesome LLM Apps in under 5 minutes
 ---
 
-## Get started in three steps
+Welcome to Awesome LLM Apps! This guide will help you quickly set up and run your first AI agent application.
 
-Get your documentation site running locally and make your first customization.
+## What is Awesome LLM Apps?
 
-### Step 1: Set up your local environment
+Awesome LLM Apps is a curated collection of production-ready LLM applications featuring:
 
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
-    
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
-    
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
+- **AI Agents** - Single and multi-agent systems for various domains
+- **RAG Applications** - Retrieval Augmented Generation tutorials
+- **Voice AI Agents** - Voice-enabled AI applications
+- **MCP Integration** - Model Context Protocol agents
+- **Multi-agent Teams** - Coordinated agent workflows
 
-### Step 2: Deploy your changes
+All applications use models from OpenAI, Anthropic, Google, xAI, and open-source alternatives like Qwen and Llama.
 
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
-    
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+## Prerequisites
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+Before you begin, ensure you have:
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
-
-### Step 3: Go live
-
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
-
-## Next steps
-
-Now that you have your docs running, explore these key features:
-
-<CardGroup cols={2}>
-
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
-
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
-
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
-
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
-
-</CardGroup>
+- Python 3.8 or higher installed
+- pip (Python package manager)
+- Git for cloning the repository
+- API keys for your preferred LLM provider (OpenAI, Anthropic, Google, etc.)
 
 <Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
+Most applications in this repository use Streamlit for the user interface, making them easy to run and customize.
+</Note>
+
+## Quick Setup
+
+<Steps>
+  <Step title="Clone the Repository">
+    Clone the Awesome LLM Apps repository to your local machine:
+
+    ```bash
+    git clone https://github.com/Shubhamsaboo/awesome-llm-apps.git
+    cd awesome-llm-apps
+    ```
+  </Step>
+
+  <Step title="Choose Your Application">
+    Navigate to the application you want to run. Here are some popular starting points:
+
+    <CodeGroup>
+      ```bash Starter AI Agent
+      cd starter_ai_agents/ai_travel_agent
+      ```
+
+      ```bash RAG Application
+      cd rag_tutorials/ai_blog_search
+      ```
+
+      ```bash MCP Agent
+      cd mcp_ai_agents/github_mcp_agent
+      ```
+
+      ```bash Multi-Agent Team
+      cd advanced_ai_agents/multi_agent_apps/agent_teams/ai_finance_agent_team
+      ```
+    </CodeGroup>
+  </Step>
+
+  <Step title="Install Dependencies">
+    Each project has its own `requirements.txt` file. Install the required packages:
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+    <Tip>
+    Consider using a virtual environment to avoid package conflicts:
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # On Windows: venv\Scripts\activate
+    pip install -r requirements.txt
+    ```
+    </Tip>
+  </Step>
+
+  <Step title="Configure API Keys">
+    Most applications require API keys. You can provide them in two ways:
+
+    **Option 1: Environment Variables** (Recommended)
+    ```bash
+    export OPENAI_API_KEY='your-api-key-here'
+    export GOOGLE_API_KEY='your-google-api-key'
+    export SERPAPI_KEY='your-serpapi-key'
+    ```
+
+    **Option 2: Direct Input**
+    Many Streamlit apps allow you to enter API keys directly in the sidebar.
+
+    <Warning>
+    Never commit your API keys to version control. Use environment variables or `.env` files that are gitignored.
+    </Warning>
+  </Step>
+
+  <Step title="Run the Application">
+    Start the Streamlit application:
+
+    ```bash
+    streamlit run <app_name>.py
+    ```
+
+    For example:
+    ```bash
+    streamlit run travel_agent.py
+    ```
+
+    The app will automatically open in your default browser at `http://localhost:8501`
+  </Step>
+</Steps>
+
+## Your First AI Agent: Travel Planner
+
+Let's run a complete example with the AI Travel Agent:
+
+```bash
+# Navigate to the travel agent directory
+cd awesome-llm-apps/starter_ai_agents/ai_travel_agent
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Set up API keys
+export OPENAI_API_KEY='your-openai-api-key'
+export SERPAPI_KEY='your-serpapi-key'
+
+# Run the app
+streamlit run travel_agent.py
+```
+
+### How It Works
+
+The AI Travel Agent uses a multi-agent architecture:
+
+1. **Researcher Agent** - Searches the web for activities and accommodations
+2. **Planner Agent** - Creates personalized itineraries based on research
+
+Key dependencies:
+```txt
+streamlit
+agno>=2.2.10
+openai
+google-search-results
+icalendar
+```
+
+<Tip>
+You can download the generated itinerary as a `.ics` calendar file to import into Google Calendar, Apple Calendar, or any calendar app!
+</Tip>
+
+## Local vs Cloud Models
+
+Many applications support both cloud and local models:
+
+<CodeGroup>
+  ```bash Cloud Model (OpenAI)
+  streamlit run travel_agent.py
+  ```
+
+  ```bash Local Model (Ollama)
+  streamlit run local_travel_agent.py
+  ```
+</CodeGroup>
+
+For local models, you'll need:
+1. [Ollama](https://ollama.ai) installed and running
+2. Your desired model pulled: `ollama pull llama3.1`
+
+## Common API Keys You'll Need
+
+<CardGroup cols={2}>
+  <Card title="OpenAI" icon="openai">
+    Get your API key from [platform.openai.com](https://platform.openai.com/api-keys)
+  </Card>
+  
+  <Card title="Google AI" icon="google">
+    Sign up at [ai.google.dev](https://ai.google.dev) for Gemini API access
+  </Card>
+  
+  <Card title="Anthropic" icon="anthropic">
+    Create an account at [console.anthropic.com](https://console.anthropic.com)
+  </Card>
+  
+  <Card title="SerpAPI" icon="search">
+    Get search API access at [serpapi.com](https://serpapi.com)
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+### Common Issues
+
+**Import Error: Module not found**
+```bash
+# Make sure all dependencies are installed
+pip install -r requirements.txt --upgrade
+```
+
+**API Key Error**
+```bash
+# Verify your environment variable is set
+echo $OPENAI_API_KEY  # On Windows: echo %OPENAI_API_KEY%
+```
+
+**Port Already in Use**
+```bash
+# Use a different port
+streamlit run app.py --server.port 8502
+```
+
+**Docker Required (for MCP agents)**
+```bash
+# Verify Docker is running
+docker --version
+docker ps
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Installation Guide" icon="download" href="/installation">
+    Detailed installation instructions for all project types
+  </Card>
+  
+  <Card title="AI Agents" icon="robot" href="/ai-agents">
+    Explore starter and advanced AI agents
+  </Card>
+  
+  <Card title="RAG Tutorials" icon="database" href="/rag-tutorials">
+    Learn about Retrieval Augmented Generation
+  </Card>
+  
+  <Card title="MCP Agents" icon="plug" href="/mcp-agents">
+    Build agents with Model Context Protocol
+  </Card>
+</CardGroup>
+
+## Project Structure
+
+Each application follows a consistent structure:
+
+```
+project-name/
+├── app.py              # Main application file
+├── requirements.txt    # Python dependencies
+├── README.md          # Project-specific documentation
+├── .env.example       # Example environment variables (if applicable)
+└── utils/             # Helper functions (if applicable)
+```
+
+## Getting Help
+
+If you run into issues:
+
+1. Check the project-specific `README.md` file
+2. Review the [GitHub Issues](https://github.com/Shubhamsaboo/awesome-llm-apps/issues)
+3. Join the community discussions
+4. Follow [@Saboo_Shubham_](https://twitter.com/Saboo_Shubham_) on Twitter
+
+<Note>
+Each application directory contains a detailed README with specific setup instructions and usage examples.
 </Note>

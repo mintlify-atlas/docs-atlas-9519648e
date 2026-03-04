@@ -1,0 +1,723 @@
+---
+title: 'Voice AI Agents'
+description: 'Voice-enabled agents with text-to-speech capabilities for immersive interactions'
+icon: 'microphone'
+---
+
+## Overview
+
+Voice AI agents combine traditional agent capabilities with text-to-speech (TTS) technology to create immersive, conversational experiences. These agents can process text or voice input and respond with natural-sounding speech, making them ideal for customer support, educational content, and accessibility applications.
+
+<Note>
+All voice agents in this collection use advanced TTS models from OpenAI, ElevenLabs, or Google for high-quality, natural-sounding voice output.
+</Note>
+
+## Voice RAG Systems
+
+### Voice RAG with OpenAI SDK
+
+A voice-enabled Retrieval-Augmented Generation system that processes PDFs and responds with both text and voice.
+
+**Architecture:**
+```
+PDF Documents
+    ↓
+Document Processing
+├─ RecursiveCharacterTextSplitter
+├─ FastEmbed embeddings
+└─ Qdrant vector storage
+    ↓
+User Question (Text/Voice)
+    ↓
+Retrieval Pipeline
+├─ Query embedding
+├─ Vector similarity search
+└─ Context retrieval
+    ↓
+Agent Processing
+├─ Processing Agent (answer generation)
+└─ TTS Agent (speech optimization)
+    ↓
+Voice Generation
+├─ OpenAI TTS API
+├─ Voice selection
+└─ MP3 output
+    ↓
+User Response (Text + Audio)
+```
+
+**Features:**
+
+<CardGroup cols={2}>
+  <Card title="Document Processing" icon="file-pdf">
+    - PDF upload and parsing
+    - Intelligent chunking
+    - FastEmbed embeddings
+    - Qdrant vector storage
+    - Multiple document tracking
+  </Card>
+  
+  <Card title="Voice Features" icon="volume">
+    - Multiple voice options
+    - Real-time text-to-speech
+    - Downloadable MP3 files
+    - Spoken-word optimization
+    - Natural speech patterns
+  </Card>
+  
+  <Card title="RAG Pipeline" icon="magnifying-glass">
+    - Query embedding
+    - Similarity search
+    - Context-aware responses
+    - Source attribution
+    - Document references
+  </Card>
+  
+  <Card title="Agent Workflow" icon="workflow">
+    - Processing agent for answers
+    - TTS agent for speech optimization
+    - Real-time audio streaming
+    - Progress tracking
+  </Card>
+</CardGroup>
+
+```bash
+cd voice_ai_agents/voice_rag_openaisdk
+pip install -r requirements.txt
+streamlit run rag_voice.py
+```
+
+**Setup Requirements:**
+
+<Steps>
+  <Step title="Get API Keys">
+    - OpenAI API key: https://platform.openai.com/
+    - Qdrant Cloud credentials: https://cloud.qdrant.io/
+  </Step>
+  
+  <Step title="Create Environment File">
+    ```bash
+    # Create .env file
+    OPENAI_API_KEY='your-openai-api-key'
+    QDRANT_URL='your-qdrant-url'
+    QDRANT_API_KEY='your-qdrant-api-key'
+    ```
+  </Step>
+  
+  <Step title="Run Application">
+    ```bash
+    streamlit run rag_voice.py
+    ```
+  </Step>
+  
+  <Step title="Upload and Query">
+    - Upload PDF documents
+    - Ask questions about content
+    - Select preferred voice
+    - Listen to or download responses
+  </Step>
+</Steps>
+
+**Voice Selection:**
+
+OpenAI provides multiple voice personalities:
+- **alloy** - Neutral and balanced
+- **echo** - Clear and articulate  
+- **fable** - Warm and expressive
+- **onyx** - Deep and authoritative
+- **nova** - Friendly and energetic
+- **shimmer** - Soft and pleasant
+
+**Implementation Pattern:**
+```python
+from agno import Agent, OpenAI
+from agno.storage import QdrantStorage
+from agno.embeddings import FastEmbed
+
+# Create processing agent
+processing_agent = Agent(
+    name="Document Processor",
+    model=OpenAI(id="gpt-4o"),
+    instructions="Generate clear, spoken-word friendly responses",
+    storage=QdrantStorage(...)
+)
+
+# Create TTS agent
+tts_agent = Agent(
+    name="TTS Optimizer",
+    model=OpenAI(id="gpt-4o"),
+    instructions="Optimize text for natural speech synthesis"
+)
+
+# Generate and synthesize
+response = processing_agent.run(query)
+optimized = tts_agent.run(response)
+audio = openai.audio.speech.create(
+    model="tts-1",
+    voice="nova",
+    input=optimized
+)
+```
+
+<Tip>
+The TTS agent optimizes responses for speech by adjusting pacing, adding appropriate pauses, and ensuring natural flow - significantly improving audio quality.
+</Tip>
+
+## Customer Support Agents
+
+### Customer Support Voice Agent
+
+An OpenAI SDK powered customer support agent that delivers voice responses to questions about your knowledge base.
+
+**System Architecture:**
+
+```
+Documentation Website
+    ↓
+Firecrawl API (Web Crawling)
+    ↓
+Content Extraction & Processing
+    ↓
+Qdrant Vector Database
+├─ FastEmbed embeddings
+├─ Semantic indexing
+└─ Efficient retrieval
+    ↓
+User Query
+    ↓
+AI Agent Team
+├─ Documentation Processor Agent
+│   └─ Analyzes docs and generates answers
+├─ TTS Agent
+│   └─ Optimizes for natural speech
+└─ Voice synthesis
+    ↓
+Text + Voice Response
+```
+
+**Agent Team:**
+
+<Tabs>
+  <Tab title="Documentation Processor">
+    **Role:** Answer generation from knowledge base
+    
+    **Capabilities:**
+    - Analyzes documentation content
+    - Generates clear, concise responses
+    - Provides context from sources
+    - Handles follow-up questions
+    - Maintains conversation context
+    
+    **Tools:**
+    - Qdrant vector search
+    - FastEmbed for embeddings
+    - GPT-4o for reasoning
+  </Tab>
+  
+  <Tab title="TTS Agent">
+    **Role:** Speech optimization
+    
+    **Capabilities:**
+    - Converts text to speech-friendly format
+    - Adds appropriate pacing
+    - Inserts natural pauses
+    - Emphasizes key points
+    - Ensures clarity
+    
+    **Output:**
+    Natural-sounding speech with proper intonation and rhythm
+  </Tab>
+</Tabs>
+
+**Voice Customization:**
+
+Supports 11 OpenAI TTS voices:
+- **alloy** - Versatile, neutral tone
+- **ash** - Clear and professional
+- **ballad** - Expressive storytelling
+- **coral** - Warm and welcoming
+- **echo** - Articulate and clear
+- **fable** - Engaging narrator
+- **onyx** - Authoritative presence
+- **nova** - Energetic and friendly
+- **sage** - Calm and knowledgeable  
+- **shimmer** - Gentle and soothing
+- **verse** - Conversational tone
+
+```bash
+cd voice_ai_agents/customer_support_voice_agent
+pip install -r requirements.txt
+streamlit run ai_voice_agent_docs.py
+```
+
+**Setup and Usage:**
+
+<Steps>
+  <Step title="Configure API Keys">
+    Enter in sidebar:
+    - OpenAI API key
+    - Qdrant API key and URL
+    - Firecrawl API key
+  </Step>
+  
+  <Step title="Initialize Knowledge Base">
+    - Input documentation URL
+    - Select preferred voice
+    - Click "Initialize System"
+    - Wait for crawling and indexing
+  </Step>
+  
+  <Step title="Ask Questions">
+    - Type questions about the documentation
+    - Receive text response
+    - Listen to voice response
+    - Download audio if needed
+  </Step>
+</Steps>
+
+**Features in Detail:**
+
+<CardGroup cols={2}>
+  <Card title="Knowledge Base Creation" icon="database">
+    - Crawls documentation websites
+    - Preserves document structure
+    - Stores metadata
+    - Supports up to 5 pages (configurable)
+  </Card>
+  
+  <Card title="Vector Search" icon="magnifying-glass">
+    - FastEmbed for embeddings
+    - Semantic similarity search
+    - Efficient document retrieval
+    - Context-aware results
+  </Card>
+  
+  <Card title="Voice Generation" icon="microphone">
+    - High-quality TTS
+    - Multiple voice options
+    - Natural speech patterns
+    - Proper pacing and emphasis
+  </Card>
+  
+  <Card title="Interactive Interface" icon="window">
+    - Clean Streamlit UI
+    - Sidebar configuration
+    - Real-time processing
+    - Progress indicators
+    - Audio player with download
+  </Card>
+</CardGroup>
+
+<Note>
+**Scaling Configuration:** The default setup crawls 5 pages. To index more documentation, adjust the `max_pages` parameter in the Firecrawl configuration.
+</Note>
+
+## Audio Tour Agents
+
+### Self-Guided AI Audio Tour Agent
+
+A conversational voice agent that generates immersive, self-guided audio tours based on location, interests, and duration.
+
+**Multi-Agent Architecture:**
+
+<CardGroup cols={3}>
+  <Card title="Orchestrator Agent" icon="diagram-project">
+    Coordinates overall tour flow, manages transitions, and assembles content from expert agents.
+  </Card>
+  
+  <Card title="History Agent" icon="landmark">
+    Delivers historical narratives with authoritative voice and detailed context.
+  </Card>
+  
+  <Card title="Architecture Agent" icon="building">
+    Highlights architectural details, styles, and design elements with technical descriptions.
+  </Card>
+  
+  <Card title="Culture Agent" icon="masks-theater">
+    Explores local customs, traditions, and artistic heritage with enthusiastic tone.
+  </Card>
+  
+  <Card title="Culinary Agent" icon="utensils">
+    Describes iconic dishes and food culture with passionate, engaging voice.
+  </Card>
+</CardGroup>
+
+**Tour Generation Workflow:**
+
+```
+User Input
+├─ Location (e.g., "Paris, France")
+├─ Interests (History, Architecture, Culture, Food)
+├─ Duration (15, 30, or 60 minutes)
+└─ Custom preferences
+    ↓
+Orchestrator Agent Planning
+├─ Web search for location information
+├─ Time allocation based on interests
+├─ Content distribution planning
+└─ Transition coordination
+    ↓
+Expert Agents Generate Content (Parallel)
+├─ History Agent → Historical narratives
+├─ Architecture Agent → Building descriptions
+├─ Culture Agent → Cultural insights
+└─ Culinary Agent → Food experiences
+    ↓
+Orchestrator Assembles Tour
+├─ Weaves narratives together
+├─ Adds transitions
+├─ Ensures proper pacing
+└─ Balances content by interest weights
+    ↓
+Voice Synthesis (GPT-4o Mini Audio)
+├─ Different voices for each agent
+├─ Natural transitions
+├─ Expressive delivery
+└─ Appropriate tone per topic
+    ↓
+Complete Audio Tour
+```
+
+**Features:**
+
+<Tabs>
+  <Tab title="Location-Aware">
+    **Dynamic Content Generation:**
+    - Based on user-input location
+    - Real-time web search integration
+    - Up-to-date information
+    - Relevant local details
+    
+    **Personalization:**
+    - Filtered by interest categories
+    - Weighted by user preferences
+    - Customized depth of coverage
+  </Tab>
+  
+  <Tab title="Tour Duration">
+    **Time Options:**
+    - 15 minutes (quick highlights)
+    - 30 minutes (balanced coverage)
+    - 60 minutes (comprehensive tour)
+    
+    **Time Allocation:**
+    - Adapts to user interest weights
+    - Considers location relevance
+    - Ensures well-paced narratives
+    - Proportioned sections
+  </Tab>
+  
+  <Tab title="Voice Quality">
+    **Expressive Speech:**
+    - GPT-4o Mini Audio model
+    - Agent-specific voices
+    - Authoritative (History)
+    - Technical (Architecture)
+    - Enthusiastic (Culture)
+    - Passionate (Culinary)
+    
+    **Natural Flow:**
+    - Smooth transitions
+    - Appropriate pacing
+    - Emotional variation
+  </Tab>
+</Tabs>
+
+```bash
+cd voice_ai_agents/ai_audio_tour_agent
+pip install -r requirements.txt
+streamlit run ai_audio_tour_agent.py
+```
+
+**Usage Flow:**
+
+<Steps>
+  <Step title="Enter Location">
+    Specify the destination for your audio tour:
+    - City name (e.g., "Rome")
+    - Landmark (e.g., "Eiffel Tower")
+    - Region (e.g., "Tuscany")
+  </Step>
+  
+  <Step title="Select Interests">
+    Choose areas of interest:
+    - History and heritage
+    - Architecture and design
+    - Culture and arts
+    - Culinary experiences
+    
+    Adjust weights for each category
+  </Step>
+  
+  <Step title="Choose Duration">
+    Select tour length:
+    - 15 min (highlights)
+    - 30 min (standard)
+    - 60 min (comprehensive)
+  </Step>
+  
+  <Step title="Generate Tour">
+    - Agents research and create content
+    - Orchestrator assembles narrative
+    - Voice synthesis generates audio
+    - Download or stream result
+  </Step>
+</Steps>
+
+**Example Tour Structure (30 minutes):**
+
+```
+Introduction (2 min)
+└─ Orchestrator sets scene
+
+History Section (8 min)
+├─ Ancient origins
+├─ Key historical events
+└─ Notable figures
+
+Architecture Section (7 min)
+├─ Iconic buildings
+├─ Architectural styles
+└─ Design elements
+
+Culture Section (7 min)
+├─ Local traditions
+├─ Arts and music
+└─ Cultural practices
+
+Culinary Section (5 min)
+├─ Signature dishes
+├─ Food culture
+└─ Dining experiences
+
+Conclusion (1 min)
+└─ Orchestrator wraps up
+```
+
+<Tip>
+**Best Practices:**
+- Be specific with location for better results
+- Adjust interest weights to personalize content
+- Start with 30-minute tours for balanced experience
+- Use headphones for immersive experience
+</Tip>
+
+## Implementation Patterns
+
+### Basic Voice Agent
+```python
+from agno import Agent, OpenAI
+import openai
+
+# Create agent with TTS capability
+agent = Agent(
+    name="Voice Assistant",
+    model=OpenAI(id="gpt-4o"),
+    instructions="Generate clear, conversational responses"
+)
+
+# Generate response
+response = agent.run(user_query)
+
+# Convert to speech
+audio = openai.audio.speech.create(
+    model="tts-1",
+    voice="nova",
+    input=response.content
+)
+
+# Save or stream audio
+audio.stream_to_file("response.mp3")
+```
+
+### Voice RAG Pattern
+```python
+from agno import Agent
+from agno.storage import QdrantStorage
+from agno.embeddings import FastEmbed
+
+# RAG agent with voice output
+rag_agent = Agent(
+    name="Voice RAG",
+    model=OpenAI(id="gpt-4o"),
+    storage=QdrantStorage(
+        collection="docs",
+        embedder=FastEmbed()
+    ),
+    instructions="""
+    Answer questions using the knowledge base.
+    Format responses for natural speech:
+    - Use conversational language
+    - Add appropriate pauses with commas
+    - Spell out acronyms on first use
+    - Keep sentences clear and concise
+    """
+)
+
+# Query with voice output
+response = rag_agent.run(query)
+audio = synthesize_speech(response.content)
+```
+
+### Multi-Agent Voice System
+```python
+# Specialized agents with different voices
+history_agent = Agent(
+    name="Historian",
+    voice="onyx",  # Deep, authoritative
+    instructions="Deliver historical narratives"
+)
+
+culture_agent = Agent(
+    name="Culture Guide",
+    voice="nova",  # Friendly, energetic
+    instructions="Explore cultural experiences"
+)
+
+orchestrator = Agent(
+    name="Tour Guide",
+    team=[history_agent, culture_agent],
+    voice="alloy",  # Neutral, balanced
+    instructions="Coordinate tour narrative"
+)
+
+# Generate multi-voice tour
+tour = orchestrator.run(tour_request)
+```
+
+### Streaming Voice Responses
+```python
+import asyncio
+
+async def stream_voice_response(query):
+    # Stream text response
+    async for chunk in agent.run_stream(query):
+        print(chunk.content, end="", flush=True)
+        text_buffer += chunk.content
+        
+        # Generate audio for complete sentences
+        if chunk.content.endswith(('.', '!', '?')):
+            audio = await synthesize_async(text_buffer)
+            await play_audio(audio)
+            text_buffer = ""
+```
+
+## Voice Quality Optimization
+
+### Text Optimization for TTS
+```python
+def optimize_for_speech(text: str) -> str:
+    """
+    Optimize text for natural-sounding speech.
+    """
+    # Spell out acronyms
+    text = text.replace("AI", "A.I.")
+    text = text.replace("API", "A.P.I.")
+    
+    # Add pauses for readability
+    text = text.replace(". ", ". ... ")
+    
+    # Remove markdown formatting
+    text = re.sub(r'\*\*|\*|_', '', text)
+    
+    # Convert numbers to words for clarity
+    text = text.replace("1st", "first")
+    text = text.replace("2nd", "second")
+    
+    return text
+```
+
+### Voice Selection Guide
+
+| Use Case | Recommended Voice | Characteristics |
+|----------|------------------|------------------|
+| Customer Support | nova, coral | Friendly, helpful |
+| Educational Content | sage, alloy | Clear, authoritative |
+| Storytelling | fable, ballad | Expressive, engaging |
+| Professional | onyx, echo | Authoritative, clear |
+| Casual Conversation | shimmer, verse | Natural, conversational |
+
+### Audio Quality Settings
+```python
+# High-quality audio
+audio = openai.audio.speech.create(
+    model="tts-1-hd",  # HD quality
+    voice="nova",
+    input=text,
+    response_format="mp3",
+    speed=1.0  # Normal speed (0.25-4.0)
+)
+
+# Optimize for streaming
+audio = openai.audio.speech.create(
+    model="tts-1",  # Standard quality, faster
+    voice="nova",
+    input=text,
+    response_format="opus"  # Better for streaming
+)
+```
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Response Formatting" icon="align-left">
+    - Use conversational language
+    - Break into short sentences
+    - Add natural pauses with punctuation
+    - Spell out acronyms
+    - Avoid complex markdown
+  </Card>
+  
+  <Card title="Voice Selection" icon="volume">
+    - Match voice to use case
+    - Test multiple options
+    - Consider audience preferences
+    - Use consistent voices for roles
+    - Vary voices in multi-agent systems
+  </Card>
+  
+  <Card title="Audio Processing" icon="waveform">
+    - Use HD model for quality
+    - Stream for long content
+    - Cache generated audio
+    - Provide download options
+    - Add playback controls
+  </Card>
+  
+  <Card title="Error Handling" icon="shield">
+    - Handle API failures gracefully
+    - Provide text fallback
+    - Show loading indicators
+    - Timeout long requests
+    - Log audio generation issues
+  </Card>
+</CardGroup>
+
+<Warning>
+**Cost Considerations:**
+- TTS API costs per character
+- HD models cost more than standard
+- Cache audio when possible
+- Monitor usage in production
+- Consider rate limits
+</Warning>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="MCP Agents" icon="plug" href="/ai-agents/mcp-agents">
+    Add external service integration
+  </Card>
+  
+  <Card title="Multi-Agent Teams" icon="users" href="/ai-agents/multi-agent-teams">
+    Build coordinated agent systems
+  </Card>
+  
+  <Card title="Advanced Agents" icon="brain" href="/ai-agents/advanced-agents">
+    Explore sophisticated implementations
+  </Card>
+  
+  <Card title="Game Playing" icon="gamepad" href="/ai-agents/game-playing-agents">
+    Try adversarial agent systems
+  </Card>
+</CardGroup>

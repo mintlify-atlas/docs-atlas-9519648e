@@ -1,0 +1,360 @@
+---
+title: Introduction
+description: A curated collection of production-ready LLM applications with RAG, AI Agents, Multi-agent Teams, MCP, and Voice Agents
+mode: custom
+---
+
+<div className="relative overflow-hidden bg-gradient-to-br from-[#8557a0] via-[#b5549d] to-[#b85a9e] dark:from-[#6b4580] dark:via-[#8557a0] dark:to-[#b5549d] py-20">
+  <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      <div className="lg:col-span-7">
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white dark:text-white mb-6">
+          Awesome LLM Apps
+        </h1>
+        <p className="text-lg sm:text-xl text-white/90 dark:text-white/90 max-w-2xl mb-8">
+          A curated collection of 100+ production-ready LLM applications built with RAG, AI Agents, Multi-agent Teams, MCP, and Voice Agents using OpenAI, Anthropic, Gemini, and open-source models.
+        </p>
+        <div className="flex flex-wrap gap-4">
+          <a 
+            href="/quickstart" 
+            className="inline-flex items-center px-6 py-3 rounded-lg bg-white dark:bg-white text-[#8557a0] dark:text-[#8557a0] font-semibold hover:bg-gray-100 dark:hover:bg-gray-100 transition-colors no-underline"
+          >
+            Get Started
+          </a>
+          <a 
+            href="/examples/ai-travel-agent" 
+            className="inline-flex items-center px-6 py-3 rounded-lg border border-white/30 bg-white/10 text-white dark:border-white/30 dark:bg-white/10 dark:text-white font-semibold hover:bg-white/20 dark:hover:bg-white/20 transition-colors no-underline"
+          >
+            Explore Examples
+          </a>
+        </div>
+      </div>
+      <div className="lg:col-span-5 hidden lg:block">
+        <div className="relative">
+          <img 
+            src="https://media.brand.dev/b7c807e1-1be4-441a-95c3-6b0055825409.png" 
+            alt="Awesome LLM Apps" 
+            className="w-full h-auto"
+            noZoom
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div className="mt-16 mb-16 max-w-5xl mx-auto px-6">
+  <div className="text-center mb-12">
+    <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+      Quick start
+    </h2>
+    <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+      Get started with Awesome LLM Apps in minutes. Clone the repo, navigate to your project, and run your first AI agent.
+    </p>
+  </div>
+
+  <Steps>
+    <Step title="Clone the repository">
+      Clone the Awesome LLM Apps repository to your local machine:
+      
+      ```bash
+      git clone https://github.com/Shubhamsaboo/awesome-llm-apps.git
+      cd awesome-llm-apps
+      ```
+    </Step>
+    
+    <Step title="Choose your project">
+      Navigate to any project directory. For example, to try the AI Travel Agent:
+      
+      ```bash
+      cd starter_ai_agents/ai_travel_agent
+      ```
+      
+      <Note>
+        Browse the repository to explore 100+ different LLM applications across categories like starter agents, advanced agents, RAG tutorials, and multi-agent teams.
+      </Note>
+    </Step>
+    
+    <Step title="Install dependencies">
+      Each project has its own `requirements.txt` file. Install the dependencies:
+      
+      ```bash
+      pip install -r requirements.txt
+      ```
+    </Step>
+    
+    <Step title="Configure API keys">
+      Most projects require API keys from providers like OpenAI, Anthropic, or Google. Set your API keys as environment variables:
+      
+      ```bash
+      export OPENAI_API_KEY='your-api-key-here'
+      export ANTHROPIC_API_KEY='your-api-key-here'
+      ```
+      
+      <Tip>
+        Check each project's README for specific API key requirements and setup instructions.
+      </Tip>
+    </Step>
+    
+    <Step title="Run the application">
+      Most projects use Streamlit for the UI. Run the app:
+      
+      ```bash
+      streamlit run app.py
+      ```
+      
+      Your browser will automatically open to the application interface.
+    </Step>
+  </Steps>
+</div>
+
+<div className="mt-16 mb-16 max-w-5xl mx-auto px-6">
+  <div className="text-center mb-12">
+    <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+      Explore by category
+    </h2>
+    <p className="text-lg text-gray-600 dark:text-gray-400">
+      Discover LLM applications organized by use case and complexity level
+    </p>
+  </div>
+
+  <CardGroup cols={3}>
+    <Card title="AI Agents" icon="robot" href="/ai-agents/overview">
+      Build intelligent agents from starter to advanced with specialized capabilities
+    </Card>
+    <Card title="RAG Applications" icon="magnifying-glass" href="/rag/overview">
+      Implement retrieval-augmented generation with multiple strategies
+    </Card>
+    <Card title="Multi-Agent Teams" icon="users" href="/ai-agents/multi-agent-teams">
+      Coordinate specialized agents working together on complex tasks
+    </Card>
+    <Card title="Voice AI Agents" icon="microphone" href="/ai-agents/voice-agents">
+      Create conversational agents with audio processing capabilities
+    </Card>
+    <Card title="MCP Agents" icon="plug" href="/ai-agents/mcp-agents">
+      Integrate Model Context Protocol for enhanced agent capabilities
+    </Card>
+    <Card title="Agent Skills" icon="puzzle-piece" href="/agent-skills/overview">
+      Reusable modular capabilities following AgentSkills.io specification
+    </Card>
+  </CardGroup>
+</div>
+
+<div className="mt-16 mb-16 max-w-5xl mx-auto px-6">
+  <div className="text-center mb-12">
+    <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+      Key features
+    </h2>
+    <p className="text-lg text-gray-600 dark:text-gray-400">
+      Everything you need to build production-ready LLM applications
+    </p>
+  </div>
+
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="p-6 rounded-2xl border border-gray-200 dark:border-[#27272a] bg-white dark:bg-[#1a1d27] hover:border-[#8557a0] dark:hover:border-[#8557a0] transition-colors">
+      <div className="flex items-start gap-4">
+        <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-[#8557a0]/10 dark:bg-[#8557a0]/20 flex items-center justify-center">
+          <svg className="w-6 h-6 text-[#8557a0]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+            100+ Production-Ready Apps
+          </h3>
+          <p className="text-gray-600 dark:text-gray-400">
+            Curated collection of working LLM applications you can run immediately
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div className="p-6 rounded-2xl border border-gray-200 dark:border-[#27272a] bg-white dark:bg-[#1a1d27] hover:border-[#8557a0] dark:hover:border-[#8557a0] transition-colors">
+      <div className="flex items-start gap-4">
+        <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-[#8557a0]/10 dark:bg-[#8557a0]/20 flex items-center justify-center">
+          <svg className="w-6 h-6 text-[#8557a0]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+          </svg>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+            Multi-Provider Support
+          </h3>
+          <p className="text-gray-600 dark:text-gray-400">
+            Works with OpenAI, Anthropic, Gemini, and open-source models
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div className="p-6 rounded-2xl border border-gray-200 dark:border-[#27272a] bg-white dark:bg-[#1a1d27] hover:border-[#8557a0] dark:hover:border-[#8557a0] transition-colors">
+      <div className="flex items-start gap-4">
+        <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-[#8557a0]/10 dark:bg-[#8557a0]/20 flex items-center justify-center">
+          <svg className="w-6 h-6 text-[#8557a0]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+            Advanced RAG Techniques
+          </h3>
+          <p className="text-gray-600 dark:text-gray-400">
+            Agentic RAG, Corrective RAG, Knowledge Graphs, and more
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div className="p-6 rounded-2xl border border-gray-200 dark:border-[#27272a] bg-white dark:bg-[#1a1d27] hover:border-[#8557a0] dark:hover:border-[#8557a0] transition-colors">
+      <div className="flex items-start gap-4">
+        <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-[#8557a0]/10 dark:bg-[#8557a0]/20 flex items-center justify-center">
+          <svg className="w-6 h-6 text-[#8557a0]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+          </svg>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+            Local & Cloud Options
+          </h3>
+          <p className="text-gray-600 dark:text-gray-400">
+            Run models locally with Ollama or use cloud APIs
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div className="p-6 rounded-2xl border border-gray-200 dark:border-[#27272a] bg-white dark:bg-[#1a1d27] hover:border-[#8557a0] dark:hover:border-[#8557a0] transition-colors">
+      <div className="flex items-start gap-4">
+        <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-[#8557a0]/10 dark:bg-[#8557a0]/20 flex items-center justify-center">
+          <svg className="w-6 h-6 text-[#8557a0]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+          </svg>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+            Framework Crash Courses
+          </h3>
+          <p className="text-gray-600 dark:text-gray-400">
+            Learn Google ADK and OpenAI SDK with hands-on tutorials
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div className="p-6 rounded-2xl border border-gray-200 dark:border-[#27272a] bg-white dark:bg-[#1a1d27] hover:border-[#8557a0] dark:hover:border-[#8557a0] transition-colors">
+      <div className="flex items-start gap-4">
+        <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-[#8557a0]/10 dark:bg-[#8557a0]/20 flex items-center justify-center">
+          <svg className="w-6 h-6 text-[#8557a0]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+          </svg>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+            Memory & Optimization
+          </h3>
+          <p className="text-gray-600 dark:text-gray-400">
+            Advanced memory management and token optimization techniques
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div className="mt-16 mb-16 max-w-5xl mx-auto px-6">
+  <div className="text-center mb-12">
+    <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+      Popular examples
+    </h2>
+    <p className="text-lg text-gray-600 dark:text-gray-400">
+      Start with these popular LLM applications
+    </p>
+  </div>
+
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <a href="/examples/ai-travel-agent" className="group block rounded-2xl border border-gray-200 dark:border-[#27272a] overflow-hidden hover:border-[#8557a0] dark:hover:border-[#8557a0] transition-colors no-underline bg-white dark:bg-[#1a1d27]">
+      <div className="p-6">
+        <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2">
+          AI Travel Agent
+        </h3>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+          Generate personalized travel itineraries with calendar export using GPT-4o
+        </p>
+        <div className="flex items-center gap-2 text-sm text-[#8557a0] group-hover:text-[#b5549d] dark:text-[#bfb8d2] dark:group-hover:text-[#8557a0]">
+          <span>Try example</span>
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </div>
+      </div>
+    </a>
+
+    <a href="/examples/finance-agent-team" className="group block rounded-2xl border border-gray-200 dark:border-[#27272a] overflow-hidden hover:border-[#8557a0] dark:hover:border-[#8557a0] transition-colors no-underline bg-white dark:bg-[#1a1d27]">
+      <div className="p-6">
+        <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2">
+          Finance Agent Team
+        </h3>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+          Multi-agent financial analysis with web search and YFinance integration
+        </p>
+        <div className="flex items-center gap-2 text-sm text-[#8557a0] group-hover:text-[#b5549d] dark:text-[#bfb8d2] dark:group-hover:text-[#8557a0]">
+          <span>Try example</span>
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </div>
+      </div>
+    </a>
+
+    <a href="/examples/corrective-rag" className="group block rounded-2xl border border-gray-200 dark:border-[#27272a] overflow-hidden hover:border-[#8557a0] dark:hover:border-[#8557a0] transition-colors no-underline bg-white dark:bg-[#1a1d27]">
+      <div className="p-6">
+        <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2">
+          Corrective RAG (CRAG)
+        </h3>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+          Self-evaluating retrieval system with fallback strategies for accuracy
+        </p>
+        <div className="flex items-center gap-2 text-sm text-[#8557a0] group-hover:text-[#b5549d] dark:text-[#bfb8d2] dark:group-hover:text-[#8557a0]">
+          <span>Try example</span>
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </div>
+      </div>
+    </a>
+
+    <a href="/examples/deep-research-agent" className="group block rounded-2xl border border-gray-200 dark:border-[#27272a] overflow-hidden hover:border-[#8557a0] dark:hover:border-[#8557a0] transition-colors no-underline bg-white dark:bg-[#1a1d27]">
+      <div className="p-6">
+        <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2">
+          Deep Research Agent
+        </h3>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+          Conduct comprehensive research with citations and synthesis
+        </p>
+        <div className="flex items-center gap-2 text-sm text-[#8557a0] group-hover:text-[#b5549d] dark:text-[#bfb8d2] dark:group-hover:text-[#8557a0]">
+          <span>Try example</span>
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<div className="mt-16 mb-16 max-w-5xl mx-auto px-6">
+  <div className="p-8 rounded-2xl bg-gradient-to-br from-[#8557a0] to-[#b5549d] dark:from-[#6b4580] dark:to-[#8557a0] text-center">
+    <h2 className="text-3xl font-bold text-white dark:text-white mb-4">
+      Ready to build with LLMs?
+    </h2>
+    <p className="text-lg text-white/90 dark:text-white/90 max-w-2xl mx-auto mb-6">
+      Explore 100+ production-ready examples and start building your own AI-powered applications today.
+    </p>
+    <a 
+      href="/quickstart" 
+      className="inline-flex items-center px-6 py-3 rounded-lg bg-white dark:bg-white text-[#8557a0] dark:text-[#8557a0] font-semibold hover:bg-gray-100 dark:hover:bg-gray-100 transition-colors no-underline"
+    >
+      Get Started Now
+    </a>
+  </div>
+</div>

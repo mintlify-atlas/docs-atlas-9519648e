@@ -1,0 +1,823 @@
+---
+title: 'MCP AI Agents'
+description: 'Agents built on Model Context Protocol for seamless external service integration'
+icon: 'plug'
+---
+
+## Overview
+
+Model Context Protocol (MCP) agents use a standardized protocol to connect AI agents with external services, tools, and data sources. MCP provides a unified interface for agents to interact with GitHub, Notion, browsers, calendars, and many other services through consistent server implementations.
+
+<Note>
+**What is MCP?** Model Context Protocol is an open protocol that standardizes how AI applications connect to data sources and tools. It enables interchangeable integrations and reduces the complexity of building agent-service connections.
+</Note>
+
+## GitHub Integration
+
+### GitHub MCP Agent
+
+Explore and analyze GitHub repositories using natural language queries through the official GitHub MCP Server.
+
+**Architecture:**
+```
+User Natural Language Query
+    ↓
+OpenAI GPT-4o (Query Understanding)
+    ↓
+MCP Protocol Layer
+    ↓
+GitHub MCP Server (Docker Container)
+    ↓
+GitHub API
+├─ Repository data
+├─ Issues and PRs
+├─ Code statistics
+├─ Activity metrics
+└─ Collaboration data
+    ↓
+Structured Response
+```
+
+**Features:**
+
+<CardGroup cols={2}>
+  <Card title="Natural Language Interface" icon="message">
+    Ask questions in plain English:
+    - "Show me issues by label"
+    - "What PRs need review?"
+    - "Analyze code quality trends"
+  </Card>
+  
+  <Card title="Comprehensive Analysis" icon="chart-line">
+    Explore various aspects:
+    - Issues and pull requests
+    - Repository activity
+    - Code statistics
+    - Collaboration patterns
+  </Card>
+  
+  <Card title="MCP Integration" icon="plug">
+    Uses official GitHub MCP Server:
+    - Docker-based deployment
+    - Consistent API interface
+    - Automatic updates
+    - Reliable connections
+  </Card>
+  
+  <Card title="Real-time Results" icon="clock">
+    Immediate insights:
+    - Repository health
+    - Activity patterns
+    - Development trends
+    - Team collaboration
+  </Card>
+</CardGroup>
+
+**Setup Requirements:**
+
+<Warning>
+**Docker Required:**
+The official GitHub MCP server runs in a Docker container. Make sure Docker is installed and running:
+```bash
+# Check Docker installation
+docker --version
+docker ps
+
+# Install from docker.com if needed
+```
+</Warning>
+
+<Steps>
+  <Step title="Install Docker">
+    Download and install from [docker.com](https://www.docker.com/get-started)
+    
+    Verify installation:
+    ```bash
+    docker --version
+    docker ps
+    ```
+  </Step>
+  
+  <Step title="Get API Keys">
+    **OpenAI API Key:**
+    - Get from [platform.openai.com/api-keys](https://platform.openai.com/api-keys)
+    
+    **GitHub Token:**
+    - Create at [github.com/settings/tokens](https://github.com/settings/tokens)
+    - Required scope: `repo`
+  </Step>
+  
+  <Step title="Clone and Install">
+    ```bash
+    git clone https://github.com/Shubhamsaboo/awesome-llm-apps.git
+    cd mcp_ai_agents/github_mcp_agent
+    pip install -r requirements.txt
+    ```
+  </Step>
+  
+  <Step title="Run the Agent">
+    ```bash
+    streamlit run github_agent.py
+    ```
+    
+    In the app:
+    - Enter OpenAI API key
+    - Enter GitHub token
+    - Specify repository to analyze
+    - Select or write custom query
+  </Step>
+</Steps>
+
+**Example Queries:**
+
+<Tabs>
+  <Tab title="Issues">
+    ```
+    "Show me issues by label"
+    "What issues are being actively discussed?"
+    "Find issues labeled as bugs"
+    "List high-priority open issues"
+    "Show recently closed issues"
+    ```
+  </Tab>
+  
+  <Tab title="Pull Requests">
+    ```
+    "What PRs need review?"
+    "Show me recent merged PRs"
+    "Find PRs with conflicts"
+    "List draft pull requests"
+    "Show PRs by author"
+    ```
+  </Tab>
+  
+  <Tab title="Repository Analysis">
+    ```
+    "Show repository health metrics"
+    "Show repository activity patterns"
+    "Analyze code quality trends"
+    "What languages are used most?"
+    "Show contributor statistics"
+    ```
+  </Tab>
+</Tabs>
+
+## Browser Automation
+
+### Browser MCP Agent
+
+Control a browser with natural language commands using MCP-Agent and Playwright integration.
+
+**System Architecture:**
+```
+Natural Language Command
+    ↓
+LLM (OpenAI/Anthropic)
+├─ Understand intent
+├─ Plan actions
+└─ Generate commands
+    ↓
+MCP Protocol
+    ↓
+MCP-Agent Framework
+    ↓
+Playwright MCP Server (Node.js)
+    ↓
+Headless Browser
+├─ Navigate pages
+├─ Click elements
+├─ Fill forms
+├─ Take screenshots
+└─ Extract content
+    ↓
+Results + Screenshots
+```
+
+**Capabilities:**
+
+<CardGroup cols={2}>
+  <Card title="Navigation" icon="compass">
+    - Visit websites
+    - Navigate through pages
+    - Go back/forward
+    - Refresh pages
+    - Handle redirects
+  </Card>
+  
+  <Card title="Interaction" icon="hand-pointer">
+    - Click buttons and links
+    - Fill forms
+    - Submit data
+    - Scroll pages
+    - Hover elements
+  </Card>
+  
+  <Card title="Extraction" icon="download">
+    - Extract text content
+    - Get element attributes
+    - Scrape data
+    - Parse structures
+    - Summarize content
+  </Card>
+  
+  <Card title="Visual Feedback" icon="camera">
+    - Take screenshots
+    - Capture elements
+    - Visual verification
+    - Progress tracking
+  </Card>
+</CardGroup>
+
+**Prerequisites:**
+
+<Warning>
+**Node.js Required:**
+Playwright runs on Node.js. This is a critical requirement!
+
+```bash
+# Check if installed
+node --version
+npm --version
+
+# Install from nodejs.org if needed
+```
+</Warning>
+
+<Steps>
+  <Step title="Install Node.js">
+    Download and install from [nodejs.org](https://nodejs.org/)
+    
+    Verify:
+    ```bash
+    node --version  # Should show version number
+    npm --version   # Should show version number
+    ```
+  </Step>
+  
+  <Step title="Install Python Dependencies">
+    ```bash
+    cd mcp_ai_agents/browser_mcp_agent
+    pip install -r requirements.txt
+    ```
+  </Step>
+  
+  <Step title="Set API Key">
+    ```bash
+    export OPENAI_API_KEY=your-openai-api-key
+    # OR
+    export ANTHROPIC_API_KEY=your-anthropic-api-key
+    ```
+  </Step>
+  
+  <Step title="Run the Agent">
+    ```bash
+    streamlit run main.py
+    ```
+  </Step>
+</Steps>
+
+**Example Commands:**
+
+<Tabs>
+  <Tab title="Basic Navigation">
+    ```
+    "Go to www.mcp-agent.com"
+    "Navigate to the pricing page"
+    "Go back to the previous page"
+    "Refresh the current page"
+    ```
+  </Tab>
+  
+  <Tab title="Interaction">
+    ```
+    "Click on the login button"
+    "Fill in the search box with 'AI agents'"
+    "Scroll down to see more content"
+    "Click the first article link"
+    ```
+  </Tab>
+  
+  <Tab title="Content Extraction">
+    ```
+    "Summarize the main content of this page"
+    "Extract the navigation menu items"
+    "Get all the article titles"
+    "Find email addresses on this page"
+    ```
+  </Tab>
+  
+  <Tab title="Multi-step Tasks">
+    ```
+    "Go to the blog, find the most recent article, and summarize its key points"
+    "Search for 'AI tutorials', click the first result, and extract the main topics"
+    "Navigate to the contact page and extract all contact methods"
+    ```
+  </Tab>
+</Tabs>
+
+**Implementation:**
+```python
+from mcp_agent import MCPAgent
+from playwright import async_api
+
+# Initialize browser agent
+agent = MCPAgent(
+    model="gpt-4o",
+    mcp_servers={
+        "playwright": {
+            "command": "npx",
+            "args": ["-y", "@modelcontextprotocol/server-playwright"]
+        }
+    }
+)
+
+# Execute natural language commands
+result = await agent.run(
+    "Go to example.com and extract the main heading"
+)
+
+# Results include screenshots and extracted data
+screenshot = result.artifacts["screenshot"]
+content = result.content
+```
+
+## Notion Integration
+
+### Notion MCP Agent
+
+A terminal-based agent for interacting with Notion pages using natural language through the Notion MCP server.
+
+**Features:**
+
+<CardGroup cols={2}>
+  <Card title="Notion Operations" icon="note">
+    - Update blocks and content
+    - Insert new elements
+    - Retrieve page data
+    - Create structures
+  </Card>
+  
+  <Card title="Content Types" icon="list">
+    - Paragraphs and text
+    - Bullet and numbered lists
+    - Tables and databases
+    - Code blocks
+    - Comments
+  </Card>
+  
+  <Card title="Conversation Context" icon="comments">
+    - Multi-turn interactions
+    - Session management
+    - Persistent conversations
+    - Context retention
+  </Card>
+  
+  <Card title="Natural Language" icon="language">
+    - Plain English commands
+    - Complex operations
+    - Search functionality
+    - Bulk updates
+  </Card>
+</CardGroup>
+
+**Setup Process:**
+
+<Steps>
+  <Step title="Create Notion Integration">
+    1. Go to [Notion Integrations](https://www.notion.so/my-integrations)
+    2. Click "New integration"
+    3. Name it (e.g., "Notion Assistant")
+    4. Select capabilities (Read & Write content)
+    5. Submit and copy "Internal Integration Token"
+  </Step>
+  
+  <Step title="Share Page with Integration">
+    **Method 1: Via Page Menu**
+    1. Open your Notion page
+    2. Click three dots (⋮) in top-right
+    3. Select "Add connections"
+    4. Search for your integration
+    5. Click to add
+    
+    **Method 2: Via Share Button**
+    1. Click "Share" in top right
+    2. Search for integration name (preceded by "@")
+    3. Click integration
+    4. Click "Invite"
+  </Step>
+  
+  <Step title="Find Page ID">
+    1. Open Notion page in browser
+    2. Copy URL:
+       ```
+       https://www.notion.so/workspace/Your-Page-1f5b8a8ba283...
+       ```
+    3. Page ID is after last dash:
+       ```
+       1f5b8a8bad058a7e39a6
+       ```
+  </Step>
+  
+  <Step title="Configure and Run">
+    ```bash
+    cd mcp_ai_agents/notion_mcp_agent
+    pip install -r requirements.txt
+    
+    # Set environment variables
+    export NOTION_API_KEY=your-integration-token
+    export OPENAI_API_KEY=your-openai-key
+    export NOTION_PAGE_ID=your-page-id
+    
+    # Run agent
+    python notion_mcp_agent.py
+    # OR with page ID as argument
+    python notion_mcp_agent.py your-page-id-here
+    ```
+  </Step>
+</Steps>
+
+**Example Queries:**
+```
+"What's on my Notion page?"
+"Add a new paragraph saying 'Meeting notes for today'"
+"Create a bullet list with three items: Apple, Banana, Orange"
+"Add a comment to the first paragraph saying 'This looks good!'"
+"Search for any mentions of meetings"
+"Summarize our conversation so far"
+"Create a table with columns Name, Role, Status"
+```
+
+**Conversation Flow:**
+```python
+# Each session maintains context
+session_id = generate_session_id()
+user_id = generate_user_id()
+
+# Agent remembers previous interactions
+agent = NotionMCPAgent(
+    session_id=session_id,
+    user_id=user_id
+)
+
+# Multi-turn conversation
+agent.run("Add a heading 'Project Plan'")
+agent.run("Under that, add three bullet points")
+agent.run("Now add a table below with tasks")
+```
+
+<Tip>
+**Session Management:** The agent creates unique user and session IDs to maintain conversation context. You can exit with 'exit', 'quit', 'bye', or 'goodbye'.
+</Tip>
+
+## Multi-Service Integration
+
+### Multi-MCP Intelligent Assistant
+
+A powerful productivity agent that integrates multiple MCP servers for seamless access to GitHub, Perplexity, Calendar, and Gmail.
+
+**Integrated Services:**
+
+<CardGroup cols={2}>
+  <Card title="GitHub Integration" icon="github">
+    **Capabilities:**
+    - Repository management
+    - Issue & PR workflows
+    - Code analysis
+    - Project tracking
+    
+    **Operations:**
+    - Create, clone, fork repos
+    - Manage issues and PRs
+    - Review code changes
+    - Track project progress
+  </Card>
+  
+  <Card title="Perplexity Research" icon="magnifying-glass">
+    **Capabilities:**
+    - Real-time web search
+    - Information gathering
+    - Research synthesis
+    - Source verification
+    
+    **Use Cases:**
+    - Technical research
+    - Market analysis
+    - Documentation lookup
+    - Trend monitoring
+  </Card>
+  
+  <Card title="Calendar Management" icon="calendar">
+    **Capabilities:**
+    - Event scheduling
+    - Meeting coordination
+    - Availability checking
+    - Reminder management
+    
+    **Features:**
+    - Create/update events
+    - Find free slots
+    - Send invitations
+    - Handle conflicts
+  </Card>
+  
+  <Card title="Gmail Integration" icon="envelope">
+    **Capabilities:**
+    - Email management
+    - Automated responses
+    - Organization
+    - Communication workflows
+    
+    **Operations:**
+    - Read/send emails
+    - Search inbox
+    - Manage labels
+    - Draft responses
+  </Card>
+</CardGroup>
+
+**Cross-Platform Workflows:**
+
+```
+Example: Automated Project Management
+
+"Research latest React features, create GitHub issue, 
+and schedule team meeting to discuss"
+    ↓
+Perplexity Agent
+└─ Research React updates
+    ↓
+GitHub Agent
+└─ Create issue with findings
+    ↓
+Calendar Agent
+└─ Schedule team meeting
+    ↓
+Gmail Agent
+└─ Send meeting invitation with issue link
+```
+
+**Setup Requirements:**
+
+<Warning>
+**Node.js Required:** MCP servers use Node.js. Verify installation:
+```bash
+node --version
+npm --version
+npx --version
+```
+</Warning>
+
+<Steps>
+  <Step title="Install Dependencies">
+    ```bash
+    cd mcp_ai_agents/multi_mcp_agent
+    pip install -r requirements.txt
+    ```
+  </Step>
+  
+  <Step title="Set Up API Keys">
+    Create `.env` file:
+    ```env
+    OPENAI_API_KEY=your-openai-api-key
+    GITHUB_PERSONAL_ACCESS_TOKEN=your-github-token
+    PERPLEXITY_API_KEY=your-perplexity-api-key
+    ```
+    
+    **Get Keys From:**
+    - OpenAI: https://platform.openai.com/api-keys
+    - GitHub: https://github.com/settings/tokens (scopes: `repo`, `user`, `admin:org`)
+    - Perplexity: https://www.perplexity.ai/
+  </Step>
+  
+  <Step title="Run the Agent">
+    ```bash
+    python multi_mcp_agent.py
+    ```
+    
+    The assistant will:
+    - Validate environment variables
+    - Generate unique user and session IDs
+    - Initialize MCP server connections
+    - Start interactive CLI interface
+  </Step>
+</Steps>
+
+**Example Commands:**
+
+<Tabs>
+  <Tab title="GitHub Operations">
+    ```
+    "Show my recent GitHub repositories"
+    "Create a new issue in my project repo"
+    "Search for Python code in my repositories"
+    "Review the latest pull requests"
+    "List open issues with bug label"
+    ```
+  </Tab>
+  
+  <Tab title="Research & Information">
+    ```
+    "Search for the latest AI developments"
+    "What are the trending topics in machine learning?"
+    "Find documentation for FastAPI"
+    "Research best practices for microservices"
+    ```
+  </Tab>
+  
+  <Tab title="Calendar Management">
+    ```
+    "Schedule a meeting for next week"
+    "Show my upcoming appointments"
+    "Find available time slots for a 2-hour meeting"
+    "Cancel my 3pm meeting tomorrow"
+    ```
+  </Tab>
+  
+  <Tab title="Cross-Platform">
+    ```
+    "Create a GitHub issue and schedule a follow-up meeting"
+    "Research a topic and create a summary document"
+    "Find trending repositories and add them to my watchlist"
+    "Check my calendar, search for meeting info, and email summary"
+    ```
+  </Tab>
+</Tabs>
+
+**Architecture:**
+```python
+from agno import Agent
+from agno.mcp import MCPServer
+
+# Configure MCP servers
+mcp_servers = {
+    "github": MCPServer(
+        command="npx",
+        args=["-y", "@modelcontextprotocol/server-github"],
+        env={"GITHUB_TOKEN": github_token}
+    ),
+    "perplexity": MCPServer(
+        command="npx",
+        args=["-y", "@modelcontextprotocol/server-perplexity"],
+        env={"PERPLEXITY_API_KEY": perplexity_key}
+    ),
+    # ... more servers
+}
+
+# Create multi-service agent
+agent = Agent(
+    model="gpt-4o",
+    mcp_servers=mcp_servers,
+    memory=True,
+    session_id=session_id
+)
+
+# Agent can use all connected services
+response = agent.run(
+    "Search for AI news and create GitHub issues for interesting articles"
+)
+```
+
+**Features:**
+- Interactive CLI with streaming responses
+- Conversation memory and context retention
+- Tool chaining for complex workflows
+- Session-specific tracking
+- Markdown-formatted responses
+- Proactive workflow suggestions
+
+<Note>
+**Productivity Focus:** The Multi-MCP Assistant is designed as a productivity multiplier, automating workflows that span multiple platforms and reducing context switching.
+</Note>
+
+## MCP Implementation Patterns
+
+### Basic MCP Agent
+```python
+from mcp_agent import MCPAgent
+
+# Simple MCP agent with one server
+agent = MCPAgent(
+    model="gpt-4o",
+    mcp_servers={
+        "github": {
+            "command": "npx",
+            "args": ["-y", "@modelcontextprotocol/server-github"],
+            "env": {"GITHUB_TOKEN": token}
+        }
+    }
+)
+
+response = agent.run("Show my recent pull requests")
+```
+
+### Multi-Server Agent
+```python
+# Agent with multiple MCP servers
+agent = MCPAgent(
+    model="gpt-4o",
+    mcp_servers={
+        "github": github_server_config,
+        "notion": notion_server_config,
+        "calendar": calendar_server_config
+    }
+)
+
+# Agent can use all connected services
+response = agent.run(
+    "Create a Notion page with my GitHub stats and schedule a review meeting"
+)
+```
+
+### Custom MCP Server
+```python
+# Define custom MCP server
+custom_server = {
+    "command": "python",
+    "args": ["-m", "my_mcp_server"],
+    "env": {
+        "API_KEY": api_key,
+        "BASE_URL": base_url
+    }
+}
+
+agent = MCPAgent(
+    model="gpt-4o",
+    mcp_servers={"custom": custom_server}
+)
+```
+
+### Async MCP Operations
+```python
+import asyncio
+
+async def run_parallel_mcp_tasks():
+    # Execute multiple MCP operations in parallel
+    tasks = [
+        agent.run_async("Get GitHub issues"),
+        agent.run_async("Check calendar availability"),
+        agent.run_async("Search latest news")
+    ]
+    
+    results = await asyncio.gather(*tasks)
+    return results
+```
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Server Management" icon="server">
+    - Verify Node.js installation
+    - Check server versions
+    - Monitor server health
+    - Handle connection errors
+    - Implement retry logic
+  </Card>
+  
+  <Card title="API Key Security" icon="key">
+    - Use environment variables
+    - Never commit keys
+    - Rotate keys regularly
+    - Limit key permissions
+    - Monitor usage
+  </Card>
+  
+  <Card title="Error Handling" icon="exclamation-triangle">
+    - Catch MCP errors
+    - Provide fallbacks
+    - Log failures
+    - User-friendly messages
+    - Graceful degradation
+  </Card>
+  
+  <Card title="Performance" icon="gauge">
+    - Cache responses
+    - Batch operations
+    - Use async where possible
+    - Monitor latency
+    - Optimize queries
+  </Card>
+</CardGroup>
+
+<Tip>
+**Testing MCP Servers:** Test each MCP server individually before combining them. This makes debugging easier and ensures each integration works correctly.
+</Tip>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Voice Agents" icon="microphone" href="/ai-agents/voice-agents">
+    Add voice capabilities to MCP agents
+  </Card>
+  
+  <Card title="Multi-Agent Teams" icon="users" href="/ai-agents/multi-agent-teams">
+    Build coordinated MCP agent teams
+  </Card>
+  
+  <Card title="Game Playing" icon="gamepad" href="/ai-agents/game-playing-agents">
+    Try autonomous game agents
+  </Card>
+  
+  <Card title="Overview" icon="robot" href="/ai-agents/overview">
+    Return to agents overview
+  </Card>
+</CardGroup>

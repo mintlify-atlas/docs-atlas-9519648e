@@ -1,0 +1,727 @@
+---
+title: 'Google ADK Crash Course'
+description: 'Comprehensive tutorial series for mastering Google Agent Development Kit'
+icon: 'google'
+---
+
+# Google ADK Crash Course
+
+A comprehensive tutorial series for learning Google's Agent Development Kit (ADK) from zero to hero. Build flexible, model-agnostic AI agents with Google's powerful framework, from simple text processing to advanced multi-agent orchestration patterns.
+
+<Info>
+**Updated for Gemini 3 Flash**: All tutorials use the new **Gemini 3 Flash** model (`gemini-3-flash-preview`)
+</Info>
+
+## What is Google ADK?
+
+Google ADK (Agent Development Kit) is a flexible and modular framework for **developing and deploying AI agents**. It's optimized for Gemini but is **model-agnostic** and **deployment-agnostic**, making it compatible with other frameworks.
+
+<CardGroup cols={2}>
+  <Card title="Flexible Orchestration" icon="diagram-project">
+    Define workflows using workflow agents or LLM-driven dynamic routing for sophisticated control.
+  </Card>
+  <Card title="Multi-Agent Architecture" icon="users">
+    Build modular applications with multiple specialized agents that collaborate seamlessly.
+  </Card>
+  <Card title="Rich Tool Ecosystem" icon="toolbox">
+    Use pre-built tools, create custom functions, or integrate 3rd-party libraries like LangChain.
+  </Card>
+  <Card title="Model-Agnostic Design" icon="layer-group">
+    Work with Gemini, OpenAI, Claude, or any other model provider.
+  </Card>
+  <Card title="Deployment Ready" icon="rocket">
+    Containerize and deploy agents anywhere with deployment-agnostic architecture.
+  </Card>
+  <Card title="Built-in Evaluation" icon="chart-line">
+    Assess agent performance systematically with integrated evaluation tools.
+  </Card>
+  <Card title="Plugin System" icon="puzzle-piece">
+    Handle cross-cutting concerns like logging, monitoring, and error handling.
+  </Card>
+  <Card title="Safety & Security" icon="shield">
+    Built-in patterns for trustworthy agents with callback monitoring.
+  </Card>
+</CardGroup>
+
+## Complete Learning Path
+
+This crash course covers 9 comprehensive tutorials:
+
+### 🌱 Foundation
+
+<Steps>
+  <Step title="Tutorial 1: Your First ADK Agent">
+    **Starter Agent** - Create your first Google ADK agent
+    
+    Learn basic agent creation with the `LlmAgent` class:
+    
+    ```python
+    from google.adk.agents import LlmAgent
+    
+    agent = LlmAgent(
+        name="creative_writing_agent",
+        model="gemini-3-flash-preview",
+        description="A creative writing assistant",
+        instruction="""
+        You are a creative writing assistant.
+        Help users develop story ideas and characters.
+        """
+    )
+    ```
+    
+    **What you'll build**: Creative writing assistant with story development capabilities
+    
+    **Run it**: Use `adk web` to launch interactive interface
+  </Step>
+</Steps>
+
+### 🔄 Model Flexibility
+
+<Steps>
+  <Step title="Tutorial 2: Model-Agnostic Agents">
+    **Multi-Model Support** - Build agents that work with any model
+    
+    ADK's model-agnostic design lets you use different AI providers:
+    
+    **OpenAI Integration**:
+    ```python
+    from google.adk.agents import LlmAgent
+    
+    openai_agent = LlmAgent(
+        name="openai_agent",
+        model="gpt-4o",
+        description="OpenAI-powered agent"
+    )
+    ```
+    
+    **Anthropic Claude Integration**:
+    ```python
+    claude_agent = LlmAgent(
+        name="claude_agent",
+        model="claude-3-5-sonnet-20241022",
+        description="Claude-powered agent"
+    )
+    ```
+    
+    **What you'll build**:
+    - OpenAI GPT-4o agent
+    - Anthropic Claude agent
+    - Model comparison workflows
+  </Step>
+</Steps>
+
+### 📊 Structured Data
+
+<Steps>
+  <Step title="Tutorial 3: Structured Output Agents">
+    **Type-Safe Responses** - Work with Pydantic schemas
+    
+    Extract and validate structured data using Pydantic models:
+    
+    ```python
+    from pydantic import BaseModel
+    from google.adk.agents import LlmAgent
+    
+    class SupportTicket(BaseModel):
+        customer_name: str
+        issue_type: str
+        priority: str
+        description: str
+    
+    agent = LlmAgent(
+        name="ticket_agent",
+        model="gemini-3-flash-preview",
+        output_schema=SupportTicket
+    )
+    ```
+    
+    **What you'll build**:
+    - Customer support ticket extractor
+    - Email parser with structured validation
+    - Data extraction agents
+  </Step>
+</Steps>
+
+### 🔧 Tool Integration
+
+<Steps>
+  <Step title="Tutorial 4: Tool-Using Agents">
+    **Four Types of Tools** - Comprehensive tool integration
+    
+    ADK supports multiple tool types for maximum flexibility:
+    
+    **1. Built-in Tools** (Gemini models only):
+    ```python
+    from google.adk.agents import LlmAgent
+    from google.adk.tools import GoogleSearchTool, CodeExecutionTool
+    
+    agent = LlmAgent(
+        name="researcher",
+        model="gemini-3-flash-preview",
+        tools=[GoogleSearchTool(), CodeExecutionTool()]
+    )
+    ```
+    
+    **2. Function Tools**:
+    ```python
+    def calculate_price(quantity: int, unit_price: float) -> float:
+        """Calculate total price"""
+        return quantity * unit_price
+    
+    agent = LlmAgent(
+        name="calculator",
+        tools=[calculate_price]
+    )
+    ```
+    
+    **3. Third-party Tools** (LangChain, CrewAI):
+    ```python
+    from langchain.tools import WikipediaQueryRun
+    from google.adk.tools import LangChainTool
+    
+    wiki_tool = LangChainTool(WikipediaQueryRun())
+    agent = LlmAgent(tools=[wiki_tool])
+    ```
+    
+    **4. MCP Tools** (Model Context Protocol):
+    ```python
+    from google.adk.mcp import MCPClient
+    
+    # Connect to MCP server
+    mcp_client = MCPClient("filesystem")
+    tools = mcp_client.get_tools()
+    agent = LlmAgent(tools=tools)
+    ```
+    
+    **What you'll build**:
+    - Web search agents with Google Search
+    - Code execution agents
+    - Custom function integrations
+    - LangChain tool wrappers
+    - MCP server connections
+  </Step>
+</Steps>
+
+### 💾 Memory & State
+
+<Steps>
+  <Step title="Tutorial 5: Memory Agents">
+    **Session Management** - Persistent conversation memory
+    
+    **In-Memory Conversations**:
+    ```python
+    from google.adk.agents import LlmAgent
+    from google.adk.runners import Runner
+    from google.adk.sessions import InMemorySession
+    
+    session = InMemorySession()
+    runner = Runner(agent, session=session)
+    
+    # Conversation with memory
+    result1 = runner.run("My name is Alice")
+    result2 = runner.run("What's my name?")  # Remembers!
+    ```
+    
+    **Persistent Storage with SQLite**:
+    ```python
+    from google.adk.sessions import SQLiteSession
+    
+    session = SQLiteSession(db_path="conversations.db")
+    runner = Runner(agent, session=session)
+    
+    # Conversations persist across restarts
+    ```
+    
+    **What you'll build**:
+    - Conversational agents with memory
+    - Multi-session managers
+    - Persistent conversation storage
+  </Step>
+</Steps>
+
+### 🔔 Monitoring & Control
+
+<Steps>
+  <Step title="Tutorial 6: Callbacks">
+    **Lifecycle Monitoring** - Track agent behavior
+    
+    Three types of callbacks for complete visibility:
+    
+    **1. Agent Lifecycle Callbacks**:
+    ```python
+    def on_agent_start(context):
+        print(f"Agent {context.agent.name} starting")
+    
+    def on_agent_end(context):
+        print(f"Agent completed in {context.duration}s")
+    
+    agent = LlmAgent(
+        name="monitored_agent",
+        callbacks=[
+            AgentCallback(
+                on_start=on_agent_start,
+                on_end=on_agent_end
+            )
+        ]
+    )
+    ```
+    
+    **2. LLM Interaction Callbacks**:
+    ```python
+    def on_llm_request(context):
+        print(f"Sending request: {context.messages}")
+    
+    def on_llm_response(context):
+        print(f"Received: {context.response}")
+    ```
+    
+    **3. Tool Execution Callbacks**:
+    ```python
+    def on_tool_start(context):
+        print(f"Executing tool: {context.tool_name}")
+    
+    def on_tool_end(context):
+        print(f"Tool result: {context.result}")
+    ```
+    
+    **What you'll build**:
+    - Agent performance monitors
+    - LLM usage trackers
+    - Tool execution loggers
+  </Step>
+  
+  <Step title="Tutorial 7: Plugins">
+    **Cross-Cutting Concerns** - Global agent behavior
+    
+    Plugins handle concerns across all agents:
+    
+    ```python
+    from google.adk.plugins import Plugin
+    
+    class LoggingPlugin(Plugin):
+        def on_request(self, context):
+            log.info(f"Request: {context.input}")
+        
+        def on_response(self, context):
+            log.info(f"Response: {context.output}")
+        
+        def on_error(self, context):
+            log.error(f"Error: {context.error}")
+    
+    # Apply globally
+    runner = Runner(agent, plugins=[LoggingPlugin()])
+    ```
+    
+    **Plugin capabilities**:
+    - Global callback management
+    - Request/response modification
+    - Error handling and logging
+    - Usage analytics and monitoring
+    
+    **What you'll build**: Logging, monitoring, and analytics plugins
+  </Step>
+</Steps>
+
+### 🤝 Multi-Agent Systems
+
+<Steps>
+  <Step title="Tutorial 8: Simple Multi-Agent">
+    **Multi-Agent Researcher** - Coordinated specialist agents
+    
+    Build a research pipeline with multiple specialized agents:
+    
+    ```python
+    from google.adk.agents import LlmAgent
+    
+    # Specialized agents
+    research_agent = LlmAgent(
+        name="researcher",
+        model="gemini-3-flash-preview",
+        instruction="Conduct comprehensive web research",
+        tools=[GoogleSearchTool()]
+    )
+    
+    summarizer_agent = LlmAgent(
+        name="summarizer",
+        instruction="Synthesize research into insights"
+    )
+    
+    critic_agent = LlmAgent(
+        name="critic",
+        instruction="Analyze quality and provide recommendations"
+    )
+    
+    # Coordinator
+    coordinator = LlmAgent(
+        name="coordinator",
+        instruction="Orchestrate research workflow",
+        tools=[
+            research_agent.as_tool(),
+            summarizer_agent.as_tool(),
+            critic_agent.as_tool()
+        ]
+    )
+    ```
+    
+    **Workflow**: Research → Summarize → Critique → Report
+    
+    **What you'll build**: Comprehensive research system with specialist agents
+  </Step>
+  
+  <Step title="Tutorial 9: Multi-Agent Patterns">
+    **Advanced Orchestration** - Three workflow patterns
+    
+    **1. Sequential Agent** - Deterministic pipeline:
+    ```python
+    from google.adk.agents import SequentialAgent, LlmAgent
+    
+    sequential = SequentialAgent(
+        name="business_planner",
+        sub_agents=[
+            market_research_agent,  # Step 1
+            swot_analysis_agent,    # Step 2
+            strategy_agent,         # Step 3
+            implementation_agent    # Step 4
+        ]
+    )
+    ```
+    
+    **Use case**: Business implementation plans with market research, SWOT analysis, strategy development, and implementation planning
+    
+    **2. Loop Agent** - Iterative refinement:
+    ```python
+    from google.adk.agents import LoopAgent
+    
+    loop = LoopAgent(
+        name="tweet_crafter",
+        sub_agent=draft_agent,
+        max_iterations=5,
+        stop_condition=lambda ctx: ctx.result.quality_score > 0.9
+    )
+    ```
+    
+    **Use case**: Iterative content refinement until quality threshold met
+    
+    **3. Parallel Agent** - Concurrent execution:
+    ```python
+    from google.adk.agents import ParallelAgent
+    
+    parallel = ParallelAgent(
+        name="competitor_analyzer",
+        sub_agents=[
+            product_analyzer,
+            pricing_analyzer,
+            market_analyzer,
+            tech_analyzer
+        ],
+        merge_strategy="comprehensive_report"
+    )
+    ```
+    
+    **Use case**: Simultaneous competitor analysis across multiple dimensions
+    
+    **What you'll build**:
+    - Sequential business planning pipeline
+    - Iterative content crafting loop
+    - Parallel competitive analysis
+  </Step>
+</Steps>
+
+## Quick Start
+
+<Steps>
+  <Step title="Prerequisites">
+    Install Python 3.11+ and get your Google AI API key:
+    
+    ```bash
+    # Get API key from:
+    # https://aistudio.google.com/
+    ```
+  </Step>
+  
+  <Step title="Install Google ADK">
+    ```bash
+    pip install google-adk
+    ```
+  </Step>
+  
+  <Step title="Create Your First Agent">
+    ```python
+    from google.adk.agents import LlmAgent
+    
+    agent = LlmAgent(
+        name="my_first_agent",
+        model="gemini-3-flash-preview",
+        description="My first ADK agent",
+        instruction="You are a helpful assistant."
+    )
+    ```
+  </Step>
+  
+  <Step title="Run with ADK Web">
+    ```bash
+    adk web
+    ```
+    
+    Open the local URL and select your agent to start chatting!
+  </Step>
+</Steps>
+
+## Tutorial Structure
+
+Each tutorial follows a consistent structure:
+
+<AccordionGroup>
+  <Accordion title="README.md" icon="book">
+    Concept explanations, learning objectives, and detailed documentation
+  </Accordion>
+  <Accordion title="agent.py" icon="code">
+    Agent implementation with clear, commented code
+  </Accordion>
+  <Accordion title="app.py" icon="desktop">
+    Streamlit web interface for interactive testing (when applicable)
+  </Accordion>
+  <Accordion title="requirements.txt" icon="list">
+    Python dependencies for the tutorial
+  </Accordion>
+</AccordionGroup>
+
+## Key Features & Capabilities
+
+### Model Providers Supported
+
+<Tabs>
+  <Tab title="Google Gemini">
+    ```python
+    agent = LlmAgent(
+        name="gemini_agent",
+        model="gemini-3-flash-preview"
+    )
+    ```
+  </Tab>
+  <Tab title="OpenAI">
+    ```python
+    agent = LlmAgent(
+        name="openai_agent",
+        model="gpt-4o"
+    )
+    ```
+  </Tab>
+  <Tab title="Anthropic Claude">
+    ```python
+    agent = LlmAgent(
+        name="claude_agent",
+        model="claude-3-5-sonnet-20241022"
+    )
+    ```
+  </Tab>
+</Tabs>
+
+### Tool Integration Examples
+
+<CodeGroup>
+```python Built-in Tools (Gemini only)
+from google.adk.tools import GoogleSearchTool, CodeExecutionTool
+
+agent = LlmAgent(
+    name="researcher",
+    model="gemini-3-flash-preview",
+    tools=[GoogleSearchTool(), CodeExecutionTool()]
+)
+```
+
+```python Custom Functions
+def calculate_roi(investment: float, returns: float) -> float:
+    """Calculate return on investment percentage"""
+    return ((returns - investment) / investment) * 100
+
+agent = LlmAgent(
+    name="finance_agent",
+    tools=[calculate_roi]
+)
+```
+
+```python LangChain Integration
+from langchain.tools import WikipediaQueryRun
+from google.adk.tools import LangChainTool
+
+wiki = LangChainTool(WikipediaQueryRun())
+agent = LlmAgent(name="wiki_agent", tools=[wiki])
+```
+
+```python MCP Tools
+from google.adk.mcp import MCPClient
+
+mcp = MCPClient("filesystem")
+tools = mcp.get_tools()
+agent = LlmAgent(name="fs_agent", tools=tools)
+```
+</CodeGroup>
+
+## Workflow Agent Patterns
+
+<CardGroup cols={3}>
+  <Card title="Sequential" icon="arrow-right">
+    **Deterministic Pipeline**
+    
+    Execute sub-agents in order, each building on previous results.
+    
+    **Best for**: Step-by-step processes, analysis pipelines
+  </Card>
+  <Card title="Loop" icon="rotate">
+    **Iterative Refinement**
+    
+    Repeat sub-agent execution until condition met or max iterations reached.
+    
+    **Best for**: Quality improvement, content refinement
+  </Card>
+  <Card title="Parallel" icon="layer-group">
+    **Concurrent Execution**
+    
+    Run multiple sub-agents simultaneously and merge results.
+    
+    **Best for**: Independent analyses, multi-dimensional evaluation
+  </Card>
+</CardGroup>
+
+## Real-World Applications
+
+<CardGroup cols={2}>
+  <Card title="Research Systems" icon="magnifying-glass">
+    Multi-agent research pipelines with web search, summarization, and critique
+  </Card>
+  <Card title="Business Planning" icon="chart-line">
+    Sequential analysis from market research through implementation planning
+  </Card>
+  <Card title="Content Creation" icon="pen">
+    Iterative refinement loops for high-quality content generation
+  </Card>
+  <Card title="Data Extraction" icon="database">
+    Structured data extraction with Pydantic validation
+  </Card>
+  <Card title="Competitive Analysis" icon="users">
+    Parallel evaluation across multiple dimensions and competitors
+  </Card>
+  <Card title="Model Comparison" icon="balance-scale">
+    Test and compare different AI models for your use case
+  </Card>
+</CardGroup>
+
+## ADK Advantages
+
+<AccordionGroup>
+  <Accordion title="Model-Agnostic" icon="layer-group">
+    Use any model provider (Gemini, OpenAI, Claude) without changing code. Switch models based on cost, performance, or capabilities.
+  </Accordion>
+  <Accordion title="Deployment-Agnostic" icon="rocket">
+    Deploy anywhere - containers, serverless, on-premise. No vendor lock-in.
+  </Accordion>
+  <Accordion title="Rich Tool Ecosystem" icon="toolbox">
+    Built-in tools, custom functions, LangChain integration, CrewAI tools, and MCP support.
+  </Accordion>
+  <Accordion title="Flexible Orchestration" icon="diagram-project">
+    Sequential, loop, and parallel workflow patterns out of the box.
+  </Accordion>
+  <Accordion title="Production Ready" icon="shield">
+    Callbacks, plugins, error handling, and monitoring built-in.
+  </Accordion>
+</AccordionGroup>
+
+## Prerequisites
+
+<Warning>
+**Required**: Python 3.11+, Google AI API key, basic Python knowledge
+</Warning>
+
+<Info>
+**Optional**: Understanding of async patterns, Pydantic basics, API concepts
+</Info>
+
+## Environment Setup
+
+Create a `.env` file in your project:
+
+```bash .env
+GOOGLE_API_KEY=your_ai_studio_key_here
+```
+
+<Tip>
+Get your API key from [Google AI Studio](https://aistudio.google.com/)
+</Tip>
+
+## Learning Tips
+
+<Steps>
+  <Step title="Follow In Order">
+    Tutorials build on each other - start with Tutorial 1
+  </Step>
+  <Step title="Use ADK Web">
+    The `adk web` command provides an excellent testing interface
+  </Step>
+  <Step title="Try Streamlit Apps">
+    Many tutorials include Streamlit interfaces for hands-on learning
+  </Step>
+  <Step title="Experiment with Models">
+    ADK's model-agnostic design makes it easy to compare providers
+  </Step>
+  <Step title="Explore Patterns">
+    Try different workflow patterns to understand their use cases
+  </Step>
+</Steps>
+
+## Common Issues & Solutions
+
+<AccordionGroup>
+  <Accordion title="API Key Issues" icon="key">
+    - Ensure `GOOGLE_API_KEY` is set in `.env` file
+    - Verify key is valid from Google AI Studio
+    - Check key has necessary permissions
+  </Accordion>
+  <Accordion title="Import Errors" icon="code">
+    - Install ADK: `pip install google-adk`
+    - Verify Python 3.11+
+    - Check requirements.txt dependencies installed
+  </Accordion>
+  <Accordion title="Model Compatibility" icon="exclamation-triangle">
+    - Built-in tools (GoogleSearchTool) only work with Gemini models
+    - Use function tools for model-agnostic implementations
+    - Check model name spelling and availability
+  </Accordion>
+</AccordionGroup>
+
+## Progress Tracker
+
+- [ ] **Tutorial 1**: First ADK agent
+- [ ] **Tutorial 2**: Model-agnostic agents
+- [ ] **Tutorial 3**: Structured outputs
+- [ ] **Tutorial 4**: Tool integration (all 4 types)
+- [ ] **Tutorial 5**: Memory and sessions
+- [ ] **Tutorial 6**: Callbacks for monitoring
+- [ ] **Tutorial 7**: Plugins for cross-cutting concerns
+- [ ] **Tutorial 8**: Simple multi-agent researcher
+- [ ] **Tutorial 9**: Advanced workflow patterns 🎯
+
+## Additional Resources
+
+<CardGroup cols={2}>
+  <Card title="ADK Documentation" icon="book" href="https://google.github.io/adk-docs/">
+    Official Google ADK documentation and guides
+  </Card>
+  <Card title="Google AI Studio" icon="globe" href="https://aistudio.google.com/">
+    Get API keys and test models
+  </Card>
+  <Card title="Gemini API Reference" icon="code" href="https://ai.google.dev/docs">
+    Detailed Gemini API documentation
+  </Card>
+  <Card title="Pydantic Documentation" icon="check" href="https://docs.pydantic.dev/">
+    Learn about data validation
+  </Card>
+</CardGroup>
+
+## Next Steps
+
+<Card title="Start Learning" icon="rocket" href="#quick-start">
+  Set up your environment and begin with Tutorial 1: Your First ADK Agent
+</Card>
+
+Happy learning! 🚀

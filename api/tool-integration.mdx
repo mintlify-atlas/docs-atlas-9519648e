@@ -1,0 +1,98 @@
+---
+title: Tool Integration
+description: Patterns for integrating tools and APIs with AI agents
+---
+
+# Tool Integration
+
+Patterns for giving agents access to external tools, APIs, and functions.
+
+## Function Tools
+
+Define Python functions as tools.
+
+```python
+from agno import Agent
+
+def get_weather(location: str) -> dict:
+    """Get weather for a location."""
+    # Implementation
+    return {"temp": 72, "condition": "sunny"}
+
+agent = Agent(
+    model=OpenAI(id="gpt-4o"),
+    tools=[get_weather],
+    show_tool_calls=True
+)
+```
+
+## Built-in Tools
+
+Use pre-built tools from frameworks.
+
+```python
+from agno.tools import DuckDuckGoTools, FileTools
+
+agent = Agent(
+    tools=[DuckDuckGoTools(), FileTools()]
+)
+```
+
+## Third-Party Tools
+
+Integrate external services.
+
+```python
+from langchain.tools import TavilySearchResults
+from langchain.agents import initialize_agent
+
+search = TavilySearchResults(api_key=api_key)
+
+agent = initialize_agent(
+    tools=[search],
+    llm=llm,
+    agent_type="openai-functions"
+)
+```
+
+## MCP Tools
+
+Model Context Protocol for standardized tool access.
+
+```python
+from agno.tools.mcp import MCPTools
+
+# GitHub MCP
+github_mcp = MCPTools(
+    server_script="npx",
+    server_args=["-y", "@modelcontextprotocol/server-github"],
+    env={"GITHUB_PERSONAL_ACCESS_TOKEN": token}
+)
+
+agent = Agent(tools=[github_mcp])
+```
+
+## Tool Configuration
+
+<ParamField path="name" type="string" required>
+  Tool name for agent to reference
+</ParamField>
+
+<ParamField path="description" type="string" required>
+  Clear description of what tool does and when to use it
+</ParamField>
+
+<ParamField path="parameters" type="object">
+  JSON schema of tool parameters
+</ParamField>
+
+## Related Resources
+
+<CardGroup cols={2}>
+  <Card title="MCP Agents" icon="plug" href="/ai-agents/mcp-agents">
+    Learn about MCP integrations
+  </Card>
+  <Card title="Framework Guides" icon="book" href="/frameworks/overview">
+    Framework-specific tool patterns
+  </Card>
+</CardGroup>

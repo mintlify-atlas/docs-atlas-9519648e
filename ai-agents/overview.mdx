@@ -1,0 +1,184 @@
+---
+title: 'AI Agents Overview'
+description: 'Explore the comprehensive collection of AI agents in Awesome LLM Apps'
+icon: 'robot'
+---
+
+## What are AI Agents?
+
+AI agents are autonomous systems that use large language models to perceive, reason, and act to achieve specific goals. Unlike simple chatbots, agents can use tools, make decisions, and coordinate with other agents to complete complex tasks.
+
+## Agent Categories
+
+<CardGroup cols={2}>
+  <Card title="Starter Agents" icon="rocket" href="/ai-agents/starter-agents">
+    Single-agent applications perfect for learning agent fundamentals. Includes research, data analysis, web scraping, and specialized task agents.
+  </Card>
+  
+  <Card title="Advanced Agents" icon="brain" href="/ai-agents/advanced-agents">
+    Complex agent implementations with advanced capabilities including autonomous reasoning, medical imaging, and creative generation.
+  </Card>
+  
+  <Card title="Multi-Agent Teams" icon="users" href="/ai-agents/multi-agent-teams">
+    Coordinated teams of specialized agents working together on complex workflows like legal analysis, recruitment, and travel planning.
+  </Card>
+  
+  <Card title="Voice Agents" icon="microphone" href="/ai-agents/voice-agents">
+    Voice-enabled agents with text-to-speech capabilities for customer support, audio tours, and conversational RAG systems.
+  </Card>
+  
+  <Card title="MCP Agents" icon="plug" href="/ai-agents/mcp-agents">
+    Agents built on the Model Context Protocol for seamless integration with GitHub, Notion, browsers, and multiple services.
+  </Card>
+  
+  <Card title="Game Playing Agents" icon="gamepad" href="/ai-agents/game-playing-agents">
+    Autonomous agents that play strategic games like chess and tic-tac-toe using multi-agent architectures.
+  </Card>
+</CardGroup>
+
+## Key Capabilities
+
+### Tool Use
+Agents can interact with external APIs, databases, and services to gather information and perform actions:
+
+```python
+# Example: Agent with web search and file system tools
+from phidata import Agent
+from phidata.tools.duckduckgo import DuckDuckGo
+from phidata.tools.file import FileTools
+
+agent = Agent(
+    tools=[DuckDuckGo(), FileTools()],
+    show_tool_calls=True
+)
+```
+
+### Memory and Context
+Agents maintain conversation history and session state for coherent multi-turn interactions:
+
+```python
+# Persistent memory across sessions
+agent = Agent(
+    model=OpenAIChat(id="gpt-4o"),
+    storage=SqlAgentStorage(
+        table_name="agent_sessions",
+        db_url="sqlite:///agent_memory.db"
+    )
+)
+```
+
+### Multi-Agent Coordination
+Multiple specialized agents collaborate on complex tasks:
+
+```python
+# Agent team with role specialization
+researcher = Agent(
+    role="Research Specialist",
+    tools=[DuckDuckGo()]
+)
+
+analyst = Agent(
+    role="Data Analyst",
+    tools=[YFinanceTools()]
+)
+
+team_lead = Agent(
+    role="Team Coordinator",
+    team=[researcher, analyst]
+)
+```
+
+## Common Frameworks
+
+The collection uses various agent frameworks:
+
+<CardGroup cols={2}>
+  <Card title="Phidata" icon="phi">
+    Build multi-modal agents with memory, knowledge, and tools. Used in finance, legal, and recruitment agents.
+  </Card>
+  
+  <Card title="Agno" icon="code">
+    Modern agent framework with sandbox execution and tool integration. Powers coding and insurance agents.
+  </Card>
+  
+  <Card title="OpenAI Agents SDK" icon="openai">
+    Official SDK for building agents with OpenAI models. Used in voice and research agents.
+  </Card>
+  
+  <Card title="Autogen" icon="microsoft">
+    Microsoft's framework for multi-agent conversations. Powers the chess game implementation.
+  </Card>
+</CardGroup>
+
+## Getting Started
+
+<Steps>
+  <Step title="Choose Your Agent Type">
+    Start with [Starter Agents](/ai-agents/starter-agents) to learn fundamentals, then progress to more complex implementations.
+  </Step>
+  
+  <Step title="Set Up Your Environment">
+    Most agents require API keys for LLM providers (OpenAI, Anthropic, Google) and service integrations.
+    
+    ```bash
+    export OPENAI_API_KEY='your-key-here'
+    pip install -r requirements.txt
+    ```
+  </Step>
+  
+  <Step title="Run Your First Agent">
+    Clone the repository and run a simple agent:
+    
+    ```bash
+    git clone https://github.com/Shubhamsaboo/awesome-llm-apps.git
+    cd starter_ai_agents/openai_research_agent
+    streamlit run openai_researcher_agent.py
+    ```
+  </Step>
+  
+  <Step title="Customize and Extend">
+    Modify agent instructions, add new tools, or combine multiple agents for your use case.
+  </Step>
+</Steps>
+
+## Use Cases by Domain
+
+### Business & Finance
+- [Finance Agent Team](/ai-agents/multi-agent-teams#finance-agent-team) - Stock analysis with web search
+- [xAI Finance Agent](/ai-agents/starter-agents#xai-finance-agent) - Real-time financial data with Grok
+
+### Development & Research
+- [OpenAI Research Agent](/ai-agents/starter-agents#openai-research-agent) - Multi-agent research system
+- [Multimodal Coding Agent](/ai-agents/multi-agent-teams#multimodal-coding-agent) - Vision-to-code with o3-mini
+
+### Content & Creative
+- [Blog to Podcast Agent](/ai-agents/starter-agents#blog-to-podcast-agent) - Audio content generation
+- [Meme Generator Agent](/ai-agents/starter-agents#meme-generator-agent) - Browser automation for meme creation
+
+### Healthcare & Professional
+- [Medical Imaging Agent](/ai-agents/advanced-agents#medical-imaging-agent) - Diagnostic analysis with Gemini
+- [Legal Agent Team](/ai-agents/multi-agent-teams#legal-agent-team) - Contract review and legal research
+
+<Note>
+All agents in this collection are designed for educational purposes. Review API costs and rate limits before running agents at scale.
+</Note>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Explore Starter Agents" icon="play" href="/ai-agents/starter-agents">
+    Begin with single-agent applications
+  </Card>
+  
+  <Card title="Browse Agent Teams" icon="users" href="/ai-agents/multi-agent-teams">
+    See multi-agent coordination in action
+  </Card>
+  
+  <Card title="Try Voice Agents" icon="microphone" href="/ai-agents/voice-agents">
+    Build voice-enabled applications
+  </Card>
+  
+  <Card title="Learn MCP Integration" icon="plug" href="/ai-agents/mcp-agents">
+    Connect agents to external services
+  </Card>
+</CardGroup>

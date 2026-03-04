@@ -1,0 +1,213 @@
+---
+title: Agent Skills Overview
+description: Learn about Agent Skills - packaged instructions that extend AI agent capabilities
+---
+
+# Agent Skills Overview
+
+Agent Skills are packaged instructions and scripts that extend AI agent capabilities. They follow the [Agent Skills specification](https://agentskills.io/specification) - a simple, open format for giving agents new capabilities and expertise.
+
+## What Are Agent Skills?
+
+Agent Skills are modular, reusable packages that give AI agents specialized expertise. Think of them as "skill packages" that transform a general-purpose agent into a domain expert.
+
+Each skill contains:
+- **SKILL.md** - Instructions for the agent (required)
+- **scripts/** - Helper scripts for automation (optional)
+- **references/** - Supporting documentation (optional)
+- **assets/** - Images, templates, etc. (optional)
+
+## Why Use Agent Skills?
+
+<CardGroup cols={2}>
+  <Card title="Consistent Expertise" icon="award">
+    Package best practices and domain knowledge into reusable skills that work across different agents
+  </Card>
+  <Card title="Easy to Share" icon="share-nodes">
+    Simple markdown format makes skills easy to create, share, and maintain
+  </Card>
+  <Card title="Automatic Activation" icon="bolt">
+    Skills activate automatically based on triggers and context - no manual selection needed
+  </Card>
+  <Card title="Open Standard" icon="code">
+    Built on an open specification supported by multiple agent platforms
+  </Card>
+</CardGroup>
+
+## How Skills Work
+
+1. **Installation**: Add skills to your agent's knowledge base
+2. **Trigger Detection**: Agent detects when a skill is relevant based on the description and triggers
+3. **Skill Activation**: Agent loads the skill's instructions and follows them
+4. **Enhanced Response**: Agent responds with specialized expertise from the skill
+
+## Skill Structure
+
+Every skill follows this directory structure:
+
+```
+skill-name/
+├── SKILL.md          # Required: Instructions for the agent
+├── AGENTS.md         # Optional: Compiled rules and guidelines
+├── scripts/          # Optional: Helper scripts
+│   ├── script1.sh
+│   └── script2.py
+├── references/       # Optional: Supporting docs
+│   ├── doc1.md
+│   └── doc2.md
+└── assets/          # Optional: Images, templates
+    └── template.txt
+```
+
+## SKILL.md Format
+
+The core of every skill is a `SKILL.md` file with YAML frontmatter:
+
+```yaml
+---
+name: skill-name
+description: |
+  What the skill does and when to use it.
+  Include triggers like "use when debugging" or "when user mentions code review".
+license: MIT
+metadata:
+  author: awesome-llm-apps
+  version: "1.0.0"
+---
+
+# Skill Name
+
+You are [role description]. Instructions for the agent to follow...
+
+## When to Apply
+
+Use this skill when:
+- [Trigger condition 1]
+- [Trigger condition 2]
+- [Trigger phrase or keyword]
+
+## [Sections with instructions]
+
+[Detailed guidance, checklists, examples, etc.]
+```
+
+## Key Components
+
+### Description Field
+
+The description tells the agent when to use this skill. Include:
+- What the skill does
+- When to activate it
+- Trigger phrases ("use when", "when user mentions")
+- Common keywords that should activate it
+
+**Example:**
+```yaml
+description: |
+  Thorough code review with focus on security, performance, and best practices.
+  Use when: reviewing code, performing security audits, checking code quality,
+  or when user mentions code review, PR review, security vulnerabilities.
+```
+
+### Instructions Section
+
+Provide clear, actionable instructions:
+- Use imperative voice ("Check for X", "Ensure Y")
+- Include checklists for systematic workflows
+- Provide examples of good and bad patterns
+- Define priority levels (CRITICAL, HIGH, MEDIUM, LOW)
+- Show expected output formats
+
+### Supporting Files
+
+**AGENTS.md**: Compiled reference with all rules and examples
+**scripts/**: Automation scripts the agent can run
+**references/**: Deep-dive documentation on specific topics
+**assets/**: Templates, diagrams, or other resources
+
+## Installation Methods
+
+<Tabs>
+  <Tab title="Using npx">
+    ```bash
+    npx skills add shubhamsaboo/awesome-agent-skills
+    ```
+  </Tab>
+  <Tab title="Manual Install">
+    1. Clone or download the skill directory
+    2. Copy to your agent's skills folder
+    3. Reference in agent configuration
+  </Tab>
+  <Tab title="Direct Reference">
+    Upload SKILL.md to your agent's knowledge base or custom instructions
+  </Tab>
+</Tabs>
+
+## Platform Compatibility
+
+Agent Skills work with any skills-compatible agent platform:
+
+- **Claude Desktop / claude.ai** - Upload SKILL.md to project knowledge
+- **Cursor / VSCode** - Reference skills in `.cursorrules` or instructions
+- **Custom agents** - Load SKILL.md as system prompts
+- **AI frameworks** - Use with LangChain, AutoGen, or custom frameworks
+
+## Skill Categories
+
+Skills are organized into categories by domain:
+
+<CardGroup cols={2}>
+  <Card title="Coding Skills" icon="code" href="/agent-skills/coding-skills">
+    Python expert, code reviewer, debugger, fullstack developer
+  </Card>
+  <Card title="Research Skills" icon="magnifying-glass" href="/agent-skills/research-skills">
+    Deep research, fact checker, academic researcher
+  </Card>
+  <Card title="Writing Skills" icon="pen" href="/agent-skills/writing-skills">
+    Technical writer, content creator, editor
+  </Card>
+  <Card title="Planning Skills" icon="list-check" href="/agent-skills/planning-skills">
+    Project planner, sprint planner, strategy advisor
+  </Card>
+</CardGroup>
+
+## Example: Python Expert Skill
+
+Here's how a typical skill works in practice:
+
+**User:** "Write a function to find duplicates in a list"
+
+**Agent detects:** Keywords "write a function" + "Python" context → Loads `python-expert` skill
+
+**Agent follows skill:** 
+- Uses type hints
+- Includes comprehensive docstring
+- Follows PEP 8 style
+- Provides examples and explanation
+- Uses efficient implementation
+
+**Result:** Production-ready Python code following best practices
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Browse Coding Skills" icon="laptop-code" href="/agent-skills/coding-skills">
+    Explore coding and development skills
+  </Card>
+  <Card title="Browse Research Skills" icon="flask" href="/agent-skills/research-skills">
+    Discover research and analysis skills
+  </Card>
+  <Card title="Browse Writing Skills" icon="pen-fancy" href="/agent-skills/writing-skills">
+    Find writing and documentation skills
+  </Card>
+  <Card title="Create Your Own" icon="plus" href="/agent-skills/creating-skills">
+    Learn to create custom agent skills
+  </Card>
+</CardGroup>
+
+## Resources
+
+- [Agent Skills Specification](https://agentskills.io/specification)
+- [Agent Skills Documentation](https://agentskills.io)
+- [Vercel Agent Skills](https://github.com/vercel-labs/agent-skills) - Official examples
+- [Anthropic Skills](https://github.com/anthropics/skills) - More examples

@@ -1,0 +1,660 @@
+---
+title: 'Web Scraping AI Agent'
+description: 'Extract structured data from websites using natural language prompts with ScrapeGraph AI'
+icon: 'spider-web'
+---
+
+## Overview
+
+The Web Scraping AI Agent makes web scraping as simple as describing what you want to extract. Using ScrapeGraph AI technology, it converts natural language prompts into intelligent web scraping workflows that extract structured data from any website—no coding required.
+
+<Tip>
+  **FREE Tutorial Available**: [Follow the complete step-by-step tutorial](https://www.theunwindai.com/p/build-a-web-scraping-ai-agent-with-llama-3-2-running-locally) to learn how to build this from scratch with detailed explanations and best practices.
+</Tip>
+
+## Two Implementations
+
+This project includes two versions optimized for different use cases:
+
+<CardGroup cols={2}>
+  <Card title="Local Library" icon="laptop" color="#10b981">
+    **File**: `ai_scrapper.py`, `local_ai_scrapper.py`
+    
+    Uses open-source ScrapeGraph AI library running locally
+    
+    ✅ Free to use (no API costs)
+    ✅ Full control over execution
+    ✅ Privacy-friendly (all data stays local)
+    
+    ❌ Requires local installation
+    ❌ Limited by your hardware
+    ❌ Need to manage updates
+  </Card>
+  
+  <Card title="Cloud SDK" icon="cloud" color="#3b82f6">
+    **Folder**: `scrapegraph_ai_sdk/`
+    
+    Uses managed ScrapeGraph AI API with advanced features
+    
+    ✅ No setup required (just API key)
+    ✅ Scalable and fast
+    ✅ Advanced features (SmartCrawler, SearchScraper)
+    ✅ Always up-to-date
+    
+    ❌ Pay-per-use (credit-based)
+    ❌ Requires internet connection
+  </Card>
+</CardGroup>
+
+## Features
+
+### Local Library Version
+
+<CardGroup cols={2}>
+  <Card title="Smart Scraping" icon="brain">
+    - Natural language extraction prompts
+    - GPT-4o or local LLM support
+    - Automatic HTML parsing
+    - Structured data output
+  </Card>
+  
+  <Card title="Flexible Models" icon="robot">
+    - OpenAI GPT-4o for best quality
+    - GPT-5 support
+    - Local models via Ollama (Llama, Mistral, etc.)
+    - No vendor lock-in
+  </Card>
+  
+  <Card title="Easy Interface" icon="window">
+    - Streamlit web UI
+    - URL input and prompt entry
+    - Instant results display
+    - JSON output format
+  </Card>
+  
+  <Card title="Privacy First" icon="shield">
+    - All processing happens locally or in your LLM account
+    - No data sent to third-party scrapers
+    - Open-source transparency
+  </Card>
+</CardGroup>
+
+### Cloud SDK Version
+
+<CardGroup cols={2}>
+  <Card title="SmartScraper" icon="wand-magic">
+    Extract structured data using natural language prompts
+  </Card>
+  
+  <Card title="SearchScraper" icon="magnifying-glass">
+    AI-powered web search with structured results
+  </Card>
+  
+  <Card title="SmartCrawler" icon="spider">
+    Crawl multiple pages intelligently (up to 50+ pages)
+  </Card>
+  
+  <Card title="Markdownify" icon="file-lines">
+    Convert webpages to clean markdown format
+  </Card>
+</CardGroup>
+
+## Setup
+
+<Tabs>
+  <Tab title="Local Library">
+    <Steps>
+      <Step title="Clone Repository">
+        ```bash
+        git clone https://github.com/Shubhamsaboo/awesome-llm-apps.git
+        cd awesome-llm-apps/starter_ai_agents/web_scraping_ai_agent
+        ```
+      </Step>
+      
+      <Step title="Install Dependencies">
+        ```bash
+        pip install -r requirements.txt
+        ```
+        
+        **Required packages:**
+        - `streamlit` - Web interface
+        - `scrapegraphai` - Scraping library
+        - `playwright` - Browser automation
+      </Step>
+      
+      <Step title="Get OpenAI API Key">
+        - Sign up at [OpenAI Platform](https://platform.openai.com/)
+        - Generate an API key
+        - You'll enter it in the app (no environment variable needed)
+      </Step>
+      
+      <Step title="Run the Application">
+        **For cloud models (OpenAI):**
+        ```bash
+        streamlit run ai_scrapper.py
+        ```
+        
+        **For local models (Ollama):**
+        ```bash
+        streamlit run local_ai_scrapper.py
+        ```
+        
+        Open `http://localhost:8501` in your browser
+      </Step>
+    </Steps>
+  </Tab>
+  
+  <Tab title="Cloud SDK">
+    <Steps>
+      <Step title="Navigate to SDK Folder">
+        ```bash
+        cd scrapegraph_ai_sdk/
+        ```
+      </Step>
+      
+      <Step title="Install Dependencies">
+        ```bash
+        pip install -r requirements.txt
+        ```
+      </Step>
+      
+      <Step title="Get API Key">
+        - Sign up at [scrapegraphai.com](https://scrapegraphai.com)
+        - Get your API key from the dashboard
+      </Step>
+      
+      <Step title="Set API Key">
+        ```bash
+        export SGAI_API_KEY='your-api-key-here'
+        ```
+        
+        Or add to `.env` file:
+        ```bash
+        SGAI_API_KEY=your-api-key-here
+        ```
+      </Step>
+      
+      <Step title="Run Demos">
+        ```bash
+        # Quick test
+        python quickstart.py
+        
+        # SmartScraper demo
+        python smart_scraper_demo.py
+        
+        # Interactive app
+        streamlit run scrapegraph_app.py
+        ```
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
+
+## Usage
+
+### Local Library Version
+
+<Steps>
+  <Step title="Enter API Key">
+    Input your OpenAI API key in the sidebar (for cloud models)
+  </Step>
+  
+  <Step title="Select Model">
+    Choose between GPT-4o, GPT-5, or local models
+  </Step>
+  
+  <Step title="Enter URL">
+    Provide the website URL you want to scrape
+  </Step>
+  
+  <Step title="Write Prompt">
+    Describe what data you want to extract:
+    ```
+    Extract all product names, prices, and ratings
+    ```
+  </Step>
+  
+  <Step title="Scrape">
+    Click "Scrape" and view the structured results
+  </Step>
+</Steps>
+
+### Cloud SDK Version
+
+<Steps>
+  <Step title="Initialize Client">
+    ```python
+    from scrapegraph_py import Client
+    
+    client = Client(api_key="your-api-key")
+    ```
+  </Step>
+  
+  <Step title="Choose Method">
+    Select the appropriate scraping method:
+    - SmartScraper for single pages
+    - SearchScraper for web searches
+    - SmartCrawler for multi-page crawling
+    - Markdownify for markdown conversion
+  </Step>
+  
+  <Step title="Execute Request">
+    Make the API call with your parameters
+  </Step>
+  
+  <Step title="Process Results">
+    Receive structured JSON or markdown data
+  </Step>
+</Steps>
+
+## Code Examples
+
+### Local Library: Basic Scraping
+
+```python
+import streamlit as st
+from scrapegraphai.graphs import SmartScraperGraph
+
+st.title("Web Scraping AI Agent 🕵️‍♂️")
+st.caption("Scrape websites using OpenAI API")
+
+# Get API key
+openai_api_key = st.text_input("OpenAI API Key", type="password")
+
+if openai_api_key:
+    # Select model
+    model = st.radio("Select the model", ["gpt-4o", "gpt-5"], index=0)
+    
+    # Configure scraper
+    graph_config = {
+        "llm": {
+            "api_key": openai_api_key,
+            "model": model,
+        },
+    }
+    
+    # Get URL and prompt
+    url = st.text_input("Enter the URL of the website")
+    user_prompt = st.text_input("What do you want to extract?")
+    
+    # Create scraper
+    smart_scraper_graph = SmartScraperGraph(
+        prompt=user_prompt,
+        source=url,
+        config=graph_config
+    )
+    
+    # Scrape
+    if st.button("Scrape"):
+        result = smart_scraper_graph.run()
+        st.write(result)
+```
+
+### Cloud SDK: SmartScraper
+
+```python
+from scrapegraph_py import Client
+
+# Initialize client
+client = Client(api_key="your-sgai-api-key")
+
+# Extract structured data
+response = client.smartscraper(
+    website_url="https://example.com/products",
+    user_prompt="Extract all product names, prices, and availability"
+)
+
+print(response)
+# Output: {"products": [{"name": "...", "price": "...", "available": true}, ...]}
+```
+
+### Cloud SDK: SearchScraper
+
+```python
+# AI-powered web search with structured results
+response = client.searchscraper(
+    user_prompt="Find the top 5 AI news websites",
+    num_results=5
+)
+
+for result in response["results"]:
+    print(f"{result['title']}: {result['url']}")
+```
+
+### Cloud SDK: SmartCrawler
+
+```python
+# Crawl multiple pages
+request_id = client.smartcrawler(
+    url="https://docs.example.com",
+    user_prompt="Extract all API endpoints and their descriptions",
+    max_pages=50
+)
+
+# Check progress
+status = client.smartcrawler_progress(request_id)
+print(f"Progress: {status['progress']}%")
+
+# Get results when complete
+if status['status'] == 'completed':
+    results = client.smartcrawler_result(request_id)
+    print(results)
+```
+
+### Cloud SDK: Markdownify
+
+```python
+# Convert webpage to markdown
+response = client.markdownify(
+    website_url="https://example.com/article"
+)
+
+print(response["markdown"])
+# Output: Clean markdown version of the webpage
+```
+
+## Example Use Cases
+
+<AccordionGroup>
+  <Accordion title="E-commerce Scraping" icon="shopping-cart">
+    **Prompt**: "Extract product names, prices, and availability"
+    
+    **Use for**:
+    - Price monitoring and comparison
+    - Inventory tracking
+    - Competitor analysis
+    - Market research
+    
+    ```python
+    response = client.smartscraper(
+        website_url="https://shop.example.com/category/electronics",
+        user_prompt="Extract product name, current price, original price, discount percentage, and stock status for all items"
+    )
+    ```
+  </Accordion>
+  
+  <Accordion title="Content Aggregation" icon="newspaper">
+    **Prompt**: "Extract article title, author, date, and main content"
+    
+    **Use for**:
+    - News aggregation
+    - Content curation
+    - Research databases
+    - Media monitoring
+    
+    ```python
+    response = client.smartscraper(
+        website_url="https://news.example.com/latest",
+        user_prompt="Extract headline, author name, publication date, article summary, and full text"
+    )
+    ```
+  </Accordion>
+  
+  <Accordion title="Lead Generation" icon="users">
+    **Prompt**: "Find company names, emails, and phone numbers"
+    
+    **Use for**:
+    - B2B prospecting
+    - Contact list building
+    - Sales outreach
+    - Market intelligence
+    
+    ```python
+    response = client.smartscraper(
+        website_url="https://directory.example.com",
+        user_prompt="Extract company name, contact email, phone number, and address for each listing"
+    )
+    ```
+  </Accordion>
+  
+  <Accordion title="Real Estate Data" icon="house">
+    **Prompt**: "Extract property details, prices, and location"
+    
+    **Use for**:
+    - Market analysis
+    - Investment research
+    - Comparative pricing
+    - Trend tracking
+    
+    ```python
+    response = client.smartscraper(
+        website_url="https://realestate.example.com/listings",
+        user_prompt="Extract property address, price, bedrooms, bathrooms, square footage, and agent contact"
+    )
+    ```
+  </Accordion>
+  
+  <Accordion title="Job Listings" icon="briefcase">
+    **Prompt**: "Extract job title, company, salary, and requirements"
+    
+    **Use for**:
+    - Job aggregation
+    - Salary research
+    - Skills analysis
+    - Market trends
+    
+    ```python
+    response = client.smartscraper(
+        website_url="https://careers.example.com/openings",
+        user_prompt="Extract job title, company name, location, salary range, required skills, and application deadline"
+    )
+    ```
+  </Accordion>
+  
+  <Accordion title="Documentation Extraction" icon="book">
+    **Prompt**: "Extract all API endpoints and parameters"
+    
+    **Use for**:
+    - API documentation
+    - Integration planning
+    - Code generation
+    - Technical research
+    
+    ```python
+    request_id = client.smartcrawler(
+        url="https://api-docs.example.com",
+        user_prompt="Extract API endpoint URLs, HTTP methods, parameters, and response formats",
+        max_pages=100
+    )
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Feature Comparison
+
+| Feature | Local Library | Cloud SDK |
+|---------|--------------|----------|
+| **Setup** | Install dependencies | API key only |
+| **Cost** | Free (+ LLM costs) | Pay-per-use |
+| **Processing** | Your hardware | Cloud-based |
+| **Speed** | Depends on hardware | Fast & optimized |
+| **SmartScraper** | ✅ | ✅ |
+| **SearchScraper** | ❌ | ✅ |
+| **SmartCrawler** | ❌ | ✅ |
+| **Markdownify** | ❌ | ✅ |
+| **Scheduled Jobs** | ❌ | ✅ |
+| **Scalability** | Limited | Unlimited |
+| **Maintenance** | Self-managed | Fully managed |
+
+## Which Version Should You Use?
+
+<Tabs>
+  <Tab title="Choose Local Library If...">
+    ✅ You want a free, open-source solution
+    
+    ✅ You have good hardware (modern CPU/GPU)
+    
+    ✅ You need full control over the process
+    
+    ✅ Privacy is critical (sensitive data)
+    
+    ✅ You're learning or prototyping
+    
+    ✅ You want to customize the scraping logic
+  </Tab>
+  
+  <Tab title="Choose Cloud SDK If...">
+    ✅ You want quick setup with no installation
+    
+    ✅ You need advanced features (crawling, search)
+    
+    ✅ You want scalability for production use
+    
+    ✅ You prefer managed service reliability
+    
+    ✅ You need to scrape many pages quickly
+    
+    ✅ You want scheduled/automated scraping
+  </Tab>
+</Tabs>
+
+<Info>
+  **Pro Tip**: Start with the local version to learn and experiment, then switch to the SDK for production workloads!
+</Info>
+
+## Best Practices
+
+<Warning>
+  **Respect Robots.txt**: Always check a website's robots.txt file and terms of service before scraping. Respect rate limits and crawl delays.
+</Warning>
+
+<Tip>
+  **Be Specific**: Write detailed prompts. Instead of "get product info", use "extract product name, SKU, price, color options, and stock status".
+</Tip>
+
+<Info>
+  **Test First**: Test your scraping prompts on a single page before crawling an entire site.
+</Info>
+
+### Writing Effective Prompts
+
+<Steps>
+  <Step title="Identify Data Points">
+    List exactly what fields you want:
+    - Product name
+    - Price (including currency)
+    - Availability status
+    - Rating (if present)
+  </Step>
+  
+  <Step title="Be Explicit">
+    Specify formats and edge cases:
+    - "Extract price as a number without currency symbols"
+    - "If rating is not available, return null"
+  </Step>
+  
+  <Step title="Structure Output">
+    Request specific JSON structure:
+    - "Return results as array of objects"
+    - "Each object should have 'name', 'price', and 'url' keys"
+  </Step>
+</Steps>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Empty or Incomplete Results">
+    **Issue**: Scraper returns no data or misses fields
+    
+    **Solutions**:
+    - Make prompt more specific
+    - Check if website uses JavaScript (may need browser automation)
+    - Try different model (GPT-4o vs local model)
+    - Verify URL is accessible
+    - Test with simpler page first
+  </Accordion>
+  
+  <Accordion title="Timeout Errors">
+    **Issue**: Scraping times out or hangs
+    
+    **Solutions**:
+    - Check internet connection
+    - Try smaller/simpler pages
+    - Use Cloud SDK for heavy scraping
+    - Increase timeout in config
+    - Check if website blocks scrapers
+  </Accordion>
+  
+  <Accordion title="Invalid or Malformed Data">
+    **Issue**: Extracted data has wrong format
+    
+    **Solutions**:
+    - Refine prompt to specify exact format
+    - Add data validation examples in prompt
+    - Use schema definition if SDK supports it
+    - Post-process results with Python
+  </Accordion>
+  
+  <Accordion title="Rate Limiting">
+    **Issue**: Getting blocked or rate limited
+    
+    **Solutions**:
+    - Add delays between requests
+    - Use Cloud SDK (better rate limit handling)
+    - Rotate user agents if needed
+    - Respect robots.txt crawl-delay
+    - Consider using proxy services
+  </Accordion>
+</AccordionGroup>
+
+## Performance Tips
+
+<CardGroup cols={2}>
+  <Card title="Local Library" icon="laptop">
+    - Use local models (Llama, Mistral) for cost savings
+    - Start with simpler pages for testing
+    - Monitor memory usage with large pages
+    - Cache results when possible
+  </Card>
+  
+  <Card title="Cloud SDK" icon="cloud">
+    - Use SmartCrawler for multi-page scraping
+    - Leverage scheduled jobs for regular scraping
+    - Monitor credit usage
+    - Use appropriate max_pages limits
+  </Card>
+</CardGroup>
+
+## Legal and Ethical Considerations
+
+<Warning>
+  **Always Review Terms of Service**: Many websites prohibit automated scraping. Review and comply with each website's ToS.
+</Warning>
+
+<CardGroup cols={2}>
+  <Card title="Do" icon="check">
+    ✅ Check robots.txt
+    ✅ Respect crawl delays
+    ✅ Use reasonable rate limits
+    ✅ Identify your bot in user-agent
+    ✅ Scrape public data only
+  </Card>
+  
+  <Card title="Don't" icon="xmark">
+    ❌ Scrape copyrighted content for profit
+    ❌ Overwhelm servers with requests
+    ❌ Bypass authentication or paywalls
+    ❌ Scrape personal data without consent
+    ❌ Ignore cease-and-desist notices
+  </Card>
+</CardGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Tutorial" icon="book" href="https://www.theunwindai.com/p/build-a-web-scraping-ai-agent-with-llama-3-2-running-locally">
+    Follow the complete step-by-step tutorial
+  </Card>
+  
+  <Card title="ScrapeGraph Docs" icon="file-lines" href="https://docs.scrapegraphai.com">
+    Read the official ScrapeGraph AI documentation
+  </Card>
+  
+  <Card title="More Examples" icon="compass" href="/examples/ai-travel-agent">
+    Explore other AI agent examples
+  </Card>
+  
+  <Card title="GitHub" icon="github" href="https://github.com/Shubhamsaboo/awesome-llm-apps">
+    View source code and contribute
+  </Card>
+</CardGroup>

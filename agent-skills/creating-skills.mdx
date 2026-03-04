@@ -1,0 +1,620 @@
+---
+title: Creating Agent Skills
+description: Learn how to create your own agent skills following the AgentSkills.io specification
+---
+
+# Creating Agent Skills
+
+Learn how to create custom agent skills that package domain expertise into reusable, shareable formats.
+
+## Why Create Custom Skills?
+
+<CardGroup cols={2}>
+  <Card title="Codify Expertise" icon="brain">
+    Capture domain knowledge and best practices in a reusable format
+  </Card>
+  <Card title="Consistent Quality" icon="certificate">
+    Ensure agents follow the same high standards every time
+  </Card>
+  <Card title="Easy Sharing" icon="share-nodes">
+    Share skills across teams, projects, or the entire community
+  </Card>
+  <Card title="Reduce Prompting" icon="wand-magic-sparkles">
+    Stop repeating the same instructions - package them once
+  </Card>
+</CardGroup>
+
+---
+
+## Skill Structure
+
+### Required Files
+
+Every skill must have a `SKILL.md` file:
+
+```
+my-skill/
+└── SKILL.md          # Required: Agent instructions
+```
+
+### Optional Files
+
+```
+my-skill/
+├── SKILL.md          # Required
+├── AGENTS.md         # Optional: Compiled reference
+├── scripts/          # Optional: Automation scripts
+│   ├── script1.sh
+│   └── script2.py
+├── references/       # Optional: Deep-dive docs
+│   ├── topic1.md
+│   └── topic2.md
+└── assets/          # Optional: Templates, images
+    ├── template.txt
+    └── diagram.png
+```
+
+---
+
+## Creating SKILL.md
+
+### Basic Template
+
+```markdown
+---
+name: my-skill
+description: |
+  Brief description of what this skill does and when to use it.
+  Use when: [trigger phrases], or when user mentions [keywords].
+license: MIT
+metadata:
+  author: your-name
+  version: "1.0.0"
+---
+
+# Skill Name
+
+You are [role description with expertise level].
+
+## When to Apply
+
+Use this skill when:
+- [Specific trigger condition 1]
+- [Specific trigger condition 2]
+- [User mentions these keywords]
+- [These tasks are requested]
+
+## [Main Section]
+
+[Instructions, guidelines, examples...]
+
+## [Additional Sections]
+
+[More content as needed...]
+```
+
+### YAML Frontmatter Fields
+
+<Tabs>
+  <Tab title="name">
+    **Required** | String
+    
+    Unique identifier for the skill. Use lowercase with hyphens.
+    
+    ```yaml
+    name: python-expert
+    ```
+  </Tab>
+  
+  <Tab title="description">
+    **Required** | String (multiline)
+    
+    Describes what the skill does and when to use it. This is critical for skill activation.
+    
+    **Must include:**
+    - What the skill does
+    - When to use it ("Use when:")
+    - Trigger keywords
+    
+    ```yaml
+    description: |
+      Expert Python developer for writing clean code.
+      Use when: writing Python, code review, debugging,
+      or when user mentions Python, PEP 8, type hints.
+    ```
+  </Tab>
+  
+  <Tab title="license">
+    **Optional** | String
+    
+    License for the skill (MIT, Apache-2.0, etc.)
+    
+    ```yaml
+    license: MIT
+    ```
+  </Tab>
+  
+  <Tab title="metadata">
+    **Optional** | Object
+    
+    Additional metadata about the skill
+    
+    ```yaml
+    metadata:
+      author: awesome-llm-apps
+      version: "1.0.0"
+      tags: [python, coding, development]
+      url: https://github.com/user/skill
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Writing Effective Instructions
+
+### 1. Define the Role Clearly
+
+Start with a clear role definition:
+
+```markdown
+# Python Expert
+
+You are a senior Python developer with 10+ years of experience. 
+Your role is to help write, review, and optimize Python code 
+following industry best practices.
+```
+
+**Why this works:**
+- Sets expertise level
+- Defines scope of responsibility
+- Establishes authority
+
+### 2. Specify Triggers Precisely
+
+<Tabs>
+  <Tab title="Good Triggers">
+    ```markdown
+    ## When to Apply
+    
+    Use this skill when:
+    - Writing new Python code (scripts, functions, classes)
+    - Reviewing existing Python code for quality
+    - Debugging Python issues and exceptions
+    - Implementing type hints
+    - User mentions: Python, PEP 8, type hints, pandas
+    ```
+    
+    **Why this works:**
+    - Specific task descriptions
+    - Clear keywords to match
+    - Covers multiple scenarios
+  </Tab>
+  
+  <Tab title="Poor Triggers">
+    ```markdown
+    ## When to Apply
+    
+    Use this when coding.
+    ```
+    
+    **Problems:**
+    - Too vague
+    - No specific keywords
+    - Won't match user requests reliably
+  </Tab>
+</Tabs>
+
+### 3. Use Structured Formats
+
+<AccordionGroup>
+  <Accordion title="Checklists">
+    Great for systematic processes:
+    
+    ```markdown
+    ## Code Review Checklist
+    
+    - [ ] **Correctness** - Logic errors, edge cases
+    - [ ] **Type Safety** - Complete type hints
+    - [ ] **Performance** - Inefficient algorithms
+    - [ ] **Security** - Input validation, SQL injection
+    ```
+  </Accordion>
+  
+  <Accordion title="Priority Levels">
+    Help agents prioritize:
+    
+    ```markdown
+    ### Security (CRITICAL)
+    - SQL injection prevention
+    - XSS protection
+    - Authentication checks
+    
+    ### Performance (HIGH)
+    - Query optimization
+    - Caching strategy
+    
+    ### Style (MEDIUM)
+    - Naming conventions
+    - Code formatting
+    ```
+  </Accordion>
+  
+  <Accordion title="Examples">
+    Show good and bad patterns:
+    
+    ```markdown
+    ### Mutable Default Arguments
+    
+    ❌ **Incorrect:**
+    ```python
+    def add_item(item, items=[]):
+        items.append(item)
+        return items
+    ```
+    
+    ✅ **Correct:**
+    ```python
+    def add_item(item, items=None):
+        if items is None:
+            items = []
+        items.append(item)
+        return items
+    ```
+    ```
+  </Accordion>
+  
+  <Accordion title="Step-by-Step Processes">
+    For workflows:
+    
+    ```markdown
+    ## Research Process
+    
+    1. **Clarify the Question**
+       - What exactly needs researching?
+       - What level of detail is needed?
+    
+    2. **Gather Information**
+       - Check authoritative sources
+       - Evaluate credibility
+    
+    3. **Synthesize Findings**
+       - Identify patterns
+       - Note consensus vs debate
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### 4. Define Output Formats
+
+Show agents exactly what output should look like:
+
+```markdown
+## Output Format
+
+Structure your code review as:
+
+\```markdown
+## Summary
+[Brief overview]
+
+## Critical Issues 🔴
+
+1. **[Issue Title]** (Line X)
+   - **Problem:** [Description]
+   - **Impact:** [Why this matters]
+   - **Fix:** [How to resolve]
+   \```language
+   [Fixed code]
+   \```
+
+## High Priority 🟠
+[Continue...]
+\```
+```
+
+### 5. Include Examples
+
+Show the skill in action:
+
+```markdown
+## Example
+
+**User Request:** "Write a function to find duplicates in a list"
+
+**Response:**
+
+\```python
+from collections import Counter
+from typing import List, TypeVar
+
+T = TypeVar('T')
+
+def find_duplicates(items: List[T]) -> List[T]:
+    """Find all duplicate items in a list.
+    
+    Args:
+        items: List of items to check for duplicates.
+        
+    Returns:
+        List of items that appear more than once.
+    """
+    counts = Counter(items)
+    return [item for item, count in counts.items() if count > 1]
+\```
+
+**Why this works:**
+- Uses Counter for efficiency
+- Generic TypeVar for any type
+- Complete type hints
+- Comprehensive docstring
+\```
+```
+
+---
+
+## Advanced: Rules-Based Skills
+
+For complex domains, organize rules separately:
+
+### Directory Structure
+
+```
+python-expert/
+├── SKILL.md
+├── AGENTS.md                    # Compiled reference
+└── rules/
+    ├── correctness-mutable-defaults.md
+    ├── correctness-error-handling.md
+    ├── type-hints.md
+    ├── performance-comprehensions.md
+    └── style-pep8.md
+```
+
+### SKILL.md Points to Rules
+
+```markdown
+## How to Use This Skill
+
+This skill contains **detailed rules** in the `rules/` directory, 
+organized by category and priority.
+
+### Quick Start
+
+1. **Review [AGENTS.md](AGENTS.md)** for compiled rules with examples
+2. **Reference specific rules** from `rules/` for deep dives
+3. **Follow priority order**: Correctness → Type Safety → Performance
+
+### Available Rules
+
+**Correctness (CRITICAL)**
+- [Avoid Mutable Default Arguments](rules/correctness-mutable-defaults.md)
+- [Proper Error Handling](rules/correctness-error-handling.md)
+
+**Type Safety (HIGH)**
+- [Use Type Hints](rules/type-hints.md)
+```
+
+### AGENTS.md Compiles All Rules
+
+Create a comprehensive reference document:
+
+```markdown
+# Python Expert Guidelines
+
+**A comprehensive guide for AI agents writing Python code**
+
+## Table of Contents
+
+### Correctness — **CRITICAL**
+1. [Avoid Mutable Default Arguments](#avoid-mutable-default-arguments)
+2. [Proper Error Handling](#proper-error-handling)
+
+---
+
+## Avoid Mutable Default Arguments
+
+**Impact: CRITICAL** | **Category: correctness** | **Tags:** bugs, defaults
+
+[Full explanation, examples, rationale...]
+
+---
+
+## Proper Error Handling
+
+[Continue for each rule...]
+```
+
+---
+
+## Best Practices
+
+### Do's
+
+<CardGroup cols={2}>
+  <Card title="Be Specific" icon="crosshairs">
+    Clear, actionable instructions are better than general advice
+  </Card>
+  <Card title="Show Examples" icon="code">
+    Demonstrate both correct and incorrect patterns
+  </Card>
+  <Card title="Prioritize" icon="layer-group">
+    Use CRITICAL, HIGH, MEDIUM, LOW to guide agent focus
+  </Card>
+  <Card title="Include Context" icon="book-open">
+    Explain *why* something matters, not just *what* to do
+  </Card>
+</CardGroup>
+
+### Don'ts
+
+<CardGroup cols={2}>
+  <Card title="Avoid Ambiguity" icon="question">
+    Vague instructions lead to inconsistent agent behavior
+  </Card>
+  <Card title="Don't Overload" icon="weight-hanging">
+    Too many instructions reduce effectiveness - focus on essentials
+  </Card>
+  <Card title="Skip Jargon" icon="language">
+    Unless necessary for the domain, use clear language
+  </Card>
+  <Card title="No Contradictions" icon="triangle-exclamation">
+    Ensure instructions don't conflict with each other
+  </Card>
+</CardGroup>
+
+---
+
+## Testing Your Skill
+
+### 1. Test Activation
+
+Verify the skill activates for expected triggers:
+
+```
+Test inputs:
+- "Write a Python function to..."
+- "Review this Python code"
+- "Debug this Python error"
+- "How do I use type hints?"
+```
+
+### 2. Test Quality
+
+Evaluate agent output:
+
+- Does it follow all instructions?
+- Does output match expected format?
+- Are examples helpful and correct?
+- Is priority correctly applied?
+
+### 3. Test Edge Cases
+
+Try ambiguous or boundary cases:
+
+```
+- "Write code" (should it activate?)
+- "Write JavaScript code" (should it NOT activate?)
+- "Quick Python question" (minimal response?)
+```
+
+---
+
+## Publishing Your Skill
+
+### 1. Choose a Repository
+
+**Options:**
+- Your own GitHub repository
+- Fork awesome-agent-skills
+- Submit to a skill marketplace
+
+### 2. Add Documentation
+
+Include:
+- **README.md** - How to use the skill
+- **LICENSE** - Clear licensing (MIT recommended)
+- **Examples** - Demo of skill in action
+
+### 3. Share
+
+- Submit to awesome-agent-skills via PR
+- Share on social media
+- Add to agentskills.io directory
+- Blog about your skill
+
+---
+
+## Skill Template
+
+Use this as a starting point:
+
+```markdown
+---
+name: my-skill
+description: |
+  [What the skill does]. Use when: [triggers], or when user 
+  mentions [keywords].
+license: MIT
+metadata:
+  author: your-name
+  version: "1.0.0"
+---
+
+# Skill Name
+
+You are [role with expertise level].
+
+## When to Apply
+
+Use this skill when:
+- [Trigger 1]
+- [Trigger 2]
+- User mentions: [keywords]
+
+## [Process/Framework Name]
+
+[Step-by-step instructions or framework]
+
+## [Guidelines/Best Practices]
+
+### [Category 1] (PRIORITY LEVEL)
+- [Guideline 1]
+- [Guideline 2]
+
+### [Category 2] (PRIORITY LEVEL)
+- [Guideline 1]
+- [Guideline 2]
+
+## Output Format
+
+[Template for agent output]
+
+## Example
+
+**User Request:** "[Example request]"
+
+**Response:**
+
+[Example output]
+
+**Why this works:**
+- [Explanation 1]
+- [Explanation 2]
+```
+
+---
+
+## Resources
+
+<CardGroup cols={2}>
+  <Card title="Agent Skills Specification" icon="file-lines" href="https://agentskills.io/specification">
+    Official specification for skill format
+  </Card>
+  <Card title="Awesome Agent Skills" icon="star" href="https://github.com/shubhamsaboo/awesome-agent-skills">
+    Collection of example skills to learn from
+  </Card>
+  <Card title="Vercel Agent Skills" icon="bolt" href="https://github.com/vercel-labs/agent-skills">
+    Official examples from Vercel
+  </Card>
+  <Card title="Community Discord" icon="discord" href="https://agentskills.io/community">
+    Get help creating skills
+  </Card>
+</CardGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Browse Existing Skills" icon="books" href="/agent-skills/overview">
+    Learn from existing skill implementations
+  </Card>
+  <Card title="Coding Skills" icon="code" href="/agent-skills/coding-skills">
+    See examples of coding skills
+  </Card>
+  <Card title="Research Skills" icon="magnifying-glass" href="/agent-skills/research-skills">
+    Explore research skill patterns
+  </Card>
+  <Card title="Writing Skills" icon="pen" href="/agent-skills/writing-skills">
+    Review writing skill structures
+  </Card>
+</CardGroup>

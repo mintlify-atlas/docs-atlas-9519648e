@@ -1,0 +1,111 @@
+---
+title: Agent Patterns
+description: Common architectural patterns for building AI agents
+---
+
+# Agent Patterns
+
+Common patterns and architectures for building effective AI agents across different use cases.
+
+## Single Agent Patterns
+
+### ReAct Agent
+
+Reason and Act pattern where agent thinks through problems step-by-step.
+
+```python
+from agno import Agent, OpenAI
+
+agent = Agent(
+    model=OpenAI(id="gpt-4o"),
+    tools=[search_tool, calculator_tool],
+    reasoning=True,
+    markdown=True
+)
+
+response = agent.run("What is the GDP of Japan in 2023?")
+```
+
+### Function Calling Agent
+
+Agent with structured tool use via function calling.
+
+```python
+from openai import OpenAI
+
+client = OpenAI()
+
+tools = [{
+    "type": "function",
+    "function": {
+        "name": "get_weather",
+        "parameters": {"location": {"type": "string"}}
+    }
+}]
+
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=messages,
+    tools=tools
+)
+```
+
+## Multi-Agent Patterns
+
+### Sequential Coordination
+
+Agents work in sequence, each building on previous outputs.
+
+```python
+from agno import Agent
+
+# Define agents
+researcher = Agent(name="Researcher", role="Research")
+writer = Agent(name="Writer", role="Write")
+editor = Agent(name="Editor", role="Edit")
+
+# Sequential execution
+research = researcher.run(topic)
+article = writer.run(research)
+final = editor.run(article)
+```
+
+### Team Coordination
+
+Coordinator agent delegates to specialist agents.
+
+```python
+team_agent = Agent(
+    team=[web_agent, finance_agent],
+    model=OpenAI(id="gpt-4o")
+)
+
+response = team_agent.run("Analyze Tesla stock")
+```
+
+### Swarm Orchestration
+
+Circular handoff between specialized agents using AG2.
+
+```python
+from autogen.ext.swarm import Swarm
+
+client = Swarm()
+
+response = client.run(
+    agent=initial_agent,
+    messages=[{"role": "user", "content": query}],
+    context_variables={"phase": "summary"}
+)
+```
+
+## Related Resources
+
+<CardGroup cols={2}>
+  <Card title="AI Agents" icon="robot" href="/ai-agents/overview">
+    Learn about different agent types
+  </Card>
+  <Card title="Multi-Agent Teams" icon="users" href="/ai-agents/multi-agent-teams">
+    Build coordinated agent teams
+  </Card>
+</CardGroup>

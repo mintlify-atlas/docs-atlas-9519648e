@@ -1,0 +1,102 @@
+---
+title: RAG Patterns
+description: Common patterns and architectures for RAG systems
+---
+
+# RAG Patterns
+
+Common architectural patterns for building Retrieval-Augmented Generation systems.
+
+## Basic RAG
+
+Standard retrieve-then-generate pattern.
+
+```python
+from langchain.chains import RetrievalQA
+from langchain_openai import ChatOpenAI
+from langchain_chroma import Chroma
+
+llm = ChatOpenAI(model="gpt-4o")
+vectorstore = Chroma(embedding_function=embeddings)
+
+qa = RetrievalQA.from_chain_type(
+    llm=llm,
+    retriever=vectorstore.as_retriever(search_kwargs={"k": 4})
+)
+
+response = qa.invoke({"query": "What is RAG?"})
+```
+
+## Agentic RAG
+
+Agent decides when and how to retrieve.
+
+```python
+from agno import Agent, OpenAI
+from agno.tools.retrieval import RAGTool
+
+agent = Agent(
+    model=OpenAI(id="gpt-4o"),
+    tools=[RAGTool(vectorstore=vectorstore)],
+    reasoning=True
+)
+
+response = agent.run("Analyze the climate data")
+```
+
+## Corrective RAG (CRAG)
+
+Self-evaluating retrieval with fallback strategies.
+
+```python
+from langgraph.graph import StateGraph
+
+workflow = StateGraph(RAGState)
+workflow.add_node("retrieve", retrieve)
+workflow.add_node("grade", grade_documents)
+workflow.add_node("generate", generate)
+workflow.add_node("transform_query", transform_query)
+workflow.add_node("web_search", web_search)
+
+workflow.add_conditional_edges(
+    "grade",
+    decide_to_generate,
+    {"transform_query": "transform_query", 
+     "generate": "generate",
+     "web_search": "web_search"}
+)
+
+app = workflow.compile()
+```
+
+## Hybrid Search
+
+Combine vector and keyword search.
+
+```python
+from langchain.retrievers import EnsembleRetriever
+from langchain_community.retrievers import BM25Retriever
+
+# Vector retriever
+vector_retriever = vectorstore.as_retriever(search_kwargs={"k": 4})
+
+# BM25 retriever
+bm25_retriever = BM25Retriever.from_documents(documents)
+
+# Combine
+ensemble_retriever = EnsembleRetriever(
+    retrievers=[vector_retriever, bm25_retriever],
+    weights=[0.5, 0.5]
+)
+```
+
+## Related Resources
+
+<CardGroup cols={2}>
+  <Card title="RAG Overview" icon="magnifying-glass" href="/rag/overview">
+    Learn RAG fundamentals
+  </Card>
+  <Card title="Advanced Techniques" icon="wand-magic-sparkles" href="/rag/advanced-techniques">
+    Explore advanced RAG patterns
+  </Card>
+</CardGroup>

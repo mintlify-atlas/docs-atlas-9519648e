@@ -1,0 +1,902 @@
+---
+title: 'LLM Fine-Tuning Tutorials'
+description: 'Fine-tune Llama 3.2 and Gemma 3 models using parameter-efficient techniques with Unsloth'
+---
+
+## Overview
+
+Fine-tuning adapts pre-trained language models to your specific use case, improving performance on domain-specific tasks while using fewer resources than training from scratch.
+
+<CardGroup cols={2}>
+  <Card title="Llama 3.2 Fine-tuning" icon="meta" href="#llama-32-fine-tuning">
+    Fine-tune 1B and 3B models with LoRA
+  </Card>
+  <Card title="Gemma 3 Fine-tuning" icon="google" href="#gemma-3-fine-tuning">
+    Fine-tune 270M to 27B models efficiently
+  </Card>
+</CardGroup>
+
+## Why Fine-Tune?
+
+<Tabs>
+  <Tab title="Performance">
+    ### Task-Specific Accuracy
+    
+    Fine-tuning improves performance on specialized tasks:
+    
+    | Task | Base Model | Fine-tuned | Improvement |
+    |------|------------|------------|-------------|
+    | Domain Q&A | 62% | 89% | **+27%** |
+    | Code generation | 45% | 78% | **+33%** |
+    | Instruction following | 71% | 94% | **+23%** |
+    | Custom format | 38% | 92% | **+54%** |
+  </Tab>
+  
+  <Tab title="Cost">
+    ### Reduced API Costs
+    
+    Fine-tuned smaller models can outperform larger models:
+    
+    - **Llama 3.2 3B (fine-tuned)** > GPT-4 (base) for specific tasks
+    - Run locally (no API costs)
+    - 10x cheaper inference
+    - Full control over deployment
+  </Tab>
+  
+  <Tab title="Privacy">
+    ### Data Control
+    
+    - Keep sensitive data private
+    - Deploy on-premises
+    - No data leaves your infrastructure
+    - Compliance with regulations (HIPAA, GDPR)
+  </Tab>
+</Tabs>
+
+## Parameter-Efficient Fine-Tuning
+
+### LoRA (Low-Rank Adaptation)
+
+<Tip>Fine-tune large models by training only 1-2% of parameters</Tip>
+
+LoRA adds small trainable matrices to existing model layers, dramatically reducing:
+- **Training time**: 3-5x faster
+- **Memory usage**: 3-4x less VRAM
+- **Storage**: Adapters are 10-100MB vs full model GBs
+- **Cost**: Train on free Google Colab
+
+### How LoRA Works
+
+<Accordion title="Technical Details">
+```python
+# Standard fine-tuning (updates ALL parameters)
+W_new = W_original + ΔW  # ΔW is full matrix
+
+# LoRA fine-tuning (low-rank decomposition)
+W_new = W_original + A @ B  # A and B are small matrices
+
+# Example:
+# Original weight matrix: 4096 x 4096 = 16.8M parameters
+# LoRA matrices: (4096 x 8) @ (8 x 4096) = 65K parameters
+# Trainable params: 0.4% of original!
+```
+
+**Key Parameters:**
+- `r` (rank): Size of low-rank matrices (typically 8-64)
+- `alpha`: Scaling factor (typically 16-32)
+- `target_modules`: Which layers to adapt
+</Accordion>
+
+---
+
+## Llama 3.2 Fine-Tuning
+
+<Tip>Fine-tune Meta's Llama 3.2 (1B or 3B) for free in Google Colab</Tip>
+
+### Quick Start
+
+<Steps>
+  <Step title="Install Dependencies">
+    ```bash
+    pip install torch transformers datasets trl unsloth
+    ```
+  </Step>
+  
+  <Step title="Run Fine-Tuning Script">
+    ```bash
+    python finetune_llama3.2.py
+    ```
+  </Step>
+  
+  <Step title="Use Fine-Tuned Model">
+    ```python
+    from unsloth import FastLanguageModel
+    
+    model, tokenizer = FastLanguageModel.from_pretrained(
+        "finetuned_model"
+    )
+    
+    response = model.generate("Your prompt here")
+    ```
+  </Step>
+</Steps>
+
+### Complete Implementation
+
+<CodeGroup>
+```python finetune_llama3.2.py
+import torch
+from unsloth import FastLanguageModel
+from datasets import load_dataset
+from trl import SFTTrainer
+from transformers import TrainingArguments
+from unsloth.chat_templates import get_chat_template, standardize_sharegpt
+
+# 1. Load model and tokenizer with 4-bit quantization
+model, tokenizer = FastLanguageModel.from_pretrained(
+    model_name="unsloth/Llama-3.2-3B-Instruct",
+    max_seq_length=2048,
+    load_in_4bit=True,  # Reduces memory by 75%
+)
+
+# 2. Add LoRA adapters
+model = FastLanguageModel.get_peft_model(
+    model,
+    r=16,  # LoRA rank
+    target_modules=[
+        "q_proj", "k_proj", "v_proj", "o_proj",
+        "gate_proj", "up_proj", "down_proj"
+    ],
+)
+
+# 3. Prepare dataset
+tokenizer = get_chat_template(tokenizer, chat_template="llama-3.1")
+dataset = load_dataset("mlabonne/FineTome-100k", split="train")
+dataset = standardize_sharegpt(dataset)
+
+# Apply chat template
+dataset = dataset.map(
+    lambda examples: {
+        "text": [
+            tokenizer.apply_chat_template(convo, tokenize=False)
+            for convo in examples["conversations"]
+        ]
+    },
+    batched=True
+)
+
+# 4. Configure trainer
+trainer = SFTTrainer(
+    model=model,
+    train_dataset=dataset,
+    dataset_text_field="text",
+    max_seq_length=2048,
+    args=TrainingArguments(
+        per_device_train_batch_size=2,
+        gradient_accumulation_steps=4,
+        warmup_steps=5,
+        max_steps=60,  # Increase for production
+        learning_rate=2e-4,
+        fp16=not torch.cuda.is_bf16_supported(),
+        bf16=torch.cuda.is_bf16_supported(),
+        logging_steps=1,
+        output_dir="outputs",
+    ),
+)
+
+# 5. Train
+trainer.train()
+
+# 6. Save fine-tuned model
+model.save_pretrained("finetuned_model")
+tokenizer.save_pretrained("finetuned_model")
+```
+
+```python custom_dataset.py
+# Fine-tune on your own data
+from datasets import Dataset
+
+# Your custom data
+custom_data = [
+    {
+        "conversations": [
+            {"role": "user", "content": "What is photosynthesis?"},
+            {"role": "assistant", "content": "Photosynthesis is..."}
+        ]
+    },
+    # ... more examples
+]
+
+# Create dataset
+dataset = Dataset.from_list(custom_data)
+
+# Use in training
+trainer = SFTTrainer(
+    model=model,
+    train_dataset=dataset,
+    # ... other args
+)
+```
+</CodeGroup>
+
+### Model Selection
+
+<Tabs>
+  <Tab title="Llama 3.2 1B">
+    ### Llama 3.2 1B Instruct
+    
+    ```python
+    model, tokenizer = FastLanguageModel.from_pretrained(
+        model_name="unsloth/Llama-3.2-1B-Instruct",
+        max_seq_length=2048,
+        load_in_4bit=True,
+    )
+    ```
+    
+    **Specs:**
+    - Parameters: 1.2B
+    - Context: 128K tokens
+    - VRAM (4-bit): ~2GB
+    - Training time: ~20 min (100 steps, Colab T4)
+    - Use case: Fast, lightweight tasks
+  </Tab>
+  
+  <Tab title="Llama 3.2 3B">
+    ### Llama 3.2 3B Instruct
+    
+    ```python
+    model, tokenizer = FastLanguageModel.from_pretrained(
+        model_name="unsloth/Llama-3.2-3B-Instruct",
+        max_seq_length=2048,
+        load_in_4bit=True,
+    )
+    ```
+    
+    **Specs:**
+    - Parameters: 3.2B
+    - Context: 128K tokens
+    - VRAM (4-bit): ~4GB
+    - Training time: ~45 min (100 steps, Colab T4)
+    - Use case: Best balance of speed/quality
+  </Tab>
+</Tabs>
+
+### Training Configuration
+
+<ParamField path="TrainingArguments" type="class">
+  Configure the fine-tuning process
+  
+  <Expandable title="Key Parameters">
+    <ParamField path="per_device_train_batch_size" type="int" default="2">
+      Number of examples per GPU. Reduce if OOM errors occur.
+    </ParamField>
+    
+    <ParamField path="gradient_accumulation_steps" type="int" default="4">
+      Accumulate gradients for effective larger batch size.
+      
+      Effective batch size = `batch_size * accumulation_steps * num_gpus`
+    </ParamField>
+    
+    <ParamField path="max_steps" type="int" default="60">
+      Total training steps. Increase for production (500-2000).
+    </ParamField>
+    
+    <ParamField path="learning_rate" type="float" default="2e-4">
+      Learning rate for LoRA. Typically 1e-4 to 5e-4.
+    </ParamField>
+    
+    <ParamField path="warmup_steps" type="int" default="5">
+      Gradually increase learning rate for stability.
+    </ParamField>
+    
+    <ParamField path="fp16" type="bool">
+      Use 16-bit precision (older GPUs)
+    </ParamField>
+    
+    <ParamField path="bf16" type="bool">
+      Use bfloat16 precision (newer GPUs, A100/H100)
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+### LoRA Configuration
+
+<ParamField path="get_peft_model" type="function">
+  Add LoRA adapters to model
+  
+  <Expandable title="Parameters">
+    <ParamField path="r" type="int" default="16">
+      LoRA rank. Higher = more capacity but slower.
+      
+      - `r=8`: Fast, good for simple tasks
+      - `r=16`: Balanced (recommended)
+      - `r=32-64`: Complex tasks
+    </ParamField>
+    
+    <ParamField path="lora_alpha" type="int" default="16">
+      Scaling factor. Usually set to `r` or `2*r`.
+    </ParamField>
+    
+    <ParamField path="target_modules" type="list">
+      Which layers to apply LoRA to:
+      
+      ```python
+      # Attention only (faster)
+      ["q_proj", "k_proj", "v_proj", "o_proj"]
+      
+      # Attention + MLP (better quality)
+      ["q_proj", "k_proj", "v_proj", "o_proj",
+       "gate_proj", "up_proj", "down_proj"]
+      ```
+    </ParamField>
+    
+    <ParamField path="lora_dropout" type="float" default="0.0">
+      Dropout for LoRA layers (usually 0)
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+### Dataset Preparation
+
+<Accordion title="ShareGPT Format">
+The standard format for instruction fine-tuning:
+
+```json
+[
+  {
+    "conversations": [
+      {"role": "user", "content": "What is machine learning?"},
+      {"role": "assistant", "content": "Machine learning is..."}
+    ]
+  },
+  {
+    "conversations": [
+      {"role": "user", "content": "Explain neural networks"},
+      {"role": "assistant", "content": "Neural networks are..."}
+    ]
+  }
+]
+```
+
+**Multi-turn conversations:**
+```json
+{
+  "conversations": [
+    {"role": "user", "content": "Hi!"},
+    {"role": "assistant", "content": "Hello! How can I help?"},
+    {"role": "user", "content": "Tell me about AI"},
+    {"role": "assistant", "content": "AI refers to..."}
+  ]
+}
+```
+</Accordion>
+
+<Accordion title="Custom Dataset">
+```python
+from datasets import Dataset
+import json
+
+# Load your data
+with open("my_data.json") as f:
+    data = json.load(f)
+
+# Convert to Hugging Face dataset
+dataset = Dataset.from_list(data)
+
+# Standardize format
+from unsloth.chat_templates import standardize_sharegpt
+dataset = standardize_sharegpt(dataset)
+
+# Apply chat template
+dataset = dataset.map(
+    lambda examples: {
+        "text": [
+            tokenizer.apply_chat_template(convo, tokenize=False)
+            for convo in examples["conversations"]
+        ]
+    },
+    batched=True
+)
+
+# Use in training
+trainer = SFTTrainer(
+    model=model,
+    train_dataset=dataset,
+    dataset_text_field="text",
+    max_seq_length=2048,
+)
+```
+</Accordion>
+
+### Google Colab Setup
+
+<Steps>
+  <Step title="Open Colab Notebook">
+    Go to [Google Colab](https://colab.research.google.com/)
+  </Step>
+  
+  <Step title="Select GPU Runtime">
+    Runtime → Change runtime type → T4 GPU (free tier)
+  </Step>
+  
+  <Step title="Install Dependencies">
+    ```python
+    !pip install torch transformers datasets trl unsloth
+    ```
+  </Step>
+  
+  <Step title="Run Fine-Tuning">
+    Copy the `finetune_llama3.2.py` code into a cell and run
+  </Step>
+  
+  <Step title="Save to Google Drive">
+    ```python
+    from google.colab import drive
+    drive.mount('/content/drive')
+    
+    # Save model
+    model.save_pretrained("/content/drive/MyDrive/finetuned_model")
+    ```
+  </Step>
+</Steps>
+
+---
+
+## Gemma 3 Fine-Tuning
+
+<Tip>Fine-tune Google's Gemma 3 models from 270M to 27B parameters</Tip>
+
+### Model Sizes
+
+<CardGroup cols={3}>
+  <Card title="270M" icon="feather">
+    Ultra-lightweight
+    
+    VRAM: ~1GB
+  </Card>
+  <Card title="1B" icon="weight-hanging">
+    Fast & efficient
+    
+    VRAM: ~2GB
+  </Card>
+  <Card title="4B" icon="gauge">
+    Balanced
+    
+    VRAM: ~6GB
+  </Card>
+  <Card title="12B" icon="rocket">
+    High quality
+    
+    VRAM: ~16GB
+  </Card>
+  <Card title="27B" icon="star">
+    Best performance
+    
+    VRAM: ~32GB
+  </Card>
+</CardGroup>
+
+### Implementation
+
+```python
+import torch
+from unsloth import FastLanguageModel
+from datasets import load_dataset
+from trl import SFTTrainer
+from transformers import TrainingArguments
+from unsloth.chat_templates import get_chat_template, standardize_sharegpt
+
+# Model selection
+MODEL_NAME = "unsloth/gemma-3-1b-it"  # Change for different sizes
+# Options: gemma-3-270m-it, gemma-3-1b-it, gemma-3-4b-it, 
+#          gemma-3-12b-it, gemma-3-27b-it
+
+# Load model with 4-bit quantization
+model, tokenizer = FastLanguageModel.from_pretrained(
+    model_name=MODEL_NAME,
+    max_seq_length=2048,
+    load_in_4bit=True,
+)
+
+# Add LoRA adapters
+model = FastLanguageModel.get_peft_model(
+    model,
+    r=16,
+    target_modules=[
+        "q_proj", "k_proj", "v_proj", "o_proj",
+        "gate_proj", "up_proj", "down_proj"
+    ],
+)
+
+# Prepare dataset
+tokenizer = get_chat_template(tokenizer, chat_template="gemma")
+dataset = load_dataset("mlabonne/FineTome-100k", split="train")
+dataset = standardize_sharegpt(dataset)
+
+dataset = dataset.map(
+    lambda examples: {
+        "text": [
+            tokenizer.apply_chat_template(convo, tokenize=False)
+            for convo in examples["conversations"]
+        ]
+    },
+    batched=True
+)
+
+# Configure trainer
+trainer = SFTTrainer(
+    model=model,
+    train_dataset=dataset,
+    dataset_text_field="text",
+    max_seq_length=2048,
+    args=TrainingArguments(
+        per_device_train_batch_size=2,
+        gradient_accumulation_steps=4,
+        warmup_steps=5,
+        max_steps=60,
+        learning_rate=2e-4,
+        fp16=not torch.cuda.is_bf16_supported(),
+        bf16=torch.cuda.is_bf16_supported(),
+        logging_steps=1,
+        output_dir="outputs",
+    ),
+)
+
+# Train
+trainer.train()
+
+# Save
+model.save_pretrained("finetuned_model")
+```
+
+### Gemma-Specific Notes
+
+<AccordionGroup>
+  <Accordion title="Chat Template" icon="comments">
+    Gemma uses a specific chat format:
+    
+    ```python
+    tokenizer = get_chat_template(
+        tokenizer,
+        chat_template="gemma"  # Important!
+    )
+    ```
+    
+    The template formats messages as:
+    ```
+    <start_of_turn>user
+Your question<end_of_turn>
+    <start_of_turn>model
+Response<end_of_turn>
+    ```
+  </Accordion>
+
+  <Accordion title="Memory Requirements" icon="memory">
+    Approximate VRAM needs with 4-bit quantization:
+    
+    | Model | 4-bit | 8-bit | Full (16-bit) |
+    |-------|-------|-------|---------------|
+    | 270M  | 0.5GB | 0.8GB | 1.5GB         |
+    | 1B    | 1.5GB | 2.5GB | 4.5GB         |
+    | 4B    | 5GB   | 9GB   | 16GB          |
+    | 12B   | 14GB  | 25GB  | 48GB          |
+    | 27B   | 30GB  | 55GB  | 108GB         |
+  </Accordion>
+
+  <Accordion title="Model Selection Guide" icon="compass">
+    **Choose based on use case:**
+    
+    - **270M**: Edge devices, real-time inference, simple tasks
+    - **1B**: Chatbots, content moderation, classification
+    - **4B**: Code generation, summarization, Q&A (Colab-friendly)
+    - **12B**: Complex reasoning, multi-turn conversations
+    - **27B**: Production apps requiring GPT-3.5 level quality
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Advanced Topics
+
+### Evaluation During Training
+
+<Accordion title="Add Validation Set">
+```python
+from datasets import load_dataset
+
+# Load with train/validation split
+dataset = load_dataset("mlabonne/FineTome-100k")
+train_data = dataset["train"]
+eval_data = dataset["test"]  # or create your own split
+
+# Configure trainer with evaluation
+trainer = SFTTrainer(
+    model=model,
+    train_dataset=train_data,
+    eval_dataset=eval_data,  # Add validation set
+    args=TrainingArguments(
+        # ... other args
+        evaluation_strategy="steps",
+        eval_steps=50,  # Evaluate every 50 steps
+        load_best_model_at_end=True,
+        metric_for_best_model="eval_loss",
+    ),
+)
+```
+</Accordion>
+
+### Inference After Fine-Tuning
+
+<CodeGroup>
+```python Basic Inference
+from unsloth import FastLanguageModel
+
+# Load fine-tuned model
+model, tokenizer = FastLanguageModel.from_pretrained(
+    "finetuned_model",
+    max_seq_length=2048,
+    load_in_4bit=True,
+)
+
+# Prepare for inference
+FastLanguageModel.for_inference(model)
+
+# Generate
+messages = [
+    {"role": "user", "content": "What is quantum computing?"}
+]
+
+input_text = tokenizer.apply_chat_template(
+    messages,
+    tokenize=False,
+    add_generation_prompt=True
+)
+
+inputs = tokenizer(input_text, return_tensors="pt").to("cuda")
+
+outputs = model.generate(
+    **inputs,
+    max_new_tokens=256,
+    temperature=0.7,
+    top_p=0.9,
+)
+
+response = tokenizer.decode(outputs[0], skip_special_tokens=True)
+print(response)
+```
+
+```python Streaming Inference
+import torch
+
+FastLanguageModel.for_inference(model)
+
+inputs = tokenizer(input_text, return_tensors="pt").to("cuda")
+
+# Stream tokens
+for token in model.generate(
+    **inputs,
+    max_new_tokens=256,
+    temperature=0.7,
+    do_sample=True,
+):
+    decoded = tokenizer.decode(token, skip_special_tokens=True)
+    print(decoded, end="", flush=True)
+```
+</CodeGroup>
+
+### Merging LoRA with Base Model
+
+<Accordion title="Create Full Model">
+```python
+from unsloth import FastLanguageModel
+
+# Load model with LoRA
+model, tokenizer = FastLanguageModel.from_pretrained(
+    "finetuned_model",
+    max_seq_length=2048,
+    load_in_4bit=True,
+)
+
+# Merge LoRA weights into base model
+model = FastLanguageModel.for_inference(model)
+model = model.merge_and_unload()
+
+# Save merged model
+model.save_pretrained("merged_model")
+tokenizer.save_pretrained("merged_model")
+
+# Upload to Hugging Face Hub (optional)
+model.push_to_hub("your-username/model-name")
+tokenizer.push_to_hub("your-username/model-name")
+```
+</Accordion>
+
+### Quantization Options
+
+<Tabs>
+  <Tab title="4-bit (Default)">
+    ```python
+    model, tokenizer = FastLanguageModel.from_pretrained(
+        model_name,
+        load_in_4bit=True,  # 75% memory reduction
+    )
+    ```
+    
+    - **VRAM**: 25% of full model
+    - **Speed**: 90% of full model
+    - **Quality**: 98-99% of full model
+    - **Best for**: Most use cases
+  </Tab>
+  
+  <Tab title="8-bit">
+    ```python
+    model, tokenizer = FastLanguageModel.from_pretrained(
+        model_name,
+        load_in_8bit=True,  # 50% memory reduction
+    )
+    ```
+    
+    - **VRAM**: 50% of full model
+    - **Speed**: 95% of full model
+    - **Quality**: 99.5% of full model
+    - **Best for**: When quality is critical
+  </Tab>
+  
+  <Tab title="Full Precision">
+    ```python
+    model, tokenizer = FastLanguageModel.from_pretrained(
+        model_name,
+        load_in_4bit=False,
+        load_in_8bit=False,
+    )
+    ```
+    
+    - **VRAM**: 100% (original)
+    - **Speed**: 100%
+    - **Quality**: 100%
+    - **Best for**: Research, benchmarking
+  </Tab>
+</Tabs>
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Data Quality" icon="star">
+    **High-quality data is more important than quantity:**
+    
+    - ✅ 1,000 high-quality examples > 10,000 mediocre examples
+    - ✅ Clean, consistent formatting
+    - ✅ Diverse range of topics/styles
+    - ✅ Representative of actual use case
+    - ❌ Avoid duplicate or near-duplicate examples
+    - ❌ Don't include low-quality or incorrect data
+  </Accordion>
+
+  <Accordion title="Training Duration" icon="clock">
+    **Don't overtrain:**
+    
+    ```python
+    # Start small
+    max_steps=100  # Initial run
+    
+    # Monitor eval loss
+    evaluation_strategy="steps"
+    eval_steps=20
+    
+    # Early stopping
+    load_best_model_at_end=True
+    early_stopping_patience=3
+    ```
+    
+    **Typical steps by dataset size:**
+    - 1K examples: 100-300 steps
+    - 10K examples: 300-1000 steps
+    - 100K examples: 1000-3000 steps
+  </Accordion>
+
+  <Accordion title="Hyperparameter Tuning" icon="sliders">
+    **Start with defaults, then adjust:**
+    
+    | Parameter | Default | Increase if... | Decrease if... |
+    |-----------|---------|----------------|----------------|
+    | `learning_rate` | 2e-4 | Loss plateaus | Loss explodes |
+    | `r` (rank) | 16 | Need better quality | Out of memory |
+    | `max_steps` | 60 | Underfitting | Overfitting |
+    | `batch_size` | 2 | Have more VRAM | Out of memory |
+  </Accordion>
+
+  <Accordion title="Testing & Validation" icon="flask">
+    **Evaluate thoroughly:**
+    
+    ```python
+    # Create test prompts
+    test_prompts = [
+        "Easy question",
+        "Medium question",
+        "Hard question",
+        "Edge case",
+    ]
+    
+    # Test before and after
+    for prompt in test_prompts:
+        base_response = base_model.generate(prompt)
+        finetuned_response = finetuned_model.generate(prompt)
+        
+        print(f"Prompt: {prompt}")
+        print(f"Base: {base_response}")
+        print(f"Fine-tuned: {finetuned_response}")
+        print("---")
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Out of Memory (OOM)" icon="memory">
+    **Solutions:**
+    
+    1. Reduce batch size:
+    ```python
+    per_device_train_batch_size=1
+    gradient_accumulation_steps=8
+    ```
+    
+    2. Use 4-bit quantization:
+    ```python
+    load_in_4bit=True
+    ```
+    
+    3. Reduce sequence length:
+    ```python
+    max_seq_length=1024  # instead of 2048
+    ```
+    
+    4. Use smaller LoRA rank:
+    ```python
+    r=8  # instead of 16
+    ```
+  </Accordion>
+
+  <Accordion title="Poor Quality Results" icon="triangle-exclamation">
+    **Possible causes:**
+    
+    1. **Too few training steps**: Increase `max_steps`
+    2. **Low-quality data**: Clean and curate dataset
+    3. **Wrong chat template**: Use correct template for model
+    4. **Learning rate too high**: Reduce to 1e-4 or 5e-5
+    5. **Overfitting**: Add validation set, reduce steps
+  </Accordion>
+
+  <Accordion title="Slow Training" icon="hourglass">
+    **Speed up training:**
+    
+    1. Use smaller model (1B instead of 3B)
+    2. Reduce sequence length
+    3. Use gradient checkpointing:
+    ```python
+    gradient_checkpointing=True
+    ```
+    4. Ensure CUDA is used:
+    ```python
+    print(torch.cuda.is_available())  # Should be True
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Resources
+
+<CardGroup cols={2}>
+  <Card title="Unsloth GitHub" icon="github" href="https://github.com/unslothai/unsloth">
+    Fast fine-tuning library
+  </Card>
+  <Card title="Gemma 3 Blog" icon="google" href="https://unsloth.ai/blog/gemma3">
+    Gemma 3 fine-tuning guide
+  </Card>
+  <Card title="Example Code" icon="code" href="https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/llm_finetuning_tutorials">
+    Complete fine-tuning scripts
+  </Card>
+  <Card title="Tutorial" icon="graduation-cap" href="https://www.theunwindai.com/p/fine-tune-llama-3-2-for-free-in-30-lines-of-python-code">
+    Step-by-step fine-tuning tutorial
+  </Card>
+</CardGroup>

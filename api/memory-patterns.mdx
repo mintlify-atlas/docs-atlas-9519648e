@@ -1,0 +1,127 @@
+---
+title: Memory Patterns
+description: Patterns for managing agent memory and conversation state
+---
+
+# Memory Patterns
+
+Common patterns for managing memory in AI agents and LLM applications.
+
+## In-Memory Storage
+
+Store conversation in application memory.
+
+```python
+from agno import Agent
+from agno.memory import Memory
+
+agent = Agent(
+    model=OpenAI(id="gpt-4o"),
+    memory=Memory(),
+    add_history_to_messages=True
+)
+
+# Conversation persists across runs
+response1 = agent.run("My name is John")
+response2 = agent.run("What is my name?")  # Remembers "John"
+```
+
+## Database Storage
+
+Persist conversations to database.
+
+```python
+from agno.memory.db.sqlite import SqliteMemory
+
+agent = Agent(
+    memory=SqliteMemory(
+        table_name="agent_sessions",
+        db_file="conversations.db"
+    ),
+    session_id="user-123"
+)
+```
+
+## Semantic Memory (Mem0)
+
+Store and retrieve memories by semantic similarity.
+
+```python
+from mem0 import Memory
+import qdrant_client
+
+# Initialize Mem0 with Qdrant
+memory = Memory.from_config({
+    "vector_store": {
+        "provider": "qdrant",
+        "config": {
+            "host": "localhost",
+            "port": 6333
+        }
+    }
+})
+
+# Add memories
+memory.add(
+    "User prefers Python over JavaScript",
+    user_id="user-123"
+)
+
+# Search memories
+results = memory.search(
+    "What programming language?",
+    user_id="user-123"
+)
+```
+
+## Shared Memory
+
+Share memory across multiple agents.
+
+```python
+from agno.memory import Memory
+
+shared_memory = Memory()
+
+agent1 = Agent(memory=shared_memory, name="Researcher")
+agent2 = Agent(memory=shared_memory, name="Writer")
+
+# Both agents access same conversation history
+research = agent1.run("Research quantum computing")
+article = agent2.run("Write article based on research")
+```
+
+## Memory Configuration
+
+<ParamField path="create_user_memories" type="boolean" default={true}>
+  Store user-specific memories
+</ParamField>
+
+<ParamField path="create_session_summary" type="boolean" default={false}>
+  Generate summaries of conversations
+</ParamField>
+
+<ParamField path="update_user_memories_after_run" type="boolean" default={true}>
+  Update memories after each interaction
+</ParamField>
+
+## Best Practices
+
+<Tip>
+  Use in-memory storage for short sessions, database storage for production applications.
+</Tip>
+
+<Warning>
+  Be mindful of PII and sensitive data in memory stores. Implement appropriate data retention and privacy policies.
+</Warning>
+
+## Related Resources
+
+<CardGroup cols={2}>
+  <Card title="Memory Management" icon="brain" href="/advanced/memory-management">
+    Learn advanced memory techniques
+  </Card>
+  <Card title="AI Agents" icon="robot" href="/ai-agents/overview">
+    Build stateful agents
+  </Card>
+</CardGroup>

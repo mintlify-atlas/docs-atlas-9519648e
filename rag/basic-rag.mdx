@@ -1,0 +1,555 @@
+---
+title: 'Basic RAG Patterns'
+description: 'Fundamental RAG implementations with vector stores and embeddings'
+icon: 'layer-group'
+---
+
+## Basic RAG Architecture
+
+The fundamental RAG pattern consists of three main steps:
+1. **Document Loading**: Load and prepare documents
+2. **Vector Storage**: Embed and store document chunks
+3. **Query & Generation**: Retrieve relevant context and generate answers
+
+## Complete RAG Implementation
+
+Here's a full working example of a basic RAG system:
+
+<CodeGroup>
+```python app.py
+import streamlit as st
+from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
+from langchain_chroma import Chroma
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_text_splitters.sentence_transformers import SentenceTransformersTokenTextSplitter
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
+
+# Initialize embedding model
+embedding_model = GoogleGenerativeAIEmbeddings(
+    model="models/embedding-001"
+)
+
+# Initialize vector database
+db = Chroma(
+    collection_name="pharma_database",
+    embedding_function=embedding_model,
+    persist_directory='./pharma_db'
+)
+
+def format_docs(docs):
+    """Format document list into single string."""
+    return "\n\n".join(doc.page_content for doc in docs)
+
+def add_documents_to_db(uploaded_files):
+    """Process and add PDF files to vector database."""
+    for uploaded_file in uploaded_files:
+        # Save uploaded file temporarily
+        temp_path = f"./temp/{uploaded_file.name}"
+        with open(temp_path, "wb") as f:
+            f.write(uploaded_file.getbuffer())
+        
+        # Load PDF
+        loader = PyPDFLoader(temp_path)
+        documents = loader.load()
+        
+        # Extract metadata and content
+        doc_metadata = [doc.metadata for doc in documents]
+        doc_content = [doc.page_content for doc in documents]
+        
+        # Split into chunks
+        text_splitter = SentenceTransformersTokenTextSplitter(
+            model_name="sentence-transformers/all-mpnet-base-v2",
+            chunk_size=100,
+            chunk_overlap=50
+        )
+        chunks = text_splitter.create_documents(doc_content, doc_metadata)
+        
+        # Add to database
+        db.add_documents(chunks)
+
+def run_rag_chain(query):
+    """Execute RAG chain for given query."""
+    # Create retriever with similarity search
+    retriever = db.as_retriever(
+        search_type="similarity",
+        search_kwargs={'k': 5}
+    )
+    
+    # Define prompt template
+    prompt_template = ChatPromptTemplate.from_template("""
+    You are a knowledgeable assistant.
+    Answer the question based only on the following context:
+    {context}
+
+    Question: {question}
+
+    Provide a detailed and accurate answer based on the context.
+    Don't make up information not present in the context.
+    """)
+    
+    # Initialize LLM
+    llm = ChatGoogleGenerativeAI(
+        model="gemini-1.5-pro",
+        temperature=0.7
+    )
+    
+    # Create RAG chain
+    rag_chain = (
+        {"context": retriever | format_docs, "question": RunnablePassthrough()}
+        | prompt_template
+        | llm
+        | StrOutputParser()
+    )
+    
+    # Execute chain
+    return rag_chain.invoke(query)
+
+# Streamlit UI
+st.title("📚 Basic RAG System")
+
+# Query input
+query = st.text_area(
+    "Enter your question:",
+    placeholder="What would you like to know?"
+)
+
+if st.button("Submit"):
+    if query:
+        with st.spinner("Searching and generating answer...":
+            result = run_rag_chain(query)
+            st.write(result)
+    else:
+        st.warning("Please enter a question")
+
+# Sidebar for document upload
+with st.sidebar:
+    st.header("Document Upload")
+    uploaded_files = st.file_uploader(
+        "Upload PDF documents",
+        type=["pdf"],
+        accept_multiple_files=True
+    )
+    
+    if st.button("Process Documents"):
+        if uploaded_files:
+            with st.spinner("Processing documents..."):
+                add_documents_to_db(uploaded_files)
+                st.success("Documents added successfully!")
+        else:
+            st.warning("Please upload files first")
+```
+
+```python requirements.txt
+streamlit
+langchain
+langchain-google-genai
+langchain-chroma
+langchain-community
+chromadb
+pypdf
+sentence-transformers
+```
+</CodeGroup>
+
+## Document Loading Strategies
+
+<Tabs>
+  <Tab title="PDF Loader">
+    ```python
+    from langchain_community.document_loaders import PyPDFLoader
+
+    loader = PyPDFLoader("document.pdf")
+    documents = loader.load()
+
+    # Each document has:
+    # - page_content: The text content
+    # - metadata: {'source': 'document.pdf', 'page': 0}
+    ```
+  </Tab>
+  <Tab title="Web Loader">
+    ```python
+    from langchain_community.document_loaders import WebBaseLoader
+
+    loader = WebBaseLoader("https://example.com/article")
+    documents = loader.load()
+
+    # Configure request rate
+    loader.requests_per_second = 1
+    ```
+  </Tab>
+  <Tab title="Text Loader">
+    ```python
+    from langchain_community.document_loaders import TextLoader
+
+    loader = TextLoader("document.txt", encoding="utf-8")
+    documents = loader.load()
+    ```
+  </Tab>
+  <Tab title="Multiple Files">
+    ```python
+    from langchain_community.document_loaders import DirectoryLoader
+
+    loader = DirectoryLoader(
+        "./documents",
+        glob="**/*.pdf",
+        loader_cls=PyPDFLoader
+    )
+    documents = loader.load()
+    ```
+  </Tab>
+</Tabs>
+
+## Text Splitting Techniques
+
+### 1. Recursive Character Text Splitter
+
+```python
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+text_splitter = RecursiveCharacterTextSplitter(
+    chunk_size=500,        # Maximum chunk size
+    chunk_overlap=100,     # Overlap between chunks
+    length_function=len,   # Function to measure chunk size
+    separators=["\n\n", "\n", " ", ""]  # Split hierarchy
+)
+
+chunks = text_splitter.split_documents(documents)
+```
+
+<Info>
+  **Why overlap?** Chunk overlap ensures that context isn't lost at chunk boundaries, improving retrieval quality.
+</Info>
+
+### 2. Token-Based Splitting
+
+```python
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+# Split by tokens (useful for LLM context limits)
+text_splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
+    chunk_size=500,
+    chunk_overlap=100,
+    encoding_name="cl100k_base"  # GPT-4 tokenizer
+)
+
+chunks = text_splitter.split_documents(documents)
+```
+
+### 3. Semantic Splitting
+
+```python
+from langchain_text_splitters.sentence_transformers import SentenceTransformersTokenTextSplitter
+
+text_splitter = SentenceTransformersTokenTextSplitter(
+    model_name="sentence-transformers/all-mpnet-base-v2",
+    chunk_size=100,
+    chunk_overlap=50
+)
+
+chunks = text_splitter.split_documents(documents)
+```
+
+## Search Strategies
+
+<AccordionGroup>
+  <Accordion title="Similarity Search (Most Common)">
+    ```python
+    # Get top-k most similar documents
+    retriever = vectorstore.as_retriever(
+        search_type="similarity",
+        search_kwargs={'k': 5}
+    )
+
+    docs = retriever.get_relevant_documents(query)
+    ```
+    **Use when**: You want the most semantically similar documents.
+  </Accordion>
+  
+  <Accordion title="Similarity with Score Threshold">
+    ```python
+    # Only return documents above similarity threshold
+    retriever = vectorstore.as_retriever(
+        search_type="similarity_score_threshold",
+        search_kwargs={
+            'score_threshold': 0.7,  # 0-1 scale
+            'k': 10
+        }
+    )
+
+    docs = retriever.get_relevant_documents(query)
+    ```
+    **Use when**: You want to filter out low-quality matches.
+  </Accordion>
+  
+  <Accordion title="MMR (Maximal Marginal Relevance)">
+    ```python
+    # Balance relevance with diversity
+    retriever = vectorstore.as_retriever(
+        search_type="mmr",
+        search_kwargs={
+            'k': 5,
+            'fetch_k': 20,  # Initial candidates
+            'lambda_mult': 0.5  # Diversity vs relevance (0=diverse, 1=relevant)
+        }
+    )
+
+    docs = retriever.get_relevant_documents(query)
+    ```
+    **Use when**: You want diverse results to avoid redundancy.
+  </Accordion>
+</AccordionGroup>
+
+## Prompt Engineering for RAG
+
+<CodeGroup>
+```python Basic Prompt
+prompt = ChatPromptTemplate.from_template("""
+Answer the question based on the following context:
+
+{context}
+
+Question: {question}
+
+Answer:
+""")
+```
+
+```python Detailed Instructions
+prompt = ChatPromptTemplate.from_template("""
+You are a helpful assistant that answers questions based on provided context.
+
+Context:
+{context}
+
+Question: {question}
+
+Instructions:
+- Answer based ONLY on the context provided
+- If the answer is not in the context, say "I don't have enough information"
+- Cite specific parts of the context when possible
+- Be concise but comprehensive
+
+Answer:
+""")
+```
+
+```python With Role and Constraints
+prompt = ChatPromptTemplate.from_template("""
+You are an expert analyst specializing in {domain}.
+
+Context Information:
+{context}
+
+User Question: {question}
+
+Guidelines:
+1. Provide accurate information from the context only
+2. Use technical terminology when appropriate
+3. If information is missing, clearly state it
+4. Structure your answer with bullet points or sections
+5. Include relevant quotes from the context
+
+Your Response:
+""")
+```
+</CodeGroup>
+
+## RAG Chain Patterns
+
+### 1. Simple Chain
+
+```python
+from langchain_core.runnables import RunnablePassthrough
+
+# Linear chain: retrieve -> format -> prompt -> llm -> parse
+rag_chain = (
+    {"context": retriever | format_docs, "question": RunnablePassthrough()}
+    | prompt
+    | llm
+    | StrOutputParser()
+)
+
+response = rag_chain.invoke("What are the key findings?")
+```
+
+### 2. Chain with History
+
+```python
+from langchain_core.runnables import RunnablePassthrough
+from langchain_core.runnables.history import RunnableWithMessageHistory
+
+def get_session_history(session_id):
+    # Return chat history for session
+    return chat_history_store[session_id]
+
+rag_chain = (
+    {"context": retriever | format_docs, "question": RunnablePassthrough()}
+    | prompt
+    | llm
+)
+
+chain_with_history = RunnableWithMessageHistory(
+    rag_chain,
+    get_session_history,
+    input_messages_key="question",
+    history_messages_key="history"
+)
+
+response = chain_with_history.invoke(
+    {"question": "Tell me more"},
+    config={"configurable": {"session_id": "user123"}}
+)
+```
+
+### 3. Multi-Query Chain
+
+```python
+from langchain.retrievers.multi_query import MultiQueryRetriever
+
+# Generate multiple query variations
+multi_query_retriever = MultiQueryRetriever.from_llm(
+    retriever=vectorstore.as_retriever(),
+    llm=llm
+)
+
+rag_chain = (
+    {"context": multi_query_retriever | format_docs, "question": RunnablePassthrough()}
+    | prompt
+    | llm
+    | StrOutputParser()
+)
+```
+
+## Metadata Filtering
+
+```python
+# Add metadata when creating documents
+from langchain.schema import Document
+
+docs = [
+    Document(
+        page_content="Content here",
+        metadata={
+            "source": "paper.pdf",
+            "page": 1,
+            "category": "research",
+            "date": "2024-01-01"
+        }
+    )
+]
+
+vectorstore.add_documents(docs)
+
+# Query with metadata filters
+retriever = vectorstore.as_retriever(
+    search_kwargs={
+        'k': 5,
+        'filter': {'category': 'research'}  # Only retrieve research docs
+    }
+)
+```
+
+## Error Handling
+
+```python
+import logging
+from tenacity import retry, stop_after_attempt, wait_exponential
+
+@retry(
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=1, min=4, max=10)
+)
+def safe_rag_query(query: str) -> str:
+    """Execute RAG query with retry logic."""
+    try:
+        # Check if retriever is initialized
+        if retriever is None:
+            return "System not initialized. Please upload documents first."
+        
+        # Execute query
+        response = rag_chain.invoke(query)
+        return response
+        
+    except Exception as e:
+        logging.error(f"RAG query error: {str(e)}")
+        return f"Error processing query: {str(e)}"
+```
+
+## Performance Optimization
+
+<AccordionGroup>
+  <Accordion title="Batch Processing">
+    ```python
+    # Process multiple documents at once
+    vectorstore.add_documents(chunks, batch_size=100)
+
+    # Batch retrieval
+    queries = ["query1", "query2", "query3"]
+    results = [retriever.get_relevant_documents(q) for q in queries]
+    ```
+  </Accordion>
+  
+  <Accordion title="Caching">
+    ```python
+    from langchain.cache import InMemoryCache
+    from langchain.globals import set_llm_cache
+
+    # Cache LLM responses
+    set_llm_cache(InMemoryCache())
+
+    # Same query will use cached result
+    response1 = rag_chain.invoke(query)
+    response2 = rag_chain.invoke(query)  # From cache
+    ```
+  </Accordion>
+  
+  <Accordion title="Async Operations">
+    ```python
+    import asyncio
+
+    async def async_rag_query(query: str):
+        """Async RAG query for better performance."""
+        docs = await retriever.aget_relevant_documents(query)
+        response = await rag_chain.ainvoke(query)
+        return response
+
+    # Run multiple queries in parallel
+    results = await asyncio.gather(*[
+        async_rag_query(q) for q in queries
+    ])
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Common Pitfalls
+
+<Warning>
+  **Chunk Size Issues**: Too small = loss of context; Too large = irrelevant information.
+  
+  **Solution**: Start with 500-1000 characters and adjust based on your documents.
+</Warning>
+
+<Warning>
+  **No Overlap**: Chunks without overlap can lose critical context at boundaries.
+  
+  **Solution**: Use 10-20% overlap (e.g., 100 characters for 500-character chunks).
+</Warning>
+
+<Warning>
+  **Wrong Search Type**: Using similarity when you need diversity or vice versa.
+  
+  **Solution**: Use MMR for diverse results, similarity for focused retrieval.
+</Warning>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Agentic RAG" icon="robot" href="/rag/agentic-rag">
+    Add reasoning and tool usage to your RAG system
+  </Card>
+  <Card title="Advanced Techniques" icon="wand-magic-sparkles" href="/rag/advanced-techniques">
+    Learn about hybrid search and corrective RAG
+  </Card>
+</CardGroup>

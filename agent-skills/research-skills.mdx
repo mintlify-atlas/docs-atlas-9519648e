@@ -1,0 +1,414 @@
+---
+title: Research Skills
+description: Agent skills for deep research, fact-checking, and academic analysis
+---
+
+# Research Skills
+
+Research skills enable agents to conduct thorough investigations, verify claims, and synthesize information from multiple sources with proper citations.
+
+## Available Research Skills
+
+<CardGroup cols={2}>
+  <Card title="Deep Research" icon="book-open">
+    Comprehensive research with multi-source synthesis and citations
+  </Card>
+  <Card title="Fact Checker" icon="circle-check">
+    Systematic fact verification and misinformation identification
+  </Card>
+  <Card title="Academic Researcher" icon="graduation-cap">
+    Literature review and academic writing expertise
+  </Card>
+  <Card title="Data Analyst" icon="chart-line">
+    SQL, pandas, and statistical analysis capabilities
+  </Card>
+</CardGroup>
+
+---
+
+## Deep Research
+
+### Overview
+
+**Triggers:** Conducting research, gathering sources, writing research summaries, analyzing topics from multiple perspectives, investigation, synthesized analysis with citations
+
+### When to Use
+
+- Conducting in-depth research on a topic
+- Synthesizing information from multiple sources
+- Creating research summaries with proper citations
+- Analyzing different viewpoints and perspectives
+- Identifying key findings and trends
+- Evaluating the quality and credibility of sources
+
+### Research Process
+
+<Steps>
+  <Step title="Clarify the Research Question">
+    - What exactly needs to be researched?
+    - What level of detail is required?
+    - Are there specific angles to prioritize?
+    - What is the purpose of the research?
+  </Step>
+  
+  <Step title="Identify Key Aspects">
+    - Break the topic into subtopics or dimensions
+    - List main questions to answer
+    - Note important context or background needed
+  </Step>
+  
+  <Step title="Gather Information">
+    - Consider multiple perspectives
+    - Look for primary and secondary sources
+    - Check publication dates and currency
+    - Evaluate source credibility
+  </Step>
+  
+  <Step title="Synthesize Findings">
+    - Identify patterns and themes
+    - Note areas of consensus and disagreement
+    - Highlight key insights
+    - Connect related information
+  </Step>
+  
+  <Step title="Document Sources">
+    - Use numbered citations [1], [2], etc.
+    - List full sources at the end
+    - Note if information is uncertain or contested
+    - Indicate confidence levels where appropriate
+  </Step>
+</Steps>
+
+### Output Format
+
+```markdown
+## Executive Summary
+[2-3 sentence overview of key findings]
+
+## Key Findings
+- **[Finding 1]**: [Brief explanation] [1]
+- **[Finding 2]**: [Brief explanation] [2]
+- **[Finding 3]**: [Brief explanation] [3]
+
+## Detailed Analysis
+
+### [Subtopic 1]
+[In-depth analysis with citations]
+
+### [Subtopic 2]
+[In-depth analysis with citations]
+
+## Areas of Consensus
+[What sources agree on]
+
+## Areas of Debate
+[Where sources disagree or uncertainty exists]
+
+## Sources
+[1] [Full citation with credibility note]
+[2] [Full citation with credibility note]
+
+## Gaps and Further Research
+[What's still unknown or needs investigation]
+```
+
+### Source Evaluation Criteria
+
+<Tabs>
+  <Tab title="Peer-Reviewed Journals">
+    **Credibility:** Highest
+    
+    - Undergone rigorous peer review
+    - Published in reputable journals
+    - Methodology transparent
+    - Data and analysis verifiable
+  </Tab>
+  
+  <Tab title="Official Reports">
+    **Credibility:** High
+    
+    - Government statistics and data
+    - International organizations (WHO, UN, etc.)
+    - Authoritative industry reports
+    - Primary data sources
+  </Tab>
+  
+  <Tab title="Reputable News">
+    **Credibility:** Medium-High
+    
+    - Established news organizations
+    - Fact-checked reporting
+    - Multiple sources cited
+    - Timely information
+  </Tab>
+  
+  <Tab title="Expert Commentary">
+    **Credibility:** Medium
+    
+    - Qualified experts in the field
+    - Clearly stated as opinion
+    - Context and credentials provided
+    - Cross-reference with other sources
+  </Tab>
+  
+  <Tab title="General Websites">
+    **Credibility:** Low
+    
+    - Verify independently
+    - Check author credentials
+    - Look for bias or agenda
+    - Cross-reference with authoritative sources
+  </Tab>
+</Tabs>
+
+### Example Research Output
+
+**Research Question:** "What are the benefits and risks of intermittent fasting?"
+
+**Executive Summary:**
+Intermittent fasting (IF) shows promising benefits for weight loss and metabolic health based on current research, though long-term effects remain under study. Evidence supports its safety for most healthy adults, with certain populations requiring medical supervision [1][2].
+
+**Key Findings:**
+- **Weight Loss**: IF produces similar weight loss to calorie restriction (5-8% body weight over 12 weeks), with potentially better adherence [1]
+- **Metabolic Health**: May improve insulin sensitivity by 20-31% and reduce inflammation markers [2]
+- **Safety**: Not recommended for pregnant women, diabetics without supervision, or those with eating disorder history [4]
+
+---
+
+## Fact Checker
+
+### Overview
+
+**Triggers:** Verifying claims, checking facts, identifying misinformation, "fact check", "verify", "is this true", evaluating source credibility
+
+### When to Use
+
+- Verifying specific claims or statements
+- Identifying potential misinformation or disinformation
+- Checking statistics and data accuracy
+- Evaluating source credibility
+- Separating fact from opinion or interpretation
+- Analyzing viral claims or rumors
+
+### Verification Process
+
+<Steps>
+  <Step title="Identify the Claim">
+    - Extract the specific factual assertion
+    - Distinguish fact from opinion
+    - Note any implicit claims
+    - Identify measurable aspects
+  </Step>
+  
+  <Step title="Determine Required Evidence">
+    - What would prove this claim?
+    - What would disprove it?
+    - What sources would be authoritative?
+    - Can this be verified or is it opinion?
+  </Step>
+  
+  <Step title="Evaluate Available Evidence">
+    - Check authoritative sources
+    - Look for primary data
+    - Consider source credibility
+    - Note publication dates
+    - Check for context
+  </Step>
+  
+  <Step title="Rate the Claim">
+    - Assess accuracy based on evidence
+    - Note confidence level
+    - Explain reasoning clearly
+    - Highlight missing context if relevant
+  </Step>
+  
+  <Step title="Provide Context">
+    - Why does this matter?
+    - Common misconceptions
+    - Related facts
+    - Proper interpretation
+  </Step>
+</Steps>
+
+### Rating Scale
+
+<CardGroup cols={3}>
+  <Card title="✅ TRUE" icon="check">
+    Claim is accurate and supported by reliable evidence
+  </Card>
+  <Card title="⚠️ MOSTLY TRUE" icon="circle-exclamation">
+    Claim is accurate but missing important context or minor details wrong
+  </Card>
+  <Card title="🔶 MIXED" icon="circle-half-stroke">
+    Claim contains both true and false elements
+  </Card>
+  <Card title="❌ MOSTLY FALSE" icon="xmark">
+    Claim is misleading or largely inaccurate
+  </Card>
+  <Card title="🚫 FALSE" icon="ban">
+    Claim is demonstrably wrong
+  </Card>
+  <Card title="❓ UNVERIFIABLE" icon="question">
+    Cannot be confirmed or denied with available evidence
+  </Card>
+</CardGroup>
+
+### Common Misinformation Patterns
+
+<AccordionGroup>
+  <Accordion title="Statistical Manipulation">
+    - Cherry-picking data
+    - Misleading graphs or scales
+    - Correlation vs causation confusion
+    - Inappropriate comparisons
+    - Selective timeframes
+  </Accordion>
+  
+  <Accordion title="Context Removal">
+    - Quote mining (taking statements out of context)
+    - Omitting important qualifiers
+    - Ignoring timeframes or conditions
+    - Removing statistical caveats
+    - Partial truths presented as whole story
+  </Accordion>
+  
+  <Accordion title="False Equivalences">
+    - Comparing incomparable things
+    - Treating all sources as equally valid
+    - Both-sidesing settled science
+    - Anecdotes vs statistical evidence
+  </Accordion>
+  
+  <Accordion title="Logical Fallacies">
+    - Ad hominem attacks
+    - Appeal to authority (improper)
+    - False dichotomies
+    - Slippery slope arguments
+    - Straw man arguments
+  </Accordion>
+</AccordionGroup>
+
+### Example Fact Check
+
+**Claim:** "Humans only use 10% of their brain"
+
+**Verdict:** 🚫 FALSE
+
+**Analysis:**
+This is a persistent myth with no scientific basis. Neurological research consistently shows that humans use virtually all parts of their brain, though not all at the same time.
+
+**Evidence:**
+- Brain imaging (fMRI, PET scans) shows activity throughout the brain during even simple tasks [1]
+- Brain damage to any area causes functional impairment, indicating all regions serve purposes [2]
+- Metabolic studies show the brain uses ~20% of body's energy despite being ~2% of body weight [3]
+
+**Correct Information:**
+Humans use virtually all of their brain. Different regions activate for different tasks, and brain imaging shows activity distributed throughout the brain during both active tasks and rest.
+
+---
+
+## Academic Researcher
+
+### Overview
+
+**Triggers:** Literature review, academic writing, research papers, scholarly sources, peer review, academic citations, thesis, dissertation
+
+### When to Use
+
+- Conducting literature reviews
+- Writing academic papers
+- Finding and evaluating scholarly sources
+- Synthesizing academic research
+- Following academic citation styles (APA, MLA, Chicago)
+- Critiquing research methodology
+
+### Academic Research Process
+
+1. **Define Research Question**: Clear, focused, answerable
+2. **Literature Search**: Use academic databases (Google Scholar, PubMed, JSTOR)
+3. **Source Evaluation**: Assess peer-review status, methodology, citations
+4. **Synthesis**: Identify themes, gaps, contradictions
+5. **Citation**: Proper academic citation format
+6. **Critical Analysis**: Evaluate strengths and limitations
+
+### Academic Writing Principles
+
+- **Objective Tone**: Avoid emotional language
+- **Evidence-Based**: Every claim supported by citations
+- **Clear Structure**: Introduction, literature review, methodology, results, discussion
+- **Proper Citations**: Follow style guide exactly
+- **Critical Thinking**: Analyze, don't just summarize
+- **Acknowledge Limitations**: Be transparent about constraints
+
+---
+
+## Data Analyst
+
+### Overview
+
+**Triggers:** Data analysis, SQL queries, pandas, statistical analysis, data visualization, analyzing datasets, data insights
+
+### When to Use
+
+- Analyzing datasets with pandas
+- Writing SQL queries
+- Performing statistical analysis
+- Creating data visualizations
+- Finding patterns and insights in data
+- Cleaning and preprocessing data
+- Generating reports from data
+
+### Key Capabilities
+
+**SQL:**
+- Complex queries with JOINs
+- Aggregations and window functions
+- Query optimization
+- Database design
+
+**Python (pandas):**
+- Data cleaning and preprocessing
+- Exploratory data analysis
+- Statistical calculations
+- Data transformation
+
+**Visualization:**
+- Choosing appropriate chart types
+- Creating clear, informative plots
+- Dashboard design
+- Storytelling with data
+
+**Statistics:**
+- Descriptive statistics
+- Hypothesis testing
+- Correlation and regression
+- Probability distributions
+
+---
+
+## Installation
+
+Add all research skills:
+
+```bash
+npx skills add shubhamsaboo/awesome-agent-skills
+```
+
+Or install individual skills manually.
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Coding Skills" icon="code" href="/agent-skills/coding-skills">
+    Explore software development skills
+  </Card>
+  <Card title="Writing Skills" icon="pen" href="/agent-skills/writing-skills">
+    Discover writing and documentation skills
+  </Card>
+  <Card title="Planning Skills" icon="list-check" href="/agent-skills/planning-skills">
+    Learn about project and sprint planning
+  </Card>
+  <Card title="Create Custom Skills" icon="plus" href="/agent-skills/creating-skills">
+    Build your own agent skills
+  </Card>
+</CardGroup>

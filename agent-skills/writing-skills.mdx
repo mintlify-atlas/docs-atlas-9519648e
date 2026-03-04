@@ -1,0 +1,635 @@
+---
+title: Writing Skills
+description: Agent skills for technical writing, content creation, and editing
+---
+
+# Writing Skills
+
+Writing skills help agents create clear, engaging content across various formats - from technical documentation to blog posts and social media content.
+
+## Available Writing Skills
+
+<CardGroup cols={2}>
+  <Card title="Technical Writer" icon="book">
+    Clear documentation, API references, and technical content for developers
+  </Card>
+  <Card title="Content Creator" icon="sparkles">
+    Engaging blog posts, social media content, and marketing materials
+  </Card>
+  <Card title="Editor" icon="pen-to-square">
+    Professional editing and proofreading for clarity and correctness
+  </Card>
+  <Card title="Email Drafter" icon="envelope">
+    Professional email composition for various scenarios
+  </Card>
+</CardGroup>
+
+---
+
+## Technical Writer
+
+### Overview
+
+**Triggers:** Writing documentation, creating README files, documenting APIs, writing tutorials, creating user guides, technical writing, explaining technical concepts
+
+### When to Use
+
+- Writing API documentation
+- Creating README files and setup guides
+- Developing user manuals and tutorials
+- Documenting architecture and design
+- Writing changelog and release notes
+- Creating onboarding guides
+- Explaining complex technical concepts
+
+### Writing Principles
+
+<CardGroup cols={2}>
+  <Card title="User-Centered" icon="users">
+    Lead with the user's goal, not the feature. Answer "why should I care?" before "how does it work?"
+  </Card>
+  <Card title="Clarity First" icon="lightbulb">
+    Use active voice, keep sentences under 25 words, one idea per paragraph
+  </Card>
+  <Card title="Show, Don't Tell" icon="code">
+    Include practical examples, runnable code samples, and expected output
+  </Card>
+  <Card title="Progressive Disclosure" icon="layer-group">
+    Structure from simple to complex - quick start before deep dives
+  </Card>
+</CardGroup>
+
+### Documentation Structures
+
+<Tabs>
+  <Tab title="Project README">
+    ```markdown
+    # Project Name
+    [One-line description]
+    
+    ## Features
+    - [Key features as bullets]
+    
+    ## Installation
+    [Minimal steps to install]
+    
+    ## Quick Start
+    [Simplest possible example]
+    
+    ## Usage
+    [Common use cases with examples]
+    
+    ## API Reference
+    [If applicable]
+    
+    ## Configuration
+    [Optional settings]
+    
+    ## Troubleshooting
+    [Common issues and solutions]
+    
+    ## Contributing
+    [How to contribute]
+    
+    ## License
+    ```
+  </Tab>
+  
+  <Tab title="API Documentation">
+    ```markdown
+    ## Function/Endpoint Name
+    
+    [Brief description of what it does]
+    
+    ### Parameters
+    
+    | Name | Type | Required | Description |
+    |------|------|----------|-------------|
+    | param1 | string | Yes | What it's for |
+    
+    ### Returns
+    
+    [What it returns and in what format]
+    
+    ### Example
+    
+    ```language
+    [Complete working example]
+    ```
+    
+    ### Errors
+    
+    | Code | Description | Solution |
+    |------|-------------|----------|
+    ```
+  </Tab>
+  
+  <Tab title="Tutorial">
+    ```markdown
+    # [What You'll Build]
+    
+    [Brief description and screenshot/demo]
+    
+    ## Prerequisites
+    - [Required knowledge]
+    - [Required software]
+    
+    ## Step 1: [First Action]
+    [Clear instructions with code]
+    
+    ## Step 2: [Next Action]
+    [Continue step by step]
+    
+    ## Next Steps
+    [Where to go from here]
+    ```
+  </Tab>
+</Tabs>
+
+### Style Guide
+
+<AccordionGroup>
+  <Accordion title="Voice & Tone">
+    - **Use "you"** for direct address
+    - **Use "we"** when referring to shared actions
+    - **Avoid "I"** except in opinionated guides
+    - **Be conversational but professional**
+  </Accordion>
+  
+  <Accordion title="Formatting">
+    - **Bold** for UI elements, buttons, menu items
+    - `code formatting` for commands, variables, filenames
+    - *Italic* for emphasis (use sparingly)
+    - UPPERCASE for placeholders (API_KEY, USERNAME)
+  </Accordion>
+  
+  <Accordion title="Code Examples">
+    - Always include comments explaining non-obvious code
+    - Show complete, working examples
+    - Include expected output
+    - Provide context for why the code works
+  </Accordion>
+  
+  <Accordion title="Scannable Content">
+    - Use descriptive headings
+    - Bulleted lists for 3+ items
+    - Code blocks with syntax highlighting
+    - Visual hierarchy with formatting
+  </Accordion>
+</AccordionGroup>
+
+### Example: README for CLI Tool
+
+```markdown
+# filesort
+
+Sort and organize files by size from the command line.
+
+## Features
+
+- Sort files in any directory by size
+- Filter by file extension
+- Export results to CSV
+- Human-readable size formatting
+
+## Installation
+
+```bash
+pip install filesort
+```
+
+## Quick Start
+
+Sort files in current directory:
+```bash
+filesort .
+```
+
+Output:
+```
+1.2 GB    video.mp4
+856 MB    dataset.zip
+45 MB     photo.jpg
+2.1 KB    README.md
+```
+
+## Usage
+
+```bash
+filesort [OPTIONS] DIRECTORY
+```
+
+### Examples
+
+**Find your 10 largest files:**
+```bash
+filesort . --reverse --number 10
+```
+
+**Find large video files:**
+```bash
+filesort ~/Videos --extension mp4 --reverse
+```
+```
+
+---
+
+## Content Creator
+
+### Overview
+
+**Triggers:** Writing blog posts, creating social media content, developing marketing copy, crafting engaging headlines, content creation, blogging, social media, audience engagement
+
+### When to Use
+
+- Writing blog posts and articles
+- Creating social media content (Twitter, LinkedIn, Instagram)
+- Developing marketing copy
+- Crafting compelling headlines and hooks
+- Creating email newsletters
+- Writing product descriptions
+
+### Content Creation Framework
+
+<Steps>
+  <Step title="Know Your Audience">
+    - Who are you writing for?
+    - What are their pain points?
+    - What level of expertise do they have?
+    - What action do you want them to take?
+  </Step>
+  
+  <Step title="Hook Immediately">
+    - First sentence must grab attention
+    - Lead with value, intrigue, or emotion
+    - Make a promise you'll deliver on
+  </Step>
+  
+  <Step title="Provide Value">
+    - Actionable insights
+    - Specific examples
+    - Practical takeaways
+    - Original perspectives
+  </Step>
+  
+  <Step title="Make It Scannable">
+    - Short paragraphs (2-3 sentences)
+    - Subheadings every 3-4 paragraphs
+    - Bulleted or numbered lists
+    - Bold key points
+  </Step>
+  
+  <Step title="End With Action">
+    - Clear call-to-action
+    - Next steps
+    - Conversation starter
+    - Resource links
+  </Step>
+</Steps>
+
+### Platform-Specific Guidelines
+
+<Tabs>
+  <Tab title="Blog Posts">
+    **Length:** 800-2000 words
+    
+    **Structure:**
+    - Attention-grabbing headline
+    - Opening hook (question, statistic, bold claim)
+    - Problem description
+    - Solution with examples
+    - Key takeaways
+    - Clear next steps
+    
+    **Style:**
+    - Scannable with subheadings
+    - Mix of text and lists
+    - Include visuals where helpful
+    - Personal stories work well
+  </Tab>
+  
+  <Tab title="Twitter/X Threads">
+    **Length:** 280 chars per tweet
+    
+    **Structure:**
+    1. Hook - bold claim or question
+    2. Context or problem setup
+    3-5. Main points with examples
+    6. Key takeaway
+    7. CTA - retweet, follow, link
+    
+    **Style:**
+    - Direct and punchy
+    - One idea per tweet
+    - Use line breaks for readability
+    - Emojis sparingly for emphasis
+  </Tab>
+  
+  <Tab title="LinkedIn Posts">
+    **Length:** Up to 1300 characters
+    
+    **Structure:**
+    - Personal story or observation
+    - Transition to broader insight
+    - 3-5 actionable points
+    - Conclusion with engagement question
+    - Relevant hashtags (3-5)
+    
+    **Style:**
+    - Professional but personal
+    - Numbered lists work well
+    - Ask questions to drive engagement
+    - Share lessons learned
+  </Tab>
+  
+  <Tab title="Email Newsletters">
+    **Subject:** Curiosity-driven, 50 chars max
+    
+    **Structure:**
+    - Personal opening
+    - Value proposition paragraph
+    - Bulleted preview of content
+    - Main content sections with headers
+    - Clear CTA button or link
+    - Warm sign-off
+    
+    **Style:**
+    - Conversational tone
+    - Short paragraphs
+    - Mix text with visuals
+    - Single primary CTA
+  </Tab>
+</Tabs>
+
+### Headline Formulas
+
+1. **How To**: "How to [Achieve Desired Result] in [Timeframe]"
+2. **List**: "[Number] Ways to [Solve Problem]"
+3. **Question**: "Are You Making These [Number] [Mistakes]?"
+4. **Negative**: "Stop [Doing X] Until You Read This"
+5. **Curiosity Gap**: "The [Adjective] Secret to [Desired Result]"
+6. **Before/After**: "From [Bad State] to [Good State] in [Timeframe]"
+
+### Engagement Techniques
+
+<AccordionGroup>
+  <Accordion title="Storytelling">
+    - Start with a relatable scenario
+    - Build tension or curiosity
+    - Deliver insight or resolution
+    - Connect to reader's situation
+  </Accordion>
+  
+  <Accordion title="Social Proof">
+    - Case studies and examples
+    - Testimonials and quotes
+    - Statistics and data
+    - Expert opinions
+  </Accordion>
+  
+  <Accordion title="Emotional Triggers">
+    - **Fear**: "Don't make this costly mistake"
+    - **Curiosity**: "The surprising truth about..."
+    - **Aspiration**: "How top performers..."
+    - **Urgency**: "Limited time opportunity"
+    - **Belonging**: "Join thousands who..."
+  </Accordion>
+</AccordionGroup>
+
+### Example: LinkedIn Post
+
+```
+I used to think productivity meant working 12-hour days.
+
+Then remote work taught me something different.
+
+Last year, I worked from home for 230 days. Here's what actually 
+kept me productive (it's not what you think):
+
+**1. Start with friction**
+Don't check email first thing. Your morning energy is precious - 
+use it for deep work, not inbox triage.
+
+**2. Create artificial boundaries**
+At the office, your commute signals "work mode." At home, you need 
+new triggers. Mine: Change clothes.
+
+**3. Embrace the async**
+Set 2-3 "sync windows" daily for meetings. Rest of the time? 
+Notifications off. Deep work on.
+
+**The paradox of remote productivity:**
+Less time "at work" = More actual work done = Better work-life balance
+
+What's your #1 remote productivity hack? Drop it below 👇
+
+#RemoteWork #Productivity #WorkFromHome
+```
+
+---
+
+## Editor
+
+### Overview
+
+**Triggers:** Editing text, proofreading documents, improving clarity, fixing grammar, refining style, "edit", "proofread", "improve", "revise", grammar, readability
+
+### When to Use
+
+- Editing and revising documents
+- Proofreading for grammar and typos
+- Improving clarity and readability
+- Refining style and tone
+- Making content more concise
+- Enhancing flow and structure
+
+### Editing Levels
+
+<CardGroup cols={2}>
+  <Card title="Proofreading" icon="spell-check">
+    Surface errors: spelling, grammar, punctuation, capitalization, formatting
+  </Card>
+  <Card title="Copy Editing" icon="pen">
+    Language and style: sentence structure, word choice, redundancy, consistency
+  </Card>
+  <Card title="Line Editing" icon="align-left">
+    Flow and clarity: transitions, variety, tone, pacing, expression clarity
+  </Card>
+  <Card title="Developmental Editing" icon="sitemap">
+    Structure and content: organization, argument strength, missing info, effectiveness
+  </Card>
+</CardGroup>
+
+### Editing Checklist
+
+<Tabs>
+  <Tab title="Clarity">
+    - [ ] Is the main point immediately clear?
+    - [ ] Are complex ideas explained simply?
+    - [ ] Could any sentence be misunderstood?
+    - [ ] Are technical terms defined?
+    - [ ] Is jargon necessary or just showing off?
+  </Tab>
+  
+  <Tab title="Concision">
+    - [ ] Can any words be cut without losing meaning?
+    - [ ] Are there redundant phrases?
+    - [ ] Could complex sentences be simplified?
+    - [ ] Is every sentence necessary?
+    - [ ] Are descriptions overly detailed?
+  </Tab>
+  
+  <Tab title="Grammar & Mechanics">
+    - [ ] Subject-verb agreement correct?
+    - [ ] Pronoun references clear?
+    - [ ] Consistent verb tense?
+    - [ ] Proper punctuation?
+    - [ ] No sentence fragments (unless intentional)?
+  </Tab>
+  
+  <Tab title="Style & Tone">
+    - [ ] Consistent voice throughout?
+    - [ ] Appropriate formality level?
+    - [ ] Active voice preferred over passive?
+    - [ ] Varied sentence structure?
+    - [ ] Strong verbs instead of weak + adverbs?
+  </Tab>
+</Tabs>
+
+### Common Issues to Fix
+
+<AccordionGroup>
+  <Accordion title="Wordiness">
+    | Wordy | Concise |
+    |-------|--------|
+    | Due to the fact that | Because |
+    | In order to | To |
+    | At this point in time | Now |
+    | Has the ability to | Can |
+    | Make a decision | Decide |
+  </Accordion>
+  
+  <Accordion title="Passive Voice">
+    **Before:** "The report was written by the team"
+    **After:** "The team wrote the report"
+    
+    **Before:** "Mistakes were made"
+    **After:** "We made mistakes"
+  </Accordion>
+  
+  <Accordion title="Weak Verbs">
+    | Weak | Strong |
+    |------|-------|
+    | Make a decision | Decide |
+    | Give consideration to | Consider |
+    | Came to the realization | Realized |
+    | Provide assistance | Help |
+  </Accordion>
+  
+  <Accordion title="Redundancy">
+    | Redundant | Better |
+    |-----------|-------|
+    | Free gift | Gift |
+    | Future plans | Plans |
+    | Added bonus | Bonus |
+    | Completely finished | Finished |
+  </Accordion>
+</AccordionGroup>
+
+### Example: Before and After
+
+**Original:**
+"Our company specializes in providing solutions that have the ability to help businesses in order to achieve their goals. We make a commitment to delivering quality at this point in time."
+
+**Edited:**
+"We help businesses achieve their goals through quality solutions."
+
+**Improvements:**
+- Reduced from 30 words to 11 words
+- Removed filler phrases ("in order to", "at this point in time")
+- Changed weak phrases to strong verbs ("help" vs "have the ability to help")
+- More direct and confident tone
+
+---
+
+## Email Drafter
+
+### Overview
+
+**Triggers:** Writing emails, composing messages, professional communication, email templates, business correspondence
+
+### When to Use
+
+- Writing professional emails
+- Drafting difficult conversations
+- Creating email templates
+- Responding to various scenarios
+- Adjusting tone and formality
+- Following up on communications
+
+### Email Components
+
+**Subject Line:**
+- Clear and specific
+- Action-oriented when needed
+- 50 characters or less
+- Avoid spam trigger words
+
+**Opening:**
+- Appropriate greeting
+- Context if needed
+- Get to the point quickly
+
+**Body:**
+- One clear purpose per email
+- Short paragraphs
+- Bullets for multiple points
+- Professional but warm
+
+**Closing:**
+- Clear next steps or call-to-action
+- Appropriate sign-off
+- Contact information
+
+### Tone Guidelines
+
+<CardGroup cols={3}>
+  <Card title="Formal">
+    Executive communication, external partners, serious matters
+  </Card>
+  <Card title="Professional">
+    Colleagues, clients, standard business communication
+  </Card>
+  <Card title="Casual">
+    Team members, friendly relationships, informal updates
+  </Card>
+</CardGroup>
+
+---
+
+## Installation
+
+Add all writing skills:
+
+```bash
+npx skills add shubhamsaboo/awesome-agent-skills
+```
+
+Or install individual skills manually.
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Coding Skills" icon="code" href="/agent-skills/coding-skills">
+    Explore software development skills
+  </Card>
+  <Card title="Research Skills" icon="magnifying-glass" href="/agent-skills/research-skills">
+    Discover research and analysis skills
+  </Card>
+  <Card title="Planning Skills" icon="list-check" href="/agent-skills/planning-skills">
+    Learn about project and sprint planning
+  </Card>
+  <Card title="Create Custom Skills" icon="plus" href="/agent-skills/creating-skills">
+    Build your own agent skills
+  </Card>
+</CardGroup>

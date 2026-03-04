@@ -1,0 +1,308 @@
+---
+title: Coding Skills
+description: Agent skills for software development, code review, debugging, and programming expertise
+---
+
+# Coding Skills
+
+Coding skills give agents expertise in software development, code review, debugging, and programming best practices. These skills help agents write clean, efficient, and secure code.
+
+## Available Coding Skills
+
+<CardGroup cols={2}>
+  <Card title="Python Expert" icon="python">
+    Senior Python developer with expertise in clean, efficient code
+  </Card>
+  <Card title="Code Reviewer" icon="code-compare">
+    Thorough code review focusing on security, performance, and best practices
+  </Card>
+  <Card title="Debugger" icon="bug">
+    Systematic debugging and root cause analysis
+  </Card>
+  <Card title="Fullstack Developer" icon="layer-group">
+    Modern web development with React, Node.js, and databases
+  </Card>
+</CardGroup>
+
+---
+
+## Python Expert
+
+### Overview
+
+The Python Expert skill provides senior-level Python development expertise with focus on correctness, type safety, performance, and code quality.
+
+**Priority Order**: Correctness → Type Safety → Performance → Style
+
+### When to Use
+
+- Writing new Python code
+- Reviewing existing Python code
+- Debugging Python issues
+- Implementing type hints
+- Optimizing Python performance
+- Following PEP 8 guidelines
+
+### Key Principles
+
+- **Correctness**: Avoid mutable default arguments, implement proper error handling, handle edge cases
+- **Type Safety**: Complete type hints, TypeVar for generics, dataclasses for data containers
+- **Performance**: List comprehensions over loops, context managers, built-in functions, generators
+- **Style**: PEP 8 compliance, comprehensive docstrings, meaningful names
+
+### Example
+
+```python
+from typing import List, Optional
+from dataclasses import dataclass
+
+@dataclass
+class User:
+    id: int
+    name: str
+    email: str
+
+def get_active_users(users: List[User], min_id: Optional[int] = None) -> List[User]:
+    """Filter users by minimum ID.
+    
+    Args:
+        users: List of user objects
+        min_id: Minimum user ID to include (optional)
+        
+    Returns:
+        Filtered list of users
+    """
+    if min_id is None:
+        return users
+    
+    return [user for user in users if user.id >= min_id]
+```
+
+---
+
+## Code Reviewer
+
+### Overview
+
+The Code Reviewer skill provides security-first code review with focus on vulnerabilities, performance issues, and best practices.
+
+**Severity Levels**: CRITICAL → HIGH → MEDIUM → LOW
+
+### When to Use
+
+- Reviewing pull requests
+- Security audits
+- Performance optimization
+- Code quality improvements
+- Pre-deployment checks
+
+### Review Checklist
+
+**Security (CRITICAL)**
+- SQL injection prevention
+- XSS protection
+- Authentication/authorization
+- Input validation
+- Secrets management
+
+**Performance (HIGH)**
+- Database query efficiency
+- N+1 query problems
+- Memory leaks
+- Unnecessary computations
+- Caching opportunities
+
+**Code Quality (MEDIUM)**
+- Error handling
+- Edge case coverage
+- Code duplication
+- Naming conventions
+- Documentation quality
+
+**Style (LOW)**
+- Formatting consistency
+- Comment quality
+- File organization
+- Import ordering
+
+### Example Review
+
+```python
+# CRITICAL: SQL Injection vulnerability
+query = f"SELECT * FROM users WHERE id = {user_id}"  # Bad
+
+# Fixed: Use parameterized queries
+query = "SELECT * FROM users WHERE id = ?"
+cursor.execute(query, (user_id,))  # Good
+
+# HIGH: N+1 query problem
+for user in users:
+    orders = get_orders(user.id)  # Bad: separate query per user
+
+# Fixed: Batch query
+user_ids = [u.id for u in users]
+orders = get_orders_batch(user_ids)  # Good: single query
+```
+
+---
+
+## Debugger
+
+### Overview
+
+The Debugger skill provides systematic debugging methodology with focus on root cause analysis and reproducibility.
+
+### When to Use
+
+- Investigating bugs
+- Reproducing issues
+- Finding root causes
+- Performance debugging
+- Integration issues
+
+### Debugging Process
+
+1. **Reproduce**: Create minimal reproducible example
+2. **Isolate**: Identify affected component
+3. **Hypothesize**: Form theory about cause
+4. **Test**: Verify hypothesis
+5. **Fix**: Implement solution
+6. **Verify**: Confirm fix works
+
+### Debugging Techniques
+
+**Binary Search**
+- Comment out half the code
+- Determine which half contains the bug
+- Repeat until isolated
+
+**Logging**
+- Add strategic print statements
+- Log at decision points
+- Track state changes
+
+**Rubber Duck Debugging**
+- Explain code line by line
+- Clarifies assumptions
+- Often reveals issues
+
+### Common Bug Patterns
+
+- **Off-by-One**: Loop indices, array bounds
+- **Null References**: Check variables before use
+- **Race Conditions**: Async operation ordering
+- **Type Mismatches**: String vs number comparisons
+- **Stale State**: Cached values not updated
+
+---
+
+## Fullstack Developer
+
+### Overview
+
+The Fullstack Developer skill provides modern web development expertise across frontend, backend, and database layers.
+
+### When to Use
+
+- Building web applications
+- API development
+- Database design
+- Frontend development
+- DevOps and deployment
+
+### Technology Stack
+
+**Frontend**
+- React with TypeScript
+- State management (Context, Redux)
+- CSS frameworks (Tailwind)
+- Build tools (Vite, Webpack)
+
+**Backend**
+- Node.js / Express
+- RESTful APIs
+- Authentication (JWT, OAuth)
+- API design patterns
+
+**Database**
+- SQL (PostgreSQL, MySQL)
+- NoSQL (MongoDB)
+- ORMs (Prisma, Sequelize)
+- Query optimization
+
+### Example API
+
+```typescript
+// Express API with TypeScript
+import express, { Request, Response } from 'express';
+import { body, validationResult } from 'express-validator';
+
+const app = express();
+
+interface User {
+  id: number;
+  email: string;
+  name: string;
+}
+
+app.post(
+  '/api/users',
+  body('email').isEmail(),
+  body('name').isLength({ min: 2 }),
+  async (req: Request, res: Response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    try {
+      const user: User = await createUser(req.body);
+      res.status(201).json(user);
+    } catch (error) {
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+);
+```
+
+### Best Practices
+
+- **Security**: HTTPS, CORS, rate limiting, input validation
+- **Performance**: Caching, CDN, code splitting, lazy loading
+- **Testing**: Unit tests, integration tests, E2E tests
+- **DevOps**: CI/CD, monitoring, logging, error tracking
+
+---
+
+## Using Coding Skills
+
+### Installation
+
+```bash
+npx skills add shubhamsaboo/awesome-agent-skills
+```
+
+### Integration
+
+Coding skills automatically trigger when agents detect relevant tasks:
+- Code review requests
+- Python code writing
+- Debugging issues
+- Web development tasks
+
+### Related Skills
+
+<CardGroup cols={2}>
+  <Card title="Research Skills" icon="magnifying-glass" href="/agent-skills/research-skills">
+    Deep research and fact-checking capabilities
+  </Card>
+  <Card title="Writing Skills" icon="pen" href="/agent-skills/writing-skills">
+    Technical writing and documentation
+  </Card>
+  <Card title="Creating Skills" icon="plus" href="/agent-skills/creating-skills">
+    Build your own custom agent skills
+  </Card>
+  <Card title="All Skills" icon="puzzle-piece" href="/agent-skills/overview">
+    View all available agent skills
+  </Card>
+</CardGroup>

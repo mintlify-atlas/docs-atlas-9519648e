@@ -1,0 +1,653 @@
+---
+title: 'OpenAI Agents SDK Crash Course'
+description: 'Complete tutorial series for mastering OpenAI Agents SDK from basics to production'
+icon: 'robot'
+---
+
+# OpenAI Agents SDK Crash Course
+
+A comprehensive tutorial series for learning OpenAI's Agents SDK from zero to hero. Build powerful AI agents with OpenAI's cutting-edge framework, from simple text processing to advanced voice-enabled multi-agent systems.
+
+## What is OpenAI Agents SDK?
+
+OpenAI Agents SDK is a powerful framework for **developing and deploying AI agents** that provides:
+
+<CardGroup cols={2}>
+  <Card title="Agent Orchestration" icon="diagram-project">
+    Create and manage intelligent AI agents with sophisticated workflows and coordination patterns.
+  </Card>
+  <Card title="Tool Integration" icon="wrench">
+    Extend agents with custom functions and built-in tools like WebSearch, CodeInterpreter, and FileSearch.
+  </Card>
+  <Card title="Structured Outputs" icon="code">
+    Type-safe responses using Pydantic models for reliable data extraction and validation.
+  </Card>
+  <Card title="Multi-Agent Workflows" icon="users">
+    Coordinate multiple specialized agents with handoffs, delegation, and parallel execution.
+  </Card>
+  <Card title="Real-time Execution" icon="bolt">
+    Support for sync, async, and streaming execution methods for any use case.
+  </Card>
+  <Card title="Voice Integration" icon="microphone">
+    Static, streaming, and realtime voice capabilities for conversational AI applications.
+  </Card>
+  <Card title="Session Management" icon="database">
+    Automatic conversation memory and history with SQLiteSession.
+  </Card>
+  <Card title="Production Ready" icon="shield-check">
+    Built-in tracing, guardrails, monitoring, and observability tools.
+  </Card>
+</CardGroup>
+
+## Complete Learning Path
+
+This crash course covers 11 comprehensive tutorials organized into progressive layers:
+
+### 🌱 Foundation Layer
+
+Build your understanding of core concepts:
+
+<Steps>
+  <Step title="Tutorial 1: Your First Agent">
+    **Starter Agent** - Create your first OpenAI agent
+    
+    Learn basic agent creation, configuration, and execution methods. Understand the agent lifecycle and simple text processing.
+    
+    ```python
+    from agents import Agent
+    
+    agent = Agent(
+        name="Personal Assistant",
+        instructions="You are a helpful personal assistant."
+    )
+    ```
+    
+    **What you'll build**: Personal assistant agents with sync, async, and streaming execution
+  </Step>
+  
+  <Step title="Tutorial 2: Structured Outputs">
+    **Type-Safe Responses** - Work with Pydantic models
+    
+    Convert unstructured AI responses into validated, structured JSON data. Perfect for building reliable integrations.
+    
+    ```python
+    from pydantic import BaseModel
+    from enum import Enum
+    
+    class Priority(str, Enum):
+        LOW = "low"
+        MEDIUM = "medium"
+        HIGH = "high"
+    
+    class SupportTicket(BaseModel):
+        customer_name: str
+        priority: Priority
+        issue_description: str
+    ```
+    
+    **What you'll build**: 
+    - Support ticket extractor
+    - Product review analyzer
+    - Email generator with structured metadata
+  </Step>
+</Steps>
+
+### 🔧 Core Capabilities Layer
+
+Extend agents with powerful features:
+
+<Steps>
+  <Step title="Tutorial 3: Tool-Using Agents">
+    **Agent Tools & Functions** - Extend agent capabilities
+    
+    Add custom functions and built-in tools to give your agents real-world superpowers:
+    
+    ```python
+    from agents import function_tool
+    
+    @function_tool
+    def calculate_compound_interest(
+        principal: float, 
+        rate: float, 
+        time: int
+    ) -> float:
+        """Calculate compound interest"""
+        return principal * (1 + rate) ** time
+    
+    agent = Agent(
+        name="Calculator",
+        tools=[calculate_compound_interest]
+    )
+    ```
+    
+    **Built-in tools available**:
+    - **WebSearchTool**: Real-time web search
+    - **CodeInterpreterTool**: Execute Python code safely
+    - **FileSearchTool**: Search through uploaded documents
+    
+    **What you'll build**:
+    - Custom function tools for calculations
+    - Research agent with web search
+    - Data analysis agent with code execution
+    - Agents as tools orchestration
+  </Step>
+  
+  <Step title="Tutorial 4: Running Agents">
+    **Execution Mastery** - Master the agent execution loop
+    
+    Deep dive into how agents run, make decisions, and handle different execution patterns:
+    
+    **The Agent Loop**:
+    1. Receive user input
+    2. LLM processes and decides actions
+    3. Execute tools if needed
+    4. Generate response
+    5. Handle handoffs or continue
+    
+    **Execution Methods**:
+    ```python
+    # Synchronous
+    result = Runner.run_sync(agent, "Hello")
+    
+    # Asynchronous
+    result = await Runner.run(agent, "Hello")
+    
+    # Streaming
+    async for event in Runner.run_streamed(agent, "Hello"):
+        print(event.content)
+    ```
+    
+    **What you'll learn**:
+    - Advanced streaming events
+    - Run configuration and customization
+    - Conversation management
+    - Exception handling
+  </Step>
+  
+  <Step title="Tutorial 5: Context Management">
+    **State & Context Handling** - Manage conversation flow
+    
+    Learn to maintain state across interactions, pass context between runs, and control conversation flow:
+    
+    ```python
+    # Pass context to agent
+    result = Runner.run_sync(
+        agent,
+        "Continue the story",
+        context={"previous_chapter": chapter_1}
+    )
+    ```
+    
+    **What you'll build**: Stateful agents that remember context across multiple interactions
+  </Step>
+</Steps>
+
+### 🧠 Advanced Features Layer
+
+Implement sophisticated functionality:
+
+<Steps>
+  <Step title="Tutorial 6: Guardrails & Validation">
+    **Safety & Validation** - Add protective boundaries
+    
+    Implement input validation and output filtering for safe, reliable agents:
+    
+    ```python
+    from agents import Agent
+    
+    agent = Agent(
+        name="Safe Agent",
+        input_guardrails=[validate_user_input],
+        output_guardrails=[filter_sensitive_data]
+    )
+    ```
+    
+    **Guardrail types**:
+    - **Input guardrails**: Validate user inputs before processing
+    - **Output guardrails**: Filter and validate agent responses
+    - **Custom validators**: Business rule enforcement
+    
+    **What you'll build**: Agents with content filtering, validation rules, and safety boundaries
+  </Step>
+  
+  <Step title="Tutorial 7: Sessions & Memory">
+    **Session Management** - Automatic conversation history
+    
+    Use SQLiteSession for persistent conversation memory:
+    
+    ```python
+    from agents import SQLiteSession
+    
+    session = SQLiteSession("conversations.db")
+    result = Runner.run_sync(
+        agent,
+        "What did we discuss yesterday?",
+        session=session
+    )
+    ```
+    
+    **Features**:
+    - Automatic conversation history
+    - Memory operations (update, delete, correct)
+    - Multiple session management
+    - Conversation organization
+    
+    **What you'll build**:
+    - Agents with persistent memory
+    - Multi-session conversation managers
+    - Interactive Streamlit session interface
+  </Step>
+</Steps>
+
+### 🤝 Multi-Agent Layer
+
+Orchestrate complex agent workflows:
+
+<Steps>
+  <Step title="Tutorial 8: Handoffs & Delegation">
+    **Agent-to-Agent Task Delegation** - Specialized agent teams
+    
+    Create triage systems where agents intelligently delegate to specialists:
+    
+    ```python
+    from agents import Agent, handoff
+    
+    billing_agent = Agent(
+        name="Billing Specialist",
+        instructions="Handle billing inquiries"
+    )
+    
+    support_agent = Agent(
+        name="Tech Support",
+        instructions="Handle technical issues"
+    )
+    
+    triage_agent = Agent(
+        name="Triage",
+        instructions="Route customers to specialists",
+        handoffs=[billing_agent, support_agent]
+    )
+    ```
+    
+    **Advanced handoff features**:
+    - Custom tool names and descriptions
+    - Input filtering for context control
+    - Handoff callbacks for logging
+    - Structured input data passing
+    
+    **What you'll build**:
+    - Customer support triage system
+    - Advanced handoff with callbacks
+    - Multi-specialist coordination
+  </Step>
+  
+  <Step title="Tutorial 9: Multi-Agent Orchestration">
+    **Complex Workflows** - Parallel and coordinated execution
+    
+    **Parallel Execution**:
+    ```python
+    import asyncio
+    
+    # Run multiple agents in parallel
+    results = await asyncio.gather(
+        Runner.run(translator_agent, "Hello"),
+        Runner.run(analyzer_agent, data),
+        Runner.run(writer_agent, topic)
+    )
+    ```
+    
+    **Agents as Tools Pattern**:
+    ```python
+    # Use specialized agents as tools
+    orchestrator = Agent(
+        name="Orchestrator",
+        tools=[
+            translator.as_tool("translate"),
+            analyzer.as_tool("analyze")
+        ]
+    )
+    ```
+    
+    **What you'll build**:
+    - Parallel multi-agent research systems
+    - Agent orchestration with agents-as-tools
+    - Multi-stage workflow coordination
+  </Step>
+</Steps>
+
+### 🔍 Production Layer
+
+Prepare for real-world deployment:
+
+<Steps>
+  <Step title="Tutorial 10: Tracing & Observability">
+    **Monitoring & Debugging** - Production visibility
+    
+    Built-in tracing for execution visualization:
+    
+    ```python
+    from agents import Agent, Runner, trace
+    
+    # Default tracing
+    with trace():
+        result = Runner.run_sync(agent, "Process this")
+    
+    # Custom traces and spans
+    with trace(name="custom_workflow") as t:
+        with t.span("research_phase"):
+            research = await Runner.run(researcher, query)
+        with t.span("analysis_phase"):
+            analysis = await Runner.run(analyzer, research)
+    ```
+    
+    **What you'll learn**:
+    - Built-in execution tracing
+    - Custom traces for complex workflows
+    - Performance monitoring
+    - Debugging multi-agent systems
+  </Step>
+</Steps>
+
+### 🎙️ Voice & Advanced Features
+
+<Steps>
+  <Step title="Tutorial 11: Voice Agents">
+    **Real-time Conversation** - Voice-enabled agents
+    
+    Three voice processing modes:
+    
+    **1. Static Voice Processing**:
+    ```python
+    # Turn-based voice interaction
+    audio_input = record_audio()
+    result = Runner.run_sync(voice_agent, audio_input)
+    play_audio(result.audio_output)
+    ```
+    
+    **2. Streaming Voice**:
+    ```python
+    # Real-time conversation with streaming
+    async for event in Runner.run_streamed(voice_agent, audio):
+        if event.audio_chunk:
+            play_audio_chunk(event.audio_chunk)
+    ```
+    
+    **3. Realtime Voice (Ultra-Low Latency)**:
+    ```python
+    # WebSocket-based realtime conversation
+    async with RealtimeSession() as session:
+        await session.connect(voice_agent)
+        # Ultra-low latency voice conversation
+    ```
+    
+    **What you'll build**:
+    - Turn-based voice assistants
+    - Streaming voice conversation apps
+    - Realtime voice agents with WebSocket
+    - Speech-to-text and text-to-speech pipelines
+  </Step>
+</Steps>
+
+## Quick Start
+
+<Steps>
+  <Step title="Set Up Environment">
+    Install Python 3.8+ and get your OpenAI API key:
+    
+    ```bash
+    # Get API key from:
+    # https://platform.openai.com/api-keys
+    ```
+  </Step>
+  
+  <Step title="Install OpenAI Agents SDK">
+    ```bash
+    pip install openai-agents
+    ```
+  </Step>
+  
+  <Step title="Create Your First Agent">
+    ```python
+    from agents import Agent, Runner
+    
+    # Create agent
+    agent = Agent(
+        name="Personal Assistant",
+        instructions="You are a helpful assistant."
+    )
+    
+    # Run agent
+    result = Runner.run_sync(agent, "Hello!")
+    print(result.final_output)
+    ```
+  </Step>
+  
+  <Step title="Follow the Tutorials">
+    Start with Tutorial 1 and progress through the learning path sequentially for the best experience.
+  </Step>
+</Steps>
+
+## Tutorial Structure
+
+Each tutorial follows a consistent, learner-friendly structure:
+
+<AccordionGroup>
+  <Accordion title="README.md" icon="book">
+    Detailed concept explanations, learning objectives, and "why" behind each feature
+  </Accordion>
+  <Accordion title="Python Files" icon="code">
+    Working implementations with clear, commented code examples you can run immediately
+  </Accordion>
+  <Accordion title="Interactive Interfaces" icon="desktop">
+    Streamlit web apps for hands-on testing and experimentation
+  </Accordion>
+  <Accordion title="Submodules" icon="folder">
+    Organized examples for different concepts and variations
+  </Accordion>
+  <Accordion title="Requirements & Setup" icon="gear">
+    Clear dependencies and environment setup instructions
+  </Accordion>
+</AccordionGroup>
+
+## Key Features & Capabilities
+
+### Agent Execution Methods
+
+<Tabs>
+  <Tab title="Synchronous">
+    Perfect for simple scripts and blocking operations:
+    ```python
+    result = Runner.run_sync(agent, "Process this")
+    print(result.final_output)
+    ```
+  </Tab>
+  <Tab title="Asynchronous">
+    For concurrent operations and better performance:
+    ```python
+    result = await Runner.run(agent, "Process this")
+    print(result.final_output)
+    ```
+  </Tab>
+  <Tab title="Streaming">
+    For real-time, progressive responses:
+    ```python
+    async for event in Runner.run_streamed(agent, "Tell me a story"):
+        print(event.content, end="")
+    ```
+  </Tab>
+</Tabs>
+
+### Tool Integration Patterns
+
+<CodeGroup>
+```python Custom Function Tool
+from agents import function_tool
+
+@function_tool
+def get_weather(city: str, units: str = "metric") -> str:
+    """Get current weather for a city"""
+    # API call logic
+    return f"Weather in {city}: 72°F, Sunny"
+
+agent = Agent(
+    name="Weather Assistant",
+    tools=[get_weather]
+)
+```
+
+```python Built-in Tools
+from agents import Agent
+from agents.tools import WebSearchTool, CodeInterpreterTool
+
+agent = Agent(
+    name="Research Assistant",
+    tools=[
+        WebSearchTool(),
+        CodeInterpreterTool()
+    ]
+)
+```
+
+```python Agents as Tools
+from agents import Agent
+
+translator = Agent(name="Translator")
+analyzer = Agent(name="Analyzer")
+
+orchestrator = Agent(
+    name="Orchestrator",
+    tools=[
+        translator.as_tool("translate"),
+        analyzer.as_tool("analyze")
+    ]
+)
+```
+</CodeGroup>
+
+## Real-World Applications
+
+By completing this course, you'll be able to build:
+
+<CardGroup cols={2}>
+  <Card title="Customer Support Systems" icon="headset">
+    Multi-agent triage systems with specialized support agents for different departments
+  </Card>
+  <Card title="Research Assistants" icon="magnifying-glass">
+    Agents that search the web, analyze data, and generate comprehensive reports
+  </Card>
+  <Card title="Data Processing Pipelines" icon="database">
+    Extract structured data from unstructured inputs with type-safe validation
+  </Card>
+  <Card title="Voice Applications" icon="microphone">
+    Build voice-enabled assistants with real-time conversation capabilities
+  </Card>
+  <Card title="Content Generation" icon="pen">
+    Automated content creation with quality validation and structured outputs
+  </Card>
+  <Card title="Multi-Agent Workflows" icon="diagram-project">
+    Complex systems where multiple specialized agents collaborate to solve problems
+  </Card>
+</CardGroup>
+
+## Prerequisites
+
+<Warning>
+**Required**: Python 3.8+ (Python 3.9+ for voice features), OpenAI API key, basic Python knowledge
+</Warning>
+
+<Info>
+**Helpful but not required**: Familiarity with async/await patterns, API concepts, JSON data structures
+</Info>
+
+## Environment Setup
+
+Each tutorial requires your OpenAI API key. Create a `.env` file:
+
+```bash .env
+OPENAI_API_KEY=sk-your_openai_key_here
+```
+
+<Tip>
+Get your API key from [OpenAI Platform](https://platform.openai.com/api-keys)
+</Tip>
+
+## Learning Tips
+
+<Steps>
+  <Step title="Start Sequential">
+    Follow tutorials in order - each builds on previous concepts
+  </Step>
+  <Step title="Experiment Freely">
+    Modify code, try different prompts, and see what happens
+  </Step>
+  <Step title="Use Web Interfaces">
+    Interactive Streamlit apps make learning more engaging
+  </Step>
+  <Step title="Read Error Messages">
+    They often contain helpful guidance for troubleshooting
+  </Step>
+  <Step title="Join Community">
+    Engage with other learners and share experiences
+  </Step>
+</Steps>
+
+## Common Issues & Solutions
+
+<AccordionGroup>
+  <Accordion title="API Key Problems" icon="key">
+    - Ensure `.env` file is in the tutorial directory
+    - Verify API key is valid and has sufficient credits
+    - Check for typos in environment variable name
+  </Accordion>
+  <Accordion title="Import Errors" icon="code">
+    - Install requirements: `pip install -r requirements.txt`
+    - Verify Python 3.8+ (3.9+ for voice features)
+    - Try creating a virtual environment
+  </Accordion>
+  <Accordion title="Rate Limiting" icon="gauge-high">
+    - OpenAI has rate limits based on your plan
+    - Wait before retrying if you hit limits
+    - Consider upgrading your OpenAI plan
+  </Accordion>
+</AccordionGroup>
+
+## Progress Tracker
+
+Track your learning journey:
+
+- [ ] **Tutorial 1**: Basic agent creation ✨
+- [ ] **Tutorial 2**: Structured outputs with Pydantic
+- [ ] **Tutorial 3**: Tool integration and custom functions
+- [ ] **Tutorial 4**: Execution methods mastery
+- [ ] **Tutorial 5**: Context and state management
+- [ ] **Tutorial 6**: Guardrails and validation
+- [ ] **Tutorial 7**: Sessions and memory management
+- [ ] **Tutorial 8**: Agent handoffs and delegation
+- [ ] **Tutorial 9**: Multi-agent orchestration
+- [ ] **Tutorial 10**: Tracing and observability
+- [ ] **Tutorial 11**: Voice agents and real-time conversation 🎯
+
+## Additional Resources
+
+<CardGroup cols={2}>
+  <Card title="Official Documentation" icon="book" href="https://openai.github.io/openai-agents-python/">
+    OpenAI Agents SDK comprehensive documentation
+  </Card>
+  <Card title="OpenAI Platform" icon="globe" href="https://platform.openai.com/">
+    API keys, usage dashboard, and model information
+  </Card>
+  <Card title="Pydantic Docs" icon="code" href="https://docs.pydantic.dev/">
+    Learn more about data validation and schemas
+  </Card>
+  <Card title="Streamlit Docs" icon="desktop" href="https://docs.streamlit.io/">
+    Build interactive web interfaces for your agents
+  </Card>
+</CardGroup>
+
+## Next Steps
+
+<Card title="Start Learning" icon="rocket" href="#quick-start">
+  Set up your environment and begin with Tutorial 1: Your First Agent
+</Card>
+
+Happy learning! 🚀

@@ -1,0 +1,677 @@
+---
+title: 'Advanced AI Agents'
+description: 'Complex agent implementations with sophisticated capabilities'
+icon: 'brain'
+---
+
+## Overview
+
+Advanced agents demonstrate sophisticated AI capabilities including complex reasoning, specialized domain expertise, and advanced tool integration. These agents build upon starter patterns with enhanced decision-making, multimodal processing, and professional-grade implementations.
+
+<Note>
+While technically single agents, these implementations showcase advanced patterns that bridge the gap between basic agents and full multi-agent systems.
+</Note>
+
+## Medical & Healthcare Agents
+
+### Medical Imaging Diagnosis Agent
+
+A comprehensive medical imaging analysis agent built on Agno and powered by Gemini 2.0 Flash that acts as a medical imaging diagnosis expert.
+
+<Card title="Comprehensive Analysis Pipeline" icon="microscope">
+  **Image Type Identification:**
+  - X-ray detection and analysis
+  - MRI scan interpretation
+  - CT scan evaluation
+  - Ultrasound assessment
+  
+  **Anatomical Analysis:**
+  - Automatic region detection
+  - Key findings identification
+  - Abnormality highlighting
+  - Quality assessment
+  
+  **Diagnostic Output:**
+  - Potential diagnoses with ranking
+  - Differential diagnosis considerations
+  - Severity level assessment
+  - Patient-friendly explanations
+  - Research and reference citations
+</Card>
+
+```bash
+# Setup and run
+git clone https://github.com/Shubhamsaboo/awesome-llm-apps.git
+cd starter_ai_agents/ai_medical_imaging_agent
+pip install -r requirements.txt
+streamlit run ai_medical_imaging.py
+```
+
+**Analysis Components:**
+
+<Tabs>
+  <Tab title="Image Type & Region">
+    - Identifies imaging modality automatically
+    - Specifies anatomical region being scanned
+    - Validates image quality and completeness
+  </Tab>
+  
+  <Tab title="Key Findings">
+    - Systematic listing of observations
+    - Detailed appearance descriptions
+    - Abnormality identification and highlighting
+    - Comparison to normal anatomy
+  </Tab>
+  
+  <Tab title="Diagnostic Assessment">
+    - Potential diagnoses ranked by likelihood
+    - Differential diagnoses considered
+    - Severity assessment with clinical context
+    - Recommended follow-up actions
+  </Tab>
+  
+  <Tab title="Patient Communication">
+    - Simplified medical terminology
+    - First-principles explanations
+    - Visual reference points
+    - Actionable next steps
+  </Tab>
+</Tabs>
+
+**Technical Details:**
+- Uses Gemini 2.0 Flash for multimodal analysis
+- 1,500 free requests per day from Google
+- Requires stable internet connection
+- Real-time image processing
+
+<Warning>
+**Medical Disclaimer:** This tool is for educational and informational purposes only. All analyses should be reviewed by qualified healthcare professionals. Do not make medical decisions based solely on this analysis.
+</Warning>
+
+## Financial & Insurance Agents
+
+### Life Insurance Coverage Advisor Agent
+
+An intelligent advisor that estimates term life insurance needs and surfaces available policy options using advanced calculation methods.
+
+**Technology Stack:**
+<CardGroup cols={3}>
+  <Card title="Agno Framework" icon="code">
+    Agent orchestration and workflow management
+  </Card>
+  
+  <Card title="OpenAI GPT-5" icon="brain">
+    Core reasoning and decision-making
+  </Card>
+  
+  <Card title="E2B Sandbox" icon="shield">
+    Secure code execution environment
+  </Card>
+  
+  <Card title="Firecrawl" icon="globe">
+    Live web research and product discovery
+  </Card>
+  
+  <Card title="Python" icon="python">
+    Financial calculations and modeling
+  </Card>
+  
+  <Card title="Streamlit" icon="app-window">
+    Interactive user interface
+  </Card>
+</CardGroup>
+
+**Calculation Methodology:**
+```python
+# Discounted cash-flow income replacement model
+# The agent executes Python code in E2B sandbox:
+
+def calculate_coverage(
+    age, income, dependents, debt, 
+    assets, existing_cover, horizon, location
+):
+    # 1. Calculate income replacement need
+    income_need = income * horizon
+    
+    # 2. Add immediate obligations
+    total_need = income_need + debt
+    
+    # 3. Subtract available assets
+    net_need = total_need - assets - existing_cover
+    
+    # 4. Apply location-based adjustments
+    # 5. Consider dependent care costs
+    # 6. Account for inflation and discount rates
+    
+    return coverage_recommendation
+```
+
+**Features:**
+- Minimal intake form with essential fields
+- Deterministic coverage calculations
+- Real-time policy research
+- Up to 3 product suggestions with source links
+- Calculation breakdown transparency
+
+```bash
+cd starter_ai_agents/ai_life_insurance_advisor_agent
+pip install -r requirements.txt
+streamlit run life_insurance_advisor_agent.py
+```
+
+**Required API Keys:**
+| Service | Purpose | Get It From |
+|---------|---------|-------------|
+| OpenAI (GPT-5-mini) | Core reasoning | https://platform.openai.com/api-keys |
+| Firecrawl | Web search + crawl | https://www.firecrawl.dev/app/api-keys |
+| E2B | Code execution sandbox | https://e2b.dev |
+
+<Warning>
+**Financial Disclaimer:** This project is for educational and prototyping purposes only and does not provide licensed financial advice. Always validate output with qualified professionals and confirm details directly with insurance providers.
+</Warning>
+
+### xAI Finance Agent
+
+Financial analysis agent powered by xAI's Grok model with real-time market data integration.
+
+**Key Capabilities:**
+- Powered by Grok-4 Fast model
+- Real-time stock data analysis via YFinance
+- Web search capabilities through DuckDuckGo
+- Formatted output with tables
+- Interactive playground interface
+- AgentOS integration for monitoring
+
+```bash
+cd starter_ai_agents/xai_finance_agent
+pip install -r requirements.txt
+export XAI_API_KEY='your-api-key-here'
+python xai_finance_agent.py
+```
+
+**AgentOS Control Plane:**
+Connect your running agent to AgentOS for management and monitoring:
+
+<Steps>
+  <Step title="Visit Documentation">
+    Go to [Connecting Your OS](https://docs.agno.com/agent-os/connecting-your-os)
+  </Step>
+  
+  <Step title="Register AgentOS">
+    Follow steps to register your local instance
+  </Step>
+  
+  <Step title="Establish Connection">
+    Connect through the browser interface
+  </Step>
+  
+  <Step title="Monitor Performance">
+    Track agent interactions, costs, and performance
+  </Step>
+</Steps>
+
+## Advanced Reasoning Agents
+
+### AI Reasoning Agent
+
+Leverages advanced AI models to provide deep reasoning and decision-making capabilities.
+
+**Features:**
+<CardGroup cols={2}>
+  <Card title="Advanced Reasoning" icon="brain">
+    - Complex reasoning tasks
+    - Multi-step problem solving
+    - Logical deduction
+    - Structured analysis
+  </Card>
+  
+  <Card title="Interactive Playground" icon="play">
+    - User-friendly interface
+    - Real-time processing
+    - Markdown output support
+    - Query history tracking
+  </Card>
+</CardGroup>
+
+**Configuration:**
+```python
+# Example agent setup with Ollama
+from agno import Agent, Ollama
+
+agent = Agent(
+    model=Ollama(id="llama3.1:70b"),
+    markdown=True,
+    show_tool_calls=True
+)
+
+# Input complex reasoning queries
+response = agent.run(
+    "Analyze the ethical implications of AI in healthcare"
+)
+```
+
+```bash
+cd starter_ai_agents/ai_reasoning_agent
+pip install -r requirements.txt
+python local_ai_reasoning_agent.py
+```
+
+**Customization Options:**
+- Model selection (Ollama, OpenAI, Anthropic)
+- Temperature and sampling parameters
+- Output format preferences
+- Context window configuration
+
+## Data & Analytics Agents
+
+### AI Data Analysis Agent
+
+Advanced data analysis agent using Agno and OpenAI GPT-4o with DuckDB for efficient data processing.
+
+**Architecture:**
+```
+User Query (Natural Language)
+    ↓
+Agent (GPT-4o) interprets intent
+    ↓
+DuckDB Tool generates SQL
+    ↓
+Data Processing & Analysis
+    ↓
+Visualization + Insights
+    ↓
+Formatted Response
+```
+
+**Supported Operations:**
+<Tabs>
+  <Tab title="File Operations">
+    ```python
+    # Automatic schema inference
+    - CSV file parsing
+    - Excel workbook reading
+    - Data type detection
+    - Column name normalization
+    ```
+  </Tab>
+  
+  <Tab title="Query Types">
+    ```sql
+    -- Aggregation queries
+    "What's the total revenue by region?"
+    
+    -- Filtering and sorting
+    "Show me top 10 customers by sales"
+    
+    -- Statistical analysis
+    "Calculate average, median, and std dev"
+    
+    -- Time series
+    "Show monthly trends for the past year"
+    ```
+  </Tab>
+  
+  <Tab title="Visualizations">
+    - Bar charts for comparisons
+    - Line charts for trends
+    - Scatter plots for correlations
+    - Pie charts for distributions
+    - Heatmaps for matrices
+  </Tab>
+</Tabs>
+
+```bash
+cd starter_ai_agents/ai_data_analysis_agent
+pip install -r requirements.txt
+streamlit run ai_data_analyst.py
+```
+
+**Natural Language Examples:**
+```python
+# Complex aggregations
+"What are the top 5 products by revenue in Q4 2024?"
+
+# Multi-step analysis
+"Calculate year-over-year growth rate for each category"
+
+# Statistical queries
+"Show me outliers in the sales data using IQR method"
+
+# Conditional analysis
+"Find customers who purchased more than $10k but returned items"
+```
+
+### AI Data Visualization Agent
+
+Specialized visualization agent with multi-model support for generating insights and charts.
+
+**Model Selection:**
+| Model | Best For | Speed | Quality |
+|-------|----------|-------|--------|
+| Meta-Llama 3.1 405B | Complex analysis | Slow | Excellent |
+| DeepSeek V3 | Detailed insights | Medium | Very Good |
+| Qwen 2.5 7B | Quick analysis | Fast | Good |
+| Meta-Llama 3.3 70B | Advanced queries | Medium | Excellent |
+
+**Visualization Intelligence:**
+- Automatic chart type selection based on data
+- Dynamic axis scaling and formatting
+- Color scheme optimization
+- Multi-plot compositions
+- Interactive elements
+
+```bash
+cd starter_ai_agents/ai_data_visualisation_agent
+pip install -r requirements.txt
+streamlit run ai_data_visualisation_agent.py
+```
+
+**Required Services:**
+- Together AI API key (free tier available)
+- E2B API key for sandbox execution
+
+## Web Automation Agents
+
+### AI Meme Generator Agent (Browser Use)
+
+Advanced browser automation agent that creates memes using multi-LLM capabilities and direct website manipulation.
+
+**Multi-LLM Architecture:**
+```python
+# Automatic model switching with validation
+models = {
+    "claude": Claude35Sonnet(),
+    "gpt4o": GPT4o(),
+    "deepseek": DeepseekV3()
+}
+
+# Agent selects best model for task
+agent = BrowserAgent(
+    model=models[selected_model],
+    validate_api_key=True
+)
+```
+
+**Browser Automation Workflow:**
+<Steps>
+  <Step title="Action Verb Extraction">
+    Analyze prompt to identify key action verbs and concepts
+  </Step>
+  
+  <Step title="Template Search">
+    Navigate to imgflip.com and search for relevant meme templates
+  </Step>
+  
+  <Step title="Metaphorical Matching">
+    Use AI to match prompt intent with meme format
+  </Step>
+  
+  <Step title="Caption Generation">
+    Generate witty top and bottom text captions
+  </Step>
+  
+  <Step title="Dynamic Insertion">
+    Automate text entry into meme generator
+  </Step>
+  
+  <Step title="Quality Validation">
+    Multi-step validation and retry mechanism
+  </Step>
+  
+  <Step title="Link Extraction">
+    Extract and return generated meme URL
+  </Step>
+</Steps>
+
+**Features:**
+- Model configuration sidebar
+- API key management per model
+- Direct meme preview with clickable links
+- Responsive error handling
+- Automatic retry on failures
+
+```bash
+cd starter_ai_agents/ai_meme_generator_agent_browseruse
+pip install -r requirements.txt
+python -m playwright install --with-deps
+streamlit run ai_meme_generator_agent.py
+```
+
+<Tip>
+The agent uses Playwright for browser automation. Make sure to install browser dependencies with `--with-deps` flag.
+</Tip>
+
+## Multimodal Agents
+
+### Multimodal AI Agent
+
+Combines video analysis and web search capabilities using Google's Gemini 2.5 model.
+
+**Capabilities:**
+<CardGroup cols={2}>
+  <Card title="Video Analysis" icon="video">
+    - Multiple format support (MP4, MOV, AVI)
+    - Real-time processing
+    - Scene understanding
+    - Object detection
+    - Activity recognition
+  </Card>
+  
+  <Card title="Web Integration" icon="globe">
+    - DuckDuckGo search integration
+    - Contextual information retrieval
+    - Combined visual + textual analysis
+    - Source verification
+  </Card>
+</CardGroup>
+
+**Example Use Cases:**
+```python
+# Video content analysis
+"What products are featured in this commercial?"
+
+# Combined analysis
+"Identify the landmarks in this video and provide historical context"
+
+# Educational content
+"Explain the scientific concepts demonstrated in this experiment video"
+
+# Tutorial understanding
+"Summarize the steps shown in this cooking tutorial"
+```
+
+```bash
+cd starter_ai_agents/multimodal_ai_agent
+pip install -r requirements.txt
+export GOOGLE_API_KEY='your-api-key'
+streamlit run multimodal_agent.py
+```
+
+**Supported Models:**
+- Gemini 2.5 Flash (fast processing)
+- Gemini 2.5 Pro (enhanced accuracy)
+
+## Content Generation Agents
+
+### AI Music Generator Agent
+
+Generates custom music using ModelsLab API with GPT-4 powered prompt optimization.
+
+**Features:**
+- Detailed prompt customization:
+  - Genre selection
+  - Instrument specification
+  - Mood and atmosphere
+  - Tempo and rhythm
+  - Musical structure
+- MP3 format output
+- In-browser playback
+- Download capability
+- Preview before generation
+
+```bash
+cd starter_ai_agents/ai_music_generator_agent
+pip install -r requirements.txt
+streamlit run models_lab_music_generator_agent.py
+```
+
+**Example Prompts:**
+```
+"Upbeat electronic dance music with synthesizers and a driving beat"
+
+"Calm acoustic guitar melody with soft piano, perfect for meditation"
+
+"Epic orchestral score with strings and brass, cinematic feel"
+
+"Jazz fusion with saxophone leads and complex drum patterns"
+```
+
+### Blog to Podcast Agent
+
+Converts written blog content into professional audio podcasts.
+
+**Processing Pipeline:**
+```
+Blog URL Input
+    ↓
+Firecrawl API (Content Scraping)
+    ↓
+GPT-4 (Summary Generation)
+    ↓
+ElevenLabs TTS (Audio Synthesis)
+    ↓
+MP3 Output (Playback/Download)
+```
+
+**Features:**
+- Full blog content scraping
+- Intelligent summarization (2000 char limit)
+- High-quality voice synthesis
+- Multiple voice options
+- Audio player integration
+- Download functionality
+
+```bash
+cd starter_ai_agents/ai_blog_to_podcast_agent
+pip install -r requirements.txt
+streamlit run blog_to_podcast_agent.py
+```
+
+**Required API Keys:**
+- OpenAI (GPT-4)
+- ElevenLabs (TTS)
+- Firecrawl (Content scraping)
+
+## Trend Analysis Agents
+
+### AI Startup Trend Analysis Agent
+
+Generates actionable insights for entrepreneurs by analyzing startup trends and market gaps.
+
+**Analysis Pipeline:**
+<Steps>
+  <Step title="News Collection">
+    Gather recent startup news, funding rounds, and market analyses using DuckDuckGo
+  </Step>
+  
+  <Step title="Content Processing">
+    Extract and summarize verified information using Newspaper4k
+  </Step>
+  
+  <Step title="Pattern Identification">
+    Identify emerging patterns in:
+    - Startup funding trends
+    - Technology adoption rates
+    - Market opportunities
+    - Competitive landscape
+  </Step>
+  
+  <Step title="Insight Generation">
+    Generate actionable recommendations using Claude 3.5 Sonnet
+  </Step>
+</Steps>
+
+**Use Cases:**
+- Validate startup ideas
+- Spot market opportunities
+- Identify technology trends
+- Analyze competitive landscape
+- Track funding patterns
+
+```bash
+cd starter_ai_agents/ai_startup_trend_analysis_agent
+pip install -r requirements.txt
+streamlit run startup_trends_agent.py
+```
+
+<Note>
+Requires Anthropic API key for Claude 3.5 Sonnet. Get your key from [Anthropic's website](https://www.anthropic.com/api).
+</Note>
+
+## Best Practices
+
+### Error Handling
+```python
+from agno import Agent
+
+try:
+    agent = Agent(
+        model=OpenAI(id="gpt-4o"),
+        tools=[ComplexTool()],
+        retries=3,  # Retry on failure
+        timeout=120  # Timeout after 2 minutes
+    )
+    
+    response = agent.run(query)
+    
+except TimeoutError:
+    print("Agent execution timed out")
+except Exception as e:
+    print(f"Agent error: {e}")
+```
+
+### Resource Management
+```python
+# Use context managers for cleanup
+with Agent(model=OpenAI()) as agent:
+    result = agent.run("Process this data")
+# Agent resources automatically cleaned up
+
+# Close connections explicitly
+agent.close()
+```
+
+### Cost Optimization
+```python
+# Use cheaper models for simple tasks
+simple_agent = Agent(model=OpenAI(id="gpt-4o-mini"))
+
+# Reserve advanced models for complex reasoning
+complex_agent = Agent(model=OpenAI(id="o3-mini"))
+
+# Cache results to avoid redundant API calls
+agent = Agent(
+    model=OpenAI(),
+    cache_responses=True
+)
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Multi-Agent Teams" icon="users" href="/ai-agents/multi-agent-teams">
+    Learn to coordinate multiple specialized agents
+  </Card>
+  
+  <Card title="Voice Agents" icon="microphone" href="/ai-agents/voice-agents">
+    Add voice capabilities to your agents
+  </Card>
+  
+  <Card title="MCP Integration" icon="plug" href="/ai-agents/mcp-agents">
+    Connect agents to external services
+  </Card>
+  
+  <Card title="Game Playing Agents" icon="gamepad" href="/ai-agents/game-playing-agents">
+    Build autonomous game-playing systems
+  </Card>
+</CardGroup>

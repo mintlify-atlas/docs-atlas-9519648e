@@ -1,0 +1,578 @@
+---
+title: Planning Skills
+description: Agent skills for project planning, sprint management, and strategic decision-making
+---
+
+# Planning Skills
+
+Planning skills help agents break down complex projects, estimate timelines, manage dependencies, and facilitate effective planning processes.
+
+## Available Planning Skills
+
+<CardGroup cols={2}>
+  <Card title="Project Planner" icon="diagram-project">
+    Break down complex projects into actionable tasks with timelines and milestones
+  </Card>
+  <Card title="Sprint Planner" icon="sprint">
+    Agile sprint planning with story estimation and capacity management
+  </Card>
+  <Card title="Strategy Advisor" icon="chess">
+    High-level strategic thinking and business decision frameworks
+  </Card>
+  <Card title="Decision Helper" icon="scale-balanced">
+    Structured decision-making frameworks and analysis
+  </Card>
+</CardGroup>
+
+---
+
+## Project Planner
+
+### Overview
+
+**Triggers:** Planning projects, creating task breakdowns, defining milestones, estimating timelines, managing dependencies, project planning, roadmap, work breakdown, task estimation
+
+### When to Use
+
+- Defining project scope and deliverables
+- Creating work breakdown structures (WBS)
+- Identifying task dependencies
+- Estimating timelines and effort
+- Planning milestones and phases
+- Allocating resources
+- Risk assessment and mitigation
+
+### Planning Process
+
+<Steps>
+  <Step title="Define Success">
+    - What is the end goal?
+    - What are the success criteria?
+    - What defines "done"?
+    - What are the constraints (time, budget, resources)?
+  </Step>
+  
+  <Step title="Identify Deliverables">
+    - What are the major outputs?
+    - What milestones mark progress?
+    - What dependencies exist?
+    - What can be parallelized?
+  </Step>
+  
+  <Step title="Break Down Tasks">
+    - Each task: 2-8 hours of work
+    - Clear "done" criteria
+    - Assignable to single owner
+    - Testable/verifiable completion
+  </Step>
+  
+  <Step title="Map Dependencies">
+    - What must be done first?
+    - What can happen in parallel?
+    - What are the critical path items?
+    - Where are the bottlenecks?
+  </Step>
+  
+  <Step title="Estimate and Buffer">
+    - Best case, likely case, worst case
+    - Add 20-30% buffer for unknowns
+    - Account for review/testing time
+    - Include contingency for risks
+  </Step>
+  
+  <Step title="Assign and Track">
+    - Who owns each task?
+    - What skills are required?
+    - How will progress be tracked?
+    - When are check-ins scheduled?
+  </Step>
+</Steps>
+
+### Task Sizing Guidelines
+
+<Tabs>
+  <Tab title="Too Large (>2 days)">
+    **Problems:**
+    - Hard to estimate accurately
+    - Difficult to track progress
+    - Blocks other work too long
+    
+    **Solution:**
+    Break into smaller subtasks
+  </Tab>
+  
+  <Tab title="Well-Sized (2-8 hours)">
+    **Characteristics:**
+    - Clear deliverable
+    - One person can complete
+    - Progress visible daily
+    - Easy to estimate
+    
+    **This is ideal!**
+  </Tab>
+  
+  <Tab title="Too Small (<1 hour)">
+    **Problems:**
+    - May be over-planning
+    - Too much overhead
+    - Tracking becomes burden
+    
+    **Solution:**
+    Combine related micro-tasks
+  </Tab>
+</Tabs>
+
+### Output Format
+
+```markdown
+## Project: [Name]
+
+**Goal**: [Clear end state]
+**Timeline**: [Duration]
+**Team**: [People and roles]
+**Constraints**: [Budget, tech, deadlines]
+
+---
+
+## Milestones
+
+| # | Milestone | Target Date | Owner | Success Criteria |
+|---|-----------|-------------|-------|------------------|
+| 1 | [Name] | [Date] | [Person] | [How you know it's done] |
+
+---
+
+## Phase 1: [Phase Name] (Timeline)
+
+| Task | Effort | Owner | Depends On | Done Criteria |
+|------|--------|-------|------------|---------------|
+| [Task] | [Hours] | [Person] | [Deps] | [Definition of done] |
+
+---
+
+## Dependencies Map
+
+```
+[Task A] ──> [Task B] ──> [Task D]
+              ├──> [Task C] ──┘
+```
+
+---
+
+## Risks & Mitigation
+
+| Risk | Impact | Probability | Mitigation |
+|------|--------|-------------|------------|
+| [Risk] | High/Med/Low | High/Med/Low | [Prevention] |
+```
+
+### Estimation Techniques
+
+<AccordionGroup>
+  <Accordion title="Three-Point Estimation">
+    Calculate expected time using three scenarios:
+    
+    - **Optimistic (O)**: Best case scenario
+    - **Most Likely (M)**: Expected case
+    - **Pessimistic (P)**: Worst case scenario
+    
+    **Formula:** Expected = (O + 4M + P) / 6
+    
+    **Example:**
+    - Optimistic: 4 hours
+    - Most Likely: 8 hours
+    - Pessimistic: 16 hours
+    - Expected: (4 + 32 + 16) / 6 = 8.7 hours
+  </Accordion>
+  
+  <Accordion title="T-Shirt Sizing">
+    Quick relative sizing for tasks:
+    
+    - **XS**: < 2 hours
+    - **S**: 2-4 hours
+    - **M**: 4-8 hours (1 day)
+    - **L**: 2-3 days
+    - **XL**: 1 week
+    
+    *Break down anything larger than XL*
+  </Accordion>
+  
+  <Accordion title="Planning Poker">
+    Team estimation using Fibonacci sequence:
+    
+    1, 2, 3, 5, 8, 13, 21 story points
+    
+    **Process:**
+    1. Discuss task
+    2. Everyone estimates privately
+    3. Reveal estimates simultaneously
+    4. Discuss differences
+    5. Re-estimate until consensus
+  </Accordion>
+</AccordionGroup>
+
+### Example: Website Redesign Project
+
+## Project: Company Website Redesign
+
+**Goal**: Launch redesigned website with improved UX and modern design
+**Timeline**: 6 weeks
+**Team**: 1 designer, 2 developers
+**Constraints**: Must maintain all existing functionality, no budget for new tools
+
+---
+
+## Milestones
+
+| # | Milestone | Target Date | Owner | Success Criteria |
+|---|-----------|-------------|-------|-------------------|
+| 1 | Design Approved | End Week 2 | Designer | Stakeholders sign off on mockups |
+| 2 | Development Complete | End Week 5 | Dev Team | All pages functional in staging |
+| 3 | Launch | End Week 6 | All | Site live, no critical bugs |
+
+---
+
+## Phase 1: Discovery & Design (Weeks 1-2)
+
+| Task | Effort | Owner | Depends On | Done Criteria |
+|------|--------|-------|------------|---------------|
+| Audit current site | 4h | Designer | - | List of pages, features, pain points |
+| Stakeholder interviews | 4h | Designer | - | Requirements doc with priorities |
+| Create sitemap | 2h | Designer | Audit | Updated sitemap approved |
+| Design wireframes | 8h | Designer | Sitemap | Lo-fi wireframes for all pages |
+| Design mockups | 20h | Designer | Wireframes | Hi-fi mockups with branding |
+| Design review | 8h | Designer | Mockups | Stakeholder approval |
+
+**Total Effort**: 46 hours (~6 days)
+
+---
+
+## Sprint Planner
+
+### Overview
+
+**Triggers:** Planning sprints, estimating stories, defining sprint goals, managing sprint backlogs, sprint planning, agile, scrum, story points, sprint capacity
+
+### When to Use
+
+- Planning sprint iterations
+- Estimating user stories with story points
+- Defining sprint goals
+- Managing sprint capacity
+- Prioritizing backlog items
+- Identifying sprint dependencies and risks
+
+### Sprint Planning Framework
+
+**Story Points:** Use Modified Fibonacci: 1, 2, 3, 5, 8, 13, 20
+**Team Capacity:** (Team × Days × Hours × Focus Factor 0.6-0.8)
+**Velocity:** Average points completed in past 3-5 sprints
+
+<CardGroup cols={3}>
+  <Card title="Sprint Goal" icon="bullseye">
+    Clear, achievable objective for the sprint that provides focus
+  </Card>
+  <Card title="Capacity Planning" icon="gauge">
+    Calculate realistic capacity based on team availability and focus
+  </Card>
+  <Card title="Story Estimation" icon="ruler">
+    Use relative sizing with story points for predictable planning
+  </Card>
+</CardGroup>
+
+### Sprint Planning Output
+
+```markdown
+## Sprint [Number]: [Name]
+
+**Sprint Goal**: [Clear objective]
+**Duration**: [Dates]
+**Capacity**: [Points]
+**Committed**: [Points from backlog]
+
+## Sprint Backlog
+
+| Story | Points | Owner | Dependencies |
+|-------|--------|-------|-------------|
+| [ID-Description] | [Pts] | [Name] | [None/Story IDs] |
+
+## Risks & Mitigation
+[List potential issues and how to handle]
+
+## Definition of Done
+- [ ] Code reviewed
+- [ ] Tests passing
+- [ ] Deployed to staging
+- [ ] PO approval
+```
+
+### Capacity Calculation
+
+<Steps>
+  <Step title="Calculate Available Hours">
+    Team members × Sprint days × Hours per day
+    
+    **Example:** 5 people × 10 days × 8 hours = 400 hours
+  </Step>
+  
+  <Step title="Apply Focus Factor">
+    Available hours × Focus factor (0.6-0.8)
+    
+    **Example:** 400 hours × 0.7 = 280 productive hours
+  </Step>
+  
+  <Step title="Account for Commitments">
+    Subtract meetings, time off, support duties
+    
+    **Example:** 280 - 40 (meetings) = 240 hours
+  </Step>
+  
+  <Step title="Convert to Story Points">
+    Use historical velocity or average hours per point
+    
+    **Example:** 240 hours / 3 hours per point = 80 points
+  </Step>
+</Steps>
+
+### Story Point Guidelines
+
+| Points | Complexity | Time Estimate | Example |
+|--------|-----------|---------------|----------|
+| 1 | Trivial | 1-2 hours | Fix typo, update config |
+| 2 | Simple | 2-4 hours | Add button, simple form |
+| 3 | Moderate | 4-8 hours | CRUD endpoint, basic page |
+| 5 | Complex | 1-2 days | Authentication, search feature |
+| 8 | Very Complex | 2-3 days | Payment integration, dashboard |
+| 13 | Epic | 3-5 days | User system, reporting module |
+| 20+ | Too Large | Break it down! | Needs decomposition |
+
+### Sprint Ceremonies
+
+<Tabs>
+  <Tab title="Sprint Planning">
+    **When:** Start of sprint
+    **Duration:** 2-4 hours (2-week sprint)
+    **Participants:** Scrum team, Product Owner
+    
+    **Agenda:**
+    1. Review sprint goal
+    2. Review velocity and capacity
+    3. Estimate and commit to stories
+    4. Identify dependencies and risks
+    5. Define sprint success criteria
+  </Tab>
+  
+  <Tab title="Daily Standup">
+    **When:** Every day
+    **Duration:** 15 minutes
+    **Participants:** Scrum team
+    
+    **Format:**
+    - What did I do yesterday?
+    - What will I do today?
+    - Any blockers?
+  </Tab>
+  
+  <Tab title="Sprint Review">
+    **When:** End of sprint
+    **Duration:** 1-2 hours
+    **Participants:** Scrum team, stakeholders
+    
+    **Agenda:**
+    1. Demo completed work
+    2. Review sprint goal achievement
+    3. Gather feedback
+    4. Update product backlog
+  </Tab>
+  
+  <Tab title="Sprint Retrospective">
+    **When:** After sprint review
+    **Duration:** 1 hour
+    **Participants:** Scrum team
+    
+    **Agenda:**
+    1. What went well?
+    2. What could be improved?
+    3. Action items for next sprint
+  </Tab>
+</Tabs>
+
+---
+
+## Strategy Advisor
+
+### Overview
+
+**Triggers:** Strategic planning, business decisions, competitive analysis, market strategy, business strategy, strategic thinking, high-level planning
+
+### When to Use
+
+- Developing business strategy
+- Analyzing competitive landscape
+- Making strategic decisions
+- Evaluating market opportunities
+- Planning product roadmaps
+- Assessing strategic risks
+- Defining vision and goals
+
+### Strategic Frameworks
+
+<AccordionGroup>
+  <Accordion title="SWOT Analysis">
+    **Strengths** - Internal advantages
+    **Weaknesses** - Internal disadvantages
+    **Opportunities** - External favorable factors
+    **Threats** - External unfavorable factors
+    
+    Use to assess current position and identify strategic priorities.
+  </Accordion>
+  
+  <Accordion title="Porter's Five Forces">
+    1. Competitive rivalry
+    2. Threat of new entrants
+    3. Threat of substitutes
+    4. Bargaining power of suppliers
+    5. Bargaining power of buyers
+    
+    Use to analyze industry competitiveness and profitability.
+  </Accordion>
+  
+  <Accordion title="OKRs (Objectives & Key Results)">
+    **Objectives** - Qualitative, aspirational goals
+    **Key Results** - Quantitative, measurable outcomes
+    
+    Example:
+    - Objective: Become market leader in X
+    - KR1: Achieve 40% market share
+    - KR2: Net Promoter Score > 70
+    - KR3: $10M ARR
+  </Accordion>
+  
+  <Accordion title="Blue Ocean Strategy">
+    Create uncontested market space instead of competing in existing markets.
+    
+    **Eliminate** - What factors to remove?
+    **Reduce** - What to reduce below standard?
+    **Raise** - What to raise above standard?
+    **Create** - What new factors to create?
+  </Accordion>
+</AccordionGroup>
+
+### Strategic Decision Process
+
+1. **Define the Question**: What decision needs to be made?
+2. **Gather Information**: Market data, competitive intel, internal capabilities
+3. **Generate Options**: Brainstorm multiple strategic paths
+4. **Evaluate Options**: Use frameworks, analyze risks/benefits
+5. **Make Decision**: Choose direction and commit resources
+6. **Plan Execution**: Define initiatives and milestones
+7. **Monitor & Adapt**: Track progress and adjust strategy
+
+---
+
+## Decision Helper
+
+### Overview
+
+**Triggers:** Making decisions, evaluating options, decision framework, pros and cons, decision analysis, choosing between options
+
+### When to Use
+
+- Evaluating multiple options
+- Making important decisions
+- Analyzing trade-offs
+- Structuring complex decisions
+- Reducing decision bias
+- Building consensus
+
+### Decision Frameworks
+
+<Tabs>
+  <Tab title="Pros and Cons">
+    Simple list of advantages and disadvantages
+    
+    **Best for:** Quick decisions, clear trade-offs
+    
+    | Pros | Cons |
+    |------|------|
+    | [Advantage 1] | [Disadvantage 1] |
+    | [Advantage 2] | [Disadvantage 2] |
+  </Tab>
+  
+  <Tab title="Decision Matrix">
+    Weight criteria and score options
+    
+    **Best for:** Multiple criteria and options
+    
+    | Criteria | Weight | Option A | Option B |
+    |----------|--------|----------|----------|
+    | Cost | 30% | 8 | 6 |
+    | Speed | 25% | 6 | 9 |
+    | Quality | 45% | 9 | 7 |
+    | **Total** | | **7.95** | **7.25** |
+  </Tab>
+  
+  <Tab title="Impact/Effort Matrix">
+    Prioritize based on impact and effort
+    
+    ```
+    High Impact,  High Impact,
+    Low Effort    High Effort
+    [Quick Wins]  [Major Projects]
+    
+    Low Impact,   Low Impact,
+    Low Effort    High Effort
+    [Fill-ins]    [Avoid]
+    ```
+  </Tab>
+  
+  <Tab title="Pre-mortem Analysis">
+    Imagine the decision failed - why?
+    
+    **Process:**
+    1. Assume decision led to failure
+    2. Brainstorm reasons it failed
+    3. Identify risks to mitigate
+    4. Adjust decision or plan
+  </Tab>
+</Tabs>
+
+### Decision Checklist
+
+- [ ] Have I clearly defined the decision?
+- [ ] Have I gathered relevant information?
+- [ ] Have I considered multiple options?
+- [ ] Have I evaluated consequences?
+- [ ] Am I aware of my biases?
+- [ ] Have I consulted relevant stakeholders?
+- [ ] Is this reversible or irreversible?
+- [ ] What's the cost of delay?
+
+---
+
+## Installation
+
+Add all planning skills:
+
+```bash
+npx skills add shubhamsaboo/awesome-agent-skills
+```
+
+Or install individual skills manually.
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Coding Skills" icon="code" href="/agent-skills/coding-skills">
+    Explore software development skills
+  </Card>
+  <Card title="Research Skills" icon="magnifying-glass" href="/agent-skills/research-skills">
+    Discover research and analysis skills
+  </Card>
+  <Card title="Writing Skills" icon="pen" href="/agent-skills/writing-skills">
+    Find writing and documentation skills
+  </Card>
+  <Card title="Create Custom Skills" icon="plus" href="/agent-skills/creating-skills">
+    Build your own agent skills
+  </Card>
+</CardGroup>

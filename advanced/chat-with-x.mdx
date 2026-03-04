@@ -1,0 +1,676 @@
+---
+title: 'Chat with X Tutorials'
+description: 'Build RAG applications to chat with PDFs, GitHub repos, Gmail, YouTube videos, and more'
+---
+
+## Overview
+
+Chat with X applications use Retrieval Augmented Generation (RAG) to enable conversations with various data sources. These tutorials show you how to build interactive chat interfaces for documents, codebases, emails, and multimedia content.
+
+<CardGroup cols={3}>
+  <Card title="Chat with PDF" icon="file-pdf" href="#chat-with-pdf">
+    Extract and query PDF documents
+  </Card>
+  <Card title="Chat with GitHub" icon="github" href="#chat-with-github-repos">
+    Search and analyze codebases
+  </Card>
+  <Card title="Chat with Gmail" icon="envelope" href="#chat-with-gmail">
+    Query your email inbox
+  </Card>
+  <Card title="Chat with YouTube" icon="youtube" href="#chat-with-youtube-videos">
+    Analyze video transcripts
+  </Card>
+  <Card title="Chat with Research" icon="flask" href="#chat-with-research-papers">
+    Search academic papers
+  </Card>
+  <Card title="Chat with Substack" icon="newspaper" href="#chat-with-substack">
+    Query newsletter archives
+  </Card>
+</CardGroup>
+
+## Core RAG Architecture
+
+All "Chat with X" applications follow a common pattern:
+
+<Steps>
+  <Step title="Data Ingestion">
+    Load and preprocess content from the target source (PDF, GitHub, Gmail, etc.)
+  </Step>
+  <Step title="Chunking & Embedding">
+    Split content into chunks and generate vector embeddings
+  </Step>
+  <Step title="Vector Storage">
+    Store embeddings in a vector database (Chroma, Qdrant, etc.)
+  </Step>
+  <Step title="Retrieval">
+    Find relevant chunks using semantic similarity search
+  </Step>
+  <Step title="Generation">
+    Pass retrieved context to LLM for answer generation
+  </Step>
+</Steps>
+
+## Chat with PDF
+
+<Tip>Build a RAG application to query PDF documents in just 30 lines of Python</Tip>
+
+### Implementation
+
+<CodeGroup>
+```python OpenAI + Embedchain
+import os
+import tempfile
+import streamlit as st
+from embedchain import App
+
+def embedchain_bot(db_path, api_key):
+    return App.from_config(
+        config={
+            "llm": {"provider": "openai", "config": {"api_key": api_key}},
+            "vectordb": {"provider": "chroma", "config": {"dir": db_path}},
+            "embedder": {"provider": "openai", "config": {"api_key": api_key}},
+        }
+    )
+
+st.title("Chat with PDF")
+
+openai_access_token = st.text_input("OpenAI API Key", type="password")
+
+if openai_access_token:
+    db_path = tempfile.mkdtemp()
+    app = embedchain_bot(db_path, openai_access_token)
+
+    pdf_file = st.file_uploader("Upload a PDF file", type="pdf")
+
+    if pdf_file:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as f:
+            f.write(pdf_file.getvalue())
+            app.add(f.name, data_type="pdf_file")
+        os.remove(f.name)
+        st.success(f"Added {pdf_file.name} to knowledge base!")
+
+    prompt = st.text_input("Ask a question about the PDF")
+
+    if prompt:
+        answer = app.chat(prompt)
+        st.write(answer)
+```
+
+```python Local with Llama 3.2
+import streamlit as st
+from llama_index import VectorStoreIndex, SimpleDirectoryReader
+from llama_index.llms import Ollama
+import tempfile
+import os
+
+st.title("Chat with PDF (Local Llama 3.2)")
+
+llm = Ollama(model="llama3.2:latest", base_url="http://localhost:11434")
+
+pdf_file = st.file_uploader("Upload PDF", type="pdf")
+
+if pdf_file:
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
+        tmp.write(pdf_file.getvalue())
+        tmp_path = tmp.name
+    
+    # Load and index
+    documents = SimpleDirectoryReader(input_files=[tmp_path]).load_data()
+    index = VectorStoreIndex.from_documents(documents)
+    query_engine = index.as_query_engine(llm=llm)
+    
+    os.remove(tmp_path)
+    
+    query = st.text_input("Ask about the PDF")
+    if query:
+        response = query_engine.query(query)
+        st.write(response)
+```
+</CodeGroup>
+
+### Key Features
+
+<AccordionGroup>
+  <Accordion title="PDF Processing" icon="gears">
+    - Extracts text from multi-page PDFs
+    - Handles embedded images and tables
+    - Preserves document structure
+    - Supports scanned PDFs with OCR (optional)
+  </Accordion>
+
+  <Accordion title="Chunking Strategy" icon="scissors">
+    ```python
+    # Optimal chunking for PDFs
+    chunk_size = 1000  # tokens
+    chunk_overlap = 200  # tokens for context preservation
+    
+    # Embedchain handles this automatically
+    app.add(pdf_path, data_type="pdf_file")
+    ```
+  </Accordion>
+
+  <Accordion title="Advanced Queries" icon="search">
+    **Effective prompt patterns:**
+    - "Summarize the key findings in section 3"
+    - "What methodology was used in the research?"
+    - "Compare the results from pages 5 and 10"
+    - "Extract all statistics about X"
+  </Accordion>
+</AccordionGroup>
+
+### Setup
+
+<Tabs>
+  <Tab title="Installation">
+    ```bash
+    pip install streamlit embedchain openai chromadb
+    ```
+  </Tab>
+  <Tab title="Run">
+    ```bash
+    streamlit run chat_pdf.py
+    ```
+  </Tab>
+  <Tab title="Source">
+    [View on GitHub](https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/chat_with_X_tutorials/chat_with_pdf)
+  </Tab>
+</Tabs>
+
+---
+
+## Chat with GitHub Repos
+
+<Tip>Query codebases, understand architecture, and find implementations using natural language</Tip>
+
+### Implementation
+
+```python
+from embedchain.pipeline import Pipeline as App
+from embedchain.loaders.github import GithubLoader
+import streamlit as st
+import os
+
+loader = GithubLoader(
+    config={
+        "token": "your_github_token",
+    }
+)
+
+st.title("Chat with GitHub Repository 💬")
+st.caption("Query codebases using natural language")
+
+openai_access_token = st.text_input("OpenAI API Key", type="password")
+
+if openai_access_token:
+    os.environ["OPENAI_API_KEY"] = openai_access_token
+    app = App()
+    
+    git_repo = st.text_input("Enter GitHub Repo (e.g., username/repo)")
+    
+    if git_repo:
+        # Add repo to knowledge base
+        app.add(
+            f"repo:{git_repo} type:repo",
+            data_type="github",
+            loader=loader
+        )
+        st.success(f"Added {git_repo} to knowledge base!")
+        
+        # Ask questions
+        prompt = st.text_input("Ask about the repository")
+        
+        if prompt:
+            answer = app.chat(prompt)
+            st.write(answer)
+```
+
+### Example Queries
+
+<CardGroup cols={2}>
+  <Card title="Architecture" icon="diagram-project">
+    "How is the authentication system structured?"
+  </Card>
+  <Card title="Implementation" icon="code">
+    "Show me how error handling is implemented"
+  </Card>
+  <Card title="Dependencies" icon="link">
+    "What external libraries does this project use?"
+  </Card>
+  <Card title="Best Practices" icon="star">
+    "How does the codebase handle configuration?"
+  </Card>
+</CardGroup>
+
+### GitHub Access Configuration
+
+<Steps>
+  <Step title="Generate Personal Access Token">
+    Go to GitHub Settings → Developer settings → Personal access tokens
+  </Step>
+  <Step title="Set Permissions">
+    Enable `repo` scope for accessing repository contents
+  </Step>
+  <Step title="Configure Loader">
+    ```python
+    loader = GithubLoader(config={"token": "ghp_your_token_here"})
+    ```
+  </Step>
+</Steps>
+
+<Warning>
+  Never commit GitHub tokens to version control. Use environment variables or secrets management.
+</Warning>
+
+---
+
+## Chat with Gmail
+
+<Tip>Search and analyze your email inbox using natural language queries</Tip>
+
+### Implementation
+
+```python
+import tempfile
+import streamlit as st
+from embedchain import App
+
+def embedchain_bot(db_path, api_key):
+    return App.from_config(
+        config={
+            "llm": {"provider": "openai", "config": {"api_key": api_key}},
+            "vectordb": {"provider": "chroma", "config": {"dir": db_path}},
+            "embedder": {"provider": "openai", "config": {"api_key": api_key}},
+        }
+    )
+
+st.title("Chat with your Gmail Inbox 📧")
+
+openai_access_token = st.text_input("OpenAI API Key", type="password")
+
+# Gmail filter syntax
+gmail_filter = "to: me label:inbox"
+
+if openai_access_token:
+    db_path = tempfile.mkdtemp()
+    app = embedchain_bot(db_path, openai_access_token)
+    
+    # Add Gmail data
+    app.add(gmail_filter, data_type="gmail")
+    st.success("Added emails from Inbox to knowledge base!")
+
+    prompt = st.text_input("Ask about your emails")
+
+    if prompt:
+        answer = app.query(prompt)
+        st.write(answer)
+```
+
+### Gmail API Setup
+
+<Accordion title="Complete OAuth Configuration">
+  <Steps>
+    <Step title="Create Google Cloud Project">
+      Go to [Google Cloud Console](https://console.cloud.google.com/) and create a new project
+    </Step>
+    
+    <Step title="Enable Gmail API">
+      Navigate to APIs & Services → Library → Search for "Gmail API" → Enable
+    </Step>
+    
+    <Step title="Configure OAuth Consent">
+      - Go to APIs & Services → OAuth consent screen
+      - Select "External" user type
+      - Fill in app information
+      - Add test users (your email)
+      - Publish the consent screen
+    </Step>
+    
+    <Step title="Create OAuth Credentials">
+      - APIs & Services → Credentials → Create Credentials
+      - Select "OAuth client ID"
+      - Application type: "Desktop app"
+      - Download credentials as `credentials.json`
+    </Step>
+    
+    <Step title="Place Credentials">
+      Save `credentials.json` in your project directory
+    </Step>
+  </Steps>
+</Accordion>
+
+### Gmail Query Filters
+
+<ParamField path="gmail_filter" type="string">
+  Gmail search operators for filtering emails
+  
+  <Expandable title="Common Filters">
+    ```python
+    # All inbox emails
+    "label:inbox"
+    
+    # Unread emails
+    "is:unread"
+    
+    # From specific sender
+    "from:sender@example.com"
+    
+    # Date range
+    "after:2024/01/01 before:2024/12/31"
+    
+    # Has attachment
+    "has:attachment"
+    
+    # Combine filters
+    "from:boss@company.com is:unread has:attachment"
+    ```
+  </Expandable>
+</ParamField>
+
+### Example Queries
+
+<CodeGroup>
+```text Business Queries
+"Summarize emails from my manager this week"
+"Find all emails about the Q4 project"
+"What action items were mentioned in recent emails?"
+```
+
+```text Personal Queries
+"Show me flight confirmation emails"
+"Find emails with receipts from Amazon"
+"What newsletters did I receive this month?"
+```
+</CodeGroup>
+
+---
+
+## Chat with YouTube Videos
+
+<Tip>Analyze video content through transcripts without watching the entire video</Tip>
+
+### Implementation
+
+```python
+import streamlit as st
+from embedchain import App
+import tempfile
+
+st.title("Chat with YouTube Videos 📽️")
+
+openai_key = st.text_input("OpenAI API Key", type="password")
+
+if openai_key:
+    db_path = tempfile.mkdtemp()
+    app = App.from_config(
+        config={
+            "llm": {"provider": "openai", "config": {"api_key": openai_key}},
+            "vectordb": {"provider": "chroma", "config": {"dir": db_path}},
+            "embedder": {"provider": "openai", "config": {"api_key": openai_key}},
+        }
+    )
+    
+    youtube_url = st.text_input("YouTube Video URL")
+    
+    if youtube_url:
+        # Add video transcript
+        app.add(youtube_url, data_type="youtube_video")
+        st.success("Video transcript added!")
+        
+        query = st.text_input("Ask about the video")
+        
+        if query:
+            answer = app.chat(query)
+            st.write(answer)
+            
+            # Display video
+            st.video(youtube_url)
+```
+
+### Transcript Processing
+
+<Accordion title="How It Works">
+  1. **Extract Transcript**: Uses `youtube-transcript-api` to fetch captions
+  2. **Chunk Text**: Splits transcript into semantic chunks with timestamps
+  3. **Generate Embeddings**: Creates vector representations
+  4. **Query**: Retrieves relevant segments based on question
+  5. **Context**: Includes timestamp information in responses
+</Accordion>
+
+### Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Tutorial Videos" icon="chalkboard-user">
+    "What tools were used in this tutorial?"
+  </Card>
+  <Card title="Lectures" icon="book-open">
+    "Summarize the key concepts explained"
+  </Card>
+  <Card title="Podcasts" icon="microphone">
+    "What did they say about AI regulation?"
+  </Card>
+  <Card title="Product Reviews" icon="star">
+    "List all pros and cons mentioned"
+  </Card>
+</CardGroup>
+
+---
+
+## Chat with Research Papers
+
+<Tip>Search and query arXiv papers using conversational AI</Tip>
+
+### Implementation
+
+```python
+import streamlit as st
+from embedchain import App
+import os
+
+st.title("Chat with Arxiv Research Papers 🔎")
+
+openai_key = st.text_input("OpenAI API Key", type="password")
+
+if openai_key:
+    os.environ["OPENAI_API_KEY"] = openai_key
+    app = App()
+    
+    # arXiv search topic
+    topic = st.text_input("Research topic (e.g., 'transformers in NLP')")
+    
+    if topic:
+        # Search and add papers
+        app.add(f"arxiv:{topic}", data_type="arxiv")
+        st.success(f"Added papers about '{topic}'")
+        
+        query = st.text_input("Ask about the research")
+        
+        if query:
+            answer = app.chat(query)
+            st.write(answer)
+```
+
+### Research Queries
+
+<AccordionGroup>
+  <Accordion title="Methodology Questions" icon="flask">
+    - "What datasets were used in these papers?"
+    - "How do the approaches differ?"
+    - "What evaluation metrics are common?"
+  </Accordion>
+
+  <Accordion title="Comparative Analysis" icon="scale-balanced">
+    - "Compare the results across different papers"
+    - "Which method achieved the best performance?"
+    - "What are the main limitations discussed?"
+  </Accordion>
+
+  <Accordion title="Implementation Details" icon="code">
+    - "What architectures are used?"
+    - "List the hyperparameters mentioned"
+    - "What preprocessing steps are described?"
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Chat with Substack
+
+<Tip>Query newsletter archives and extract insights from blog posts</Tip>
+
+### Implementation
+
+```python
+import streamlit as st
+from embedchain import App
+import os
+
+st.title("Chat with Substack Newsletter 📝")
+
+openai_key = st.text_input("OpenAI API Key", type="password")
+
+if openai_key:
+    os.environ["OPENAI_API_KEY"] = openai_key
+    app = App()
+    
+    substack_url = st.text_input("Substack Blog URL")
+    
+    if substack_url:
+        # Add Substack content
+        app.add(substack_url, data_type="web_page")
+        st.success("Substack newsletter added!")
+        
+        query = st.text_input("Ask about the content")
+        
+        if query:
+            answer = app.chat(query)
+            st.write(answer)
+```
+
+---
+
+## Common Patterns & Best Practices
+
+### Embedchain Configuration
+
+<ParamField path="config" type="object">
+  Complete configuration object for Embedchain
+  
+  <Expandable title="Configuration Options">
+    <ParamField path="llm.provider" type="string" required>
+      LLM provider: `openai`, `anthropic`, `cohere`, `ollama`
+    </ParamField>
+    
+    <ParamField path="llm.config.model" type="string">
+      Model name (e.g., `gpt-4o`, `claude-3-5-sonnet-20241022`)
+    </ParamField>
+    
+    <ParamField path="vectordb.provider" type="string" required>
+      Vector database: `chroma`, `qdrant`, `pinecone`, `weaviate`
+    </ParamField>
+    
+    <ParamField path="embedder.provider" type="string" required>
+      Embedding provider: `openai`, `cohere`, `huggingface`
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+### Optimization Tips
+
+<AccordionGroup>
+  <Accordion title="Chunking Strategy" icon="scissors">
+    ```python
+    # Optimal chunk sizes by content type
+    chunk_configs = {
+        "pdf": {"chunk_size": 1000, "overlap": 200},
+        "code": {"chunk_size": 1500, "overlap": 300},
+        "email": {"chunk_size": 800, "overlap": 100},
+        "transcript": {"chunk_size": 1200, "overlap": 200},
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="Cost Management" icon="dollar-sign">
+    - Use GPT-4o-mini for embeddings (cheaper)
+    - Cache vector databases between sessions
+    - Limit retrieval to top 3-5 chunks
+    - Implement query optimization
+  </Accordion>
+
+  <Accordion title="Response Quality" icon="star">
+    ```python
+    # Improve responses with better prompts
+    system_prompt = """
+    You are a helpful assistant analyzing {data_type}.
+    Always cite specific sections when answering.
+    If information is not in the context, say so clearly.
+    """
+    
+    app = App.from_config({
+        "llm": {
+            "provider": "openai",
+            "config": {
+                "system_prompt": system_prompt,
+                "temperature": 0.3  # Lower for factual accuracy
+            }
+        }
+    })
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Multi-Source Chat
+
+<Accordion title="Combine Multiple Data Sources">
+```python
+import streamlit as st
+from embedchain import App
+import tempfile
+
+st.title("Multi-Source Chat")
+
+api_key = st.text_input("OpenAI API Key", type="password")
+
+if api_key:
+    db_path = tempfile.mkdtemp()
+    app = App.from_config({
+        "llm": {"provider": "openai", "config": {"api_key": api_key}},
+        "vectordb": {"provider": "chroma", "config": {"dir": db_path}},
+        "embedder": {"provider": "openai", "config": {"api_key": api_key}},
+    })
+    
+    # Add multiple sources
+    pdf = st.file_uploader("Upload PDF", type="pdf")
+    youtube = st.text_input("YouTube URL")
+    github = st.text_input("GitHub Repo")
+    
+    if pdf:
+        app.add(pdf, data_type="pdf_file")
+    if youtube:
+        app.add(youtube, data_type="youtube_video")
+    if github:
+        app.add(f"repo:{github} type:repo", data_type="github")
+    
+    # Query across all sources
+    query = st.text_input("Ask anything")
+    if query:
+        answer = app.chat(query)
+        st.write(answer)
+```
+</Accordion>
+
+## Resources
+
+<CardGroup cols={2}>
+  <Card title="Embedchain Docs" icon="book" href="https://docs.embedchain.ai/">
+    Complete framework documentation
+  </Card>
+  <Card title="Example Repository" icon="github" href="https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/chat_with_X_tutorials">
+    All Chat with X implementations
+  </Card>
+  <Card title="RAG Tutorial" icon="graduation-cap" href="https://www.theunwindai.com/p/build-an-llm-app-with-rag-using-llama-3-2-running-locally">
+    Step-by-step RAG guide
+  </Card>
+  <Card title="Gmail Tutorial" icon="video" href="https://www.theunwindai.com/p/build-rag-app-to-chat-with-your-gmail-inbox">
+    Complete Gmail RAG tutorial
+  </Card>
+</CardGroup>

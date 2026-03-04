@@ -1,0 +1,480 @@
+---
+title: 'Memory Management in LLM Apps'
+description: 'Build intelligent LLM applications with persistent memory using Mem0 and vector stores'
+---
+
+## Overview
+
+Memory management enables LLM applications to maintain context across conversations, remember user preferences, and provide personalized experiences. This guide covers implementation patterns using Mem0 with Qdrant vector store.
+
+## Core Concepts
+
+<CardGroup cols={2}>
+  <Card title="Persistent Memory" icon="database">
+    Store and retrieve conversation history across sessions using vector databases
+  </Card>
+  <Card title="User-Specific Context" icon="user">
+    Maintain separate memory spaces for each user with personalized preferences
+  </Card>
+  <Card title="Memory Retrieval" icon="search">
+    Semantic search through past interactions to provide relevant context
+  </Card>
+  <Card title="Multi-LLM Support" icon="brain">
+    Share memory across different language models (GPT-4, Claude, Llama)
+  </Card>
+</CardGroup>
+
+## Memory Architecture
+
+### Configuration with Mem0 and Qdrant
+
+<CodeGroup>
+```python OpenAI Configuration
+import os
+from mem0 import Memory
+from openai import OpenAI
+
+# Initialize Mem0 with Qdrant
+config = {
+    "vector_store": {
+        "provider": "qdrant",
+        "config": {
+            "model": "gpt-4o-mini",
+            "host": "localhost",
+            "port": 6333,
+        }
+    },
+}
+
+memory = Memory.from_config(config)
+openai_client = OpenAI(api_key=os.environ['OPENAI_API_KEY'])
+```
+
+```python Local (Ollama) Configuration
+from mem0 import Memory
+from litellm import completion
+
+config = {
+    "vector_store": {
+        "provider": "qdrant",
+        "config": {
+            "collection_name": "local-chatgpt-memory",
+            "host": "localhost",
+            "port": 6333,
+            "embedding_model_dims": 768,
+        },
+    },
+    "llm": {
+        "provider": "ollama",
+        "config": {
+            "model": "llama3.1:latest",
+            "temperature": 0,
+            "max_tokens": 8000,
+            "ollama_base_url": "http://localhost:11434",
+        },
+    },
+    "embedder": {
+        "provider": "ollama",
+        "config": {
+            "model": "nomic-embed-text:latest",
+            "ollama_base_url": "http://localhost:11434",
+        },
+    },
+    "version": "v1.1"
+}
+
+memory = Memory.from_config(config)
+```
+</CodeGroup>
+
+### Setup Qdrant Vector Database
+
+<Steps>
+  <Step title="Pull Qdrant Docker Image">
+    ```bash
+    docker pull qdrant/qdrant
+    ```
+  </Step>
+  
+  <Step title="Run Qdrant Container">
+    ```bash
+    docker run -p 6333:6333 -p 6334:6334 \
+        -v $(pwd)/qdrant_storage:/qdrant/storage:z \
+        qdrant/qdrant
+    ```
+  </Step>
+  
+  <Step title="Verify Connection">
+    Access the Qdrant dashboard at `http://localhost:6333/dashboard`
+  </Step>
+</Steps>
+
+## Implementation Patterns
+
+### Pattern 1: AI Research Agent with Memory
+
+<Accordion title="View Full Implementation">
+```python
+import streamlit as st
+import os
+from mem0 import Memory
+from multion.client import MultiOn
+from openai import OpenAI
+
+st.title("AI Research Agent with Memory 📚")
+
+# Initialize components
+config = {
+    "vector_store": {
+        "provider": "qdrant",
+        "config": {
+            "model": "gpt-4o-mini",
+            "host": "localhost",
+            "port": 6333,
+        }
+    },
+}
+
+memory = Memory.from_config(config)
+multion = MultiOn(api_key=api_keys['multion'])
+openai_client = OpenAI(api_key=api_keys['openai'])
+
+user_id = st.sidebar.text_input("Enter your Username")
+search_query = st.text_input("Research paper search query")
+
+if st.button('Search for Papers'):
+    with st.spinner('Searching and Processing...'):
+        # Retrieve relevant memories for context
+        relevant_memories = memory.search(search_query, user_id=user_id, limit=3)
+        
+        # Build context-aware prompt
+        prompt = f"Search for arXiv papers: {search_query}\n"
+        prompt += f"User background: {' '.join(mem['text'] for mem in relevant_memories)}"
+        
+        # Execute search with context
+        result = multion.browse(cmd=prompt, url="https://arxiv.org/")
+        st.markdown(result)
+```
+
+**Key Features:**
+- Maintains user research interests across sessions
+- Contextualizes searches based on past queries
+- Personalizes results using memory retrieval
+</Accordion>
+
+### Pattern 2: Local ChatGPT with Personal Memory
+
+<Accordion title="View Full Implementation">
+```python
+import streamlit as st
+from mem0 import Memory
+from litellm import completion
+
+# User-specific session management
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+if "previous_user_id" not in st.session_state:
+    st.session_state.previous_user_id = None
+
+user_id = st.text_input("Enter your Username")
+
+# Clear history on user switch
+if user_id != st.session_state.previous_user_id:
+    st.session_state.messages = []
+    st.session_state.previous_user_id = user_id
+
+if prompt := st.chat_input("What is your message?"):
+    # Add to chat history
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    
+    # Store in memory
+    m.add(prompt, user_id=user_id)
+    
+    # Retrieve context from memory
+    memories = m.get_all(user_id=user_id)
+    context = ""
+    if memories and "results" in memories:
+        for memory in memories["results"]:
+            if "memory" in memory:
+                context += f"- {memory['memory']}\n"
+    
+    # Generate response with context
+    response = completion(
+        model="ollama/llama3.1:latest",
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant with access to past conversations."},
+            {"role": "user", "content": f"Context: {context}\nCurrent message: {prompt}"}
+        ],
+        api_base="http://localhost:11434",
+        stream=True
+    )
+    
+    # Store response in memory
+    m.add(f"Assistant: {full_response}", user_id=user_id)
+```
+
+**Key Features:**
+- Fully local implementation (no external APIs)
+- Per-user memory isolation
+- Streaming responses with context
+</Accordion>
+
+### Pattern 3: Multi-LLM with Shared Memory
+
+<Expandable title="Multi-Model Memory Sharing">
+Enable multiple LLMs to access the same memory layer:
+
+```python
+from mem0 import Memory
+
+# Shared memory configuration
+memory = Memory.from_config(config)
+
+def chat_with_gpt4(prompt, user_id):
+    # Retrieve memories
+    context = memory.search(prompt, user_id=user_id, limit=5)
+    
+    # Add to GPT-4
+    response = openai.chat.completions.create(
+        model="gpt-4o",
+        messages=[{"role": "user", "content": prompt}]
+    )
+    
+    # Store response
+    memory.add(response.choices[0].message.content, user_id=user_id)
+    return response
+
+def chat_with_claude(prompt, user_id):
+    # Same memories available to Claude
+    context = memory.search(prompt, user_id=user_id, limit=5)
+    
+    response = anthropic.messages.create(
+        model="claude-3-5-sonnet-20241022",
+        messages=[{"role": "user", "content": prompt}]
+    )
+    
+    memory.add(response.content[0].text, user_id=user_id)
+    return response
+```
+
+**Benefits:**
+- Seamless model switching without context loss
+- Unified conversation history
+- Cross-model personalization
+</Expandable>
+
+## Memory Operations
+
+### Adding Memories
+
+<ParamField path="memory.add()" type="function">
+  <Expandable title="Parameters">
+    <ParamField path="text" type="string" required>
+      Content to store in memory
+    </ParamField>
+    <ParamField path="user_id" type="string" required>
+      Unique identifier for user's memory space
+    </ParamField>
+    <ParamField path="metadata" type="dict" default="{}">
+      Additional context (timestamps, tags, etc.)
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+```python
+# Add user message to memory
+memory.add(
+    "I'm interested in machine learning papers on transformers",
+    user_id="user123",
+    metadata={"timestamp": datetime.now(), "category": "preference"}
+)
+```
+
+### Retrieving Memories
+
+<ParamField path="memory.search()" type="function">
+  <Expandable title="Parameters">
+    <ParamField path="query" type="string" required>
+      Search query for semantic matching
+    </ParamField>
+    <ParamField path="user_id" type="string" required>
+      User's memory space to search
+    </ParamField>
+    <ParamField path="limit" type="integer" default="5">
+      Maximum number of results
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+```python
+# Semantic search through memories
+relevant_memories = memory.search(
+    "papers about attention mechanisms",
+    user_id="user123",
+    limit=3
+)
+
+for mem in relevant_memories:
+    print(f"- {mem['text']} (relevance: {mem['score']})")
+```
+
+### Viewing All Memories
+
+```python
+# Get complete memory history
+all_memories = memory.get_all(user_id="user123")
+
+if "results" in all_memories:
+    for memory in all_memories["results"]:
+        print(f"- {memory['memory']}")
+```
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Memory Granularity" icon="layer-group">
+    **Store atomic pieces of information:**
+    - ✅ "User prefers Python over JavaScript"
+    - ✅ "Interested in computer vision research"
+    - ❌ "User had a long conversation about many topics"
+    
+    Smaller, focused memories enable better retrieval and context building.
+  </Accordion>
+
+  <Accordion title="Context Window Management" icon="window-maximize">
+    **Optimize context usage:**
+    ```python
+    # Retrieve only relevant memories
+    memories = memory.search(current_query, user_id=user_id, limit=3)
+    
+    # Build concise context
+    context = "\n".join([m['text'] for m in memories[:3]])
+    
+    # Don't exceed token limits
+    if len(context) > 1000:  # tokens
+        context = context[:1000]
+    ```
+  </Accordion>
+
+  <Accordion title="Privacy & Data Management" icon="shield">
+    **User data controls:**
+    ```python
+    # Delete user memories
+    memory.delete_all(user_id="user123")
+    
+    # Export user data
+    user_data = memory.get_all(user_id="user123")
+    with open(f"{user_id}_memories.json", "w") as f:
+        json.dump(user_data, f)
+    ```
+  </Accordion>
+
+  <Accordion title="Performance Optimization" icon="gauge-high">
+    **Optimize vector operations:**
+    - Use appropriate embedding dimensions (768 for nomic-embed-text)
+    - Implement pagination for large memory sets
+    - Cache frequently accessed memories
+    - Use batch operations when possible
+    
+    ```python
+    # Batch add memories
+    memories_to_add = [
+        {"text": "Memory 1", "user_id": "user123"},
+        {"text": "Memory 2", "user_id": "user123"},
+    ]
+    
+    for mem in memories_to_add:
+        memory.add(mem["text"], user_id=mem["user_id"])
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Research Assistants" icon="microscope" href="https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/llm_apps_with_memory_tutorials/ai_arxiv_agent_memory">
+    Remember research interests, past queries, and preferred topics
+  </Card>
+  <Card title="Travel Agents" icon="plane" href="https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/llm_apps_with_memory_tutorials/ai_travel_agent_memory">
+    Maintain travel preferences, budget constraints, and destinations
+  </Card>
+  <Card title="Personalized Chatbots" icon="comments" href="https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/llm_apps_with_memory_tutorials/llm_app_personalized_memory">
+    Build rapport through conversation history and user preferences
+  </Card>
+  <Card title="Learning Assistants" icon="graduation-cap">
+    Track learning progress, knowledge gaps, and study patterns
+  </Card>
+</CardGroup>
+
+## Advanced Patterns
+
+### Stateful Multi-Turn Conversations
+
+```python
+class StatefulAgent:
+    def __init__(self, user_id, memory_config):
+        self.user_id = user_id
+        self.memory = Memory.from_config(memory_config)
+        self.conversation_history = []
+    
+    def chat(self, message):
+        # Add user message
+        self.memory.add(message, user_id=self.user_id)
+        
+        # Retrieve relevant context
+        context = self.memory.search(message, user_id=self.user_id, limit=5)
+        
+        # Generate response with full context
+        response = llm.generate(
+            prompt=message,
+            context=context,
+            history=self.conversation_history
+        )
+        
+        # Store in memory and history
+        self.memory.add(f"Assistant: {response}", user_id=self.user_id)
+        self.conversation_history.append(
+            {"user": message, "assistant": response}
+        )
+        
+        return response
+```
+
+### Memory-Enhanced RAG
+
+```python
+def rag_with_memory(query, documents, user_id):
+    # Retrieve user preferences and past interactions
+    user_context = memory.search(query, user_id=user_id, limit=3)
+    
+    # Standard RAG retrieval
+    relevant_docs = vector_store.similarity_search(query, k=5)
+    
+    # Combine with memory context
+    enhanced_prompt = f"""
+    User context: {user_context}
+    Relevant documents: {relevant_docs}
+    Query: {query}
+    
+    Provide a personalized response based on user preferences and documents.
+    """
+    
+    return llm.generate(enhanced_prompt)
+```
+
+## Resources
+
+<CardGroup cols={2}>
+  <Card title="Mem0 Documentation" icon="book" href="https://docs.mem0.ai/">
+    Official Mem0 memory framework docs
+  </Card>
+  <Card title="Qdrant Guides" icon="database" href="https://qdrant.tech/documentation/">
+    Vector database setup and optimization
+  </Card>
+  <Card title="Example Apps" icon="github" href="https://github.com/Shubhamsaboo/awesome-llm-apps/tree/main/llm_apps_with_memory_tutorials">
+    Complete implementations with memory
+  </Card>
+  <Card title="Tutorial" icon="video" href="https://www.theunwindai.com/p/build-ai-research-agent-with-memory-to-search-academic-papers">
+    Step-by-step memory tutorial
+  </Card>
+</CardGroup>

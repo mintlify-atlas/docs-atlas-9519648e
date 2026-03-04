@@ -1,122 +1,152 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Awesome LLM Apps",
+  "theme": "palm",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#8557a0",
+    "light": "#bfb8d2",
+    "dark": "#b5549d"
   },
-  "favicon": "/favicon.svg",
+
+  "logo": {
+    "light": "https://media.brand.dev/b7c807e1-1be4-441a-95c3-6b0055825409.png",
+    "dark": "https://media.brand.dev/b7c807e1-1be4-441a-95c3-6b0055825409.png"
+  },
+  "navbar": {
+    "primary": {
+      "type": "github",
+      "href": "https://github.com/Shubhamsaboo/awesome-llm-apps"
+    }
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/Shubhamsaboo/awesome-llm-apps",
+      "x": "https://twitter.com/Saboo_Shubham_",
+      "linkedin": "https://www.linkedin.com/in/shubhamsaboo/"
+    }
+  },
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Documentation",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Get Started",
             "pages": [
-              "index",
+              "introduction",
               "quickstart",
-              "development"
+              "installation"
             ]
           },
           {
-            "group": "Customization",
+            "group": "AI Agents",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+              "ai-agents/overview",
+              "ai-agents/starter-agents",
+              "ai-agents/advanced-agents",
+              "ai-agents/multi-agent-teams",
+              "ai-agents/voice-agents",
+              "ai-agents/mcp-agents",
+              "ai-agents/game-playing-agents"
             ]
           },
           {
-            "group": "Writing content",
+            "group": "RAG Applications",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
+              "rag/overview",
+              "rag/basic-rag",
+              "rag/agentic-rag",
+              "rag/advanced-techniques",
+              "rag/local-rag"
             ]
           },
           {
-            "group": "AI tools",
+            "group": "Advanced Concepts",
             "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "advanced/memory-management",
+              "advanced/chat-with-x",
+              "advanced/llm-optimization",
+              "advanced/fine-tuning"
+            ]
+          },
+          {
+            "group": "Agent Skills",
+            "pages": [
+              "agent-skills/overview",
+              "agent-skills/coding-skills",
+              "agent-skills/research-skills",
+              "agent-skills/writing-skills",
+              "agent-skills/planning-skills",
+              "agent-skills/creating-skills"
+            ]
+          },
+          {
+            "group": "Framework Guides",
+            "pages": [
+              "frameworks/overview",
+              "frameworks/google-adk",
+              "frameworks/openai-sdk"
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "Examples",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Starter Examples",
             "pages": [
-              "api-reference/introduction"
+              "examples/ai-travel-agent",
+              "examples/ai-research-agent",
+              "examples/ai-data-analysis",
+              "examples/ai-music-generator",
+              "examples/web-scraping-agent"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Advanced Examples",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "examples/deep-research-agent",
+              "examples/finance-agent-team",
+              "examples/legal-agent-team",
+              "examples/game-design-team",
+              "examples/mental-wellbeing-agent"
+            ]
+          },
+          {
+            "group": "RAG Examples",
+            "pages": [
+              "examples/basic-rag-chain",
+              "examples/corrective-rag",
+              "examples/autonomous-rag",
+              "examples/vision-rag",
+              "examples/knowledge-graph-rag"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Common Patterns",
+            "pages": [
+              "api/agent-patterns",
+              "api/rag-patterns",
+              "api/tool-integration",
+              "api/memory-patterns"
+            ]
+          },
+          {
+            "group": "Configuration",
+            "pages": [
+              "api/environment-setup",
+              "api/api-keys",
+              "api/model-configuration"
             ]
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
-  },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
-    }
-  },
-  "contextual": {
-    "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
-  },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
+    ]
   }
 }

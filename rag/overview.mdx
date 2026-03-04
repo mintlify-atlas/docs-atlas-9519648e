@@ -1,0 +1,299 @@
+---
+title: 'RAG Applications Overview'
+description: 'Understanding Retrieval-Augmented Generation architecture and implementations'
+icon: 'book-open'
+---
+
+## What is RAG?
+
+Retrieval-Augmented Generation (RAG) is a technique that enhances Large Language Models (LLMs) by providing them with relevant context from external knowledge sources. This approach combines the power of information retrieval with generative AI to produce accurate, contextual responses.
+
+## Core RAG Architecture
+
+```mermaid
+graph LR
+    A[User Query] --> B[Embedding Model]
+    B --> C[Vector Search]
+    D[Document Store] --> E[Vector Database]
+    E --> C
+    C --> F[Retrieved Context]
+    F --> G[LLM]
+    A --> G
+    G --> H[Generated Answer]
+```
+
+## Key Components
+
+<CardGroup cols={2}>
+  <Card title="Document Processing" icon="file-lines">
+    Load and chunk documents into manageable pieces for embedding and retrieval
+  </Card>
+  <Card title="Embedding Models" icon="brain">
+    Convert text into vector representations for semantic similarity search
+  </Card>
+  <Card title="Vector Databases" icon="database">
+    Store and efficiently retrieve embedded document chunks
+  </Card>
+  <Card title="Language Models" icon="message-bot">
+    Generate contextual responses using retrieved information
+  </Card>
+</CardGroup>
+
+## RAG Pipeline Stages
+
+### 1. Indexing Phase
+
+```python
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_openai import OpenAIEmbeddings
+from langchain_chroma import Chroma
+
+# Load documents
+loader = PyPDFLoader("research_paper.pdf")
+documents = loader.load()
+
+# Split into chunks
+text_splitter = RecursiveCharacterTextSplitter(
+    chunk_size=500,
+    chunk_overlap=100
+)
+chunks = text_splitter.split_documents(documents)
+
+# Create embeddings and store in vector database
+embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
+vectorstore = Chroma.from_documents(
+    documents=chunks,
+    embedding=embeddings,
+    collection_name="my_knowledge_base"
+)
+```
+
+### 2. Retrieval Phase
+
+```python
+# Create retriever
+retriever = vectorstore.as_retriever(
+    search_type="similarity",
+    search_kwargs={'k': 5}
+)
+
+# Retrieve relevant documents
+query = "What are the key findings?"
+relevant_docs = retriever.get_relevant_documents(query)
+```
+
+### 3. Generation Phase
+
+```python
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
+
+# Define prompt template
+prompt = ChatPromptTemplate.from_template("""
+Answer the question based only on the following context:
+{context}
+
+Question: {question}
+
+Provide a detailed answer based on the context above.
+""")
+
+# Create LLM
+llm = ChatOpenAI(model="gpt-4", temperature=0)
+
+# Build RAG chain
+def format_docs(docs):
+    return "\n\n".join(doc.page_content for doc in docs)
+
+rag_chain = (
+    {"context": retriever | format_docs, "question": RunnablePassthrough()}
+    | prompt
+    | llm
+    | StrOutputParser()
+)
+
+# Query the chain
+response = rag_chain.invoke(query)
+```
+
+## Popular Vector Databases
+
+<Tabs>
+  <Tab title="Chroma">
+    ```python
+    from langchain_chroma import Chroma
+    from langchain_openai import OpenAIEmbeddings
+
+    vectorstore = Chroma(
+        collection_name="documents",
+        embedding_function=OpenAIEmbeddings(),
+        persist_directory="./chroma_db"
+    )
+    ```
+  </Tab>
+  <Tab title="Qdrant">
+    ```python
+    from langchain_community.vectorstores import Qdrant
+    from qdrant_client import QdrantClient
+
+    client = QdrantClient(
+        url="http://localhost:6333",
+        api_key="your-api-key"
+    )
+
+    vectorstore = Qdrant(
+        client=client,
+        collection_name="documents",
+        embeddings=OpenAIEmbeddings()
+    )
+    ```
+  </Tab>
+  <Tab title="LanceDB">
+    ```python
+    from agno.vectordb.lancedb import LanceDb, SearchType
+    from agno.knowledge.embedder.openai import OpenAIEmbedder
+
+    vector_db = LanceDb(
+        uri="tmp/lancedb",
+        table_name="knowledge_base",
+        search_type=SearchType.vector,
+        embedder=OpenAIEmbedder(api_key=api_key)
+    )
+    ```
+  </Tab>
+  <Tab title="PgVector">
+    ```python
+    from langchain_postgres import PGVector
+
+    connection_string = "postgresql://user:pass@localhost:5432/db"
+    
+    vectorstore = PGVector(
+        collection_name="documents",
+        connection_string=connection_string,
+        embedding_function=OpenAIEmbeddings()
+    )
+    ```
+  </Tab>
+</Tabs>
+
+## Common Embedding Models
+
+<AccordionGroup>
+  <Accordion title="OpenAI Embeddings">
+    ```python
+    from langchain_openai import OpenAIEmbeddings
+
+    embeddings = OpenAIEmbeddings(
+        model="text-embedding-3-large",  # or text-embedding-3-small
+        api_key="your-api-key"
+    )
+    ```
+    - **Models**: `text-embedding-3-large`, `text-embedding-3-small`
+    - **Dimensions**: 1536 (large), 512 (small)
+    - **Best for**: High-quality semantic search
+  </Accordion>
+  
+  <Accordion title="Google Gemini Embeddings">
+    ```python
+    from langchain_google_genai import GoogleGenerativeAIEmbeddings
+
+    embeddings = GoogleGenerativeAIEmbeddings(
+        model="models/embedding-001",
+        google_api_key="your-api-key"
+    )
+    ```
+    - **Model**: `embedding-001`
+    - **Dimensions**: 768
+    - **Best for**: Multilingual support
+  </Accordion>
+  
+  <Accordion title="Cohere Embeddings">
+    ```python
+    from langchain_cohere import CohereEmbeddings
+
+    embeddings = CohereEmbeddings(
+        model="embed-english-v3.0",
+        cohere_api_key="your-api-key"
+    )
+    ```
+    - **Model**: `embed-english-v3.0`
+    - **Best for**: English text with high accuracy
+  </Accordion>
+  
+  <Accordion title="Local Embeddings (Ollama)">
+    ```python
+    from agno.knowledge.embedder.ollama import OllamaEmbedder
+
+    embeddings = OllamaEmbedder(
+        model="nomic-embed-text",  # or openhermes
+        host="http://localhost:11434"
+    )
+    ```
+    - **Models**: `nomic-embed-text`, `openhermes`
+    - **Best for**: Privacy-focused local deployments
+  </Accordion>
+</AccordionGroup>
+
+## RAG Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Question Answering" icon="circle-question">
+    Build intelligent Q&A systems over custom documents and knowledge bases
+  </Card>
+  <Card title="Document Search" icon="magnifying-glass">
+    Semantic search across large document collections with context
+  </Card>
+  <Card title="Customer Support" icon="headset">
+    AI assistants that answer questions using company documentation
+  </Card>
+  <Card title="Research Assistant" icon="flask">
+    Query and synthesize information from research papers and articles
+  </Card>
+  <Card title="Code Documentation" icon="code">
+    Answer questions about codebases using documentation
+  </Card>
+  <Card title="Legal Analysis" icon="scale-balanced">
+    Search and analyze legal documents with precise citations
+  </Card>
+</CardGroup>
+
+## RAG Variants Covered
+
+<Steps>
+  <Step title="Basic RAG">
+    Simple retrieval and generation pipeline with vector search
+  </Step>
+  <Step title="Agentic RAG">
+    RAG with reasoning capabilities and tool usage
+  </Step>
+  <Step title="Advanced Techniques">
+    Corrective RAG, hybrid search, knowledge graphs, and multi-hop reasoning
+  </Step>
+  <Step title="Local RAG">
+    Privacy-focused implementations using Ollama and local models
+  </Step>
+</Steps>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Basic RAG" icon="play" href="/rag/basic-rag">
+    Start with fundamental RAG patterns and implementations
+  </Card>
+  <Card title="Agentic RAG" icon="robot" href="/rag/agentic-rag">
+    Learn about RAG with reasoning and autonomous capabilities
+  </Card>
+  <Card title="Advanced Techniques" icon="wand-magic-sparkles" href="/rag/advanced-techniques">
+    Explore CRAG, hybrid search, and knowledge graphs
+  </Card>
+  <Card title="Local RAG" icon="house" href="/rag/local-rag">
+    Build privacy-focused RAG with Ollama
+  </Card>
+</CardGroup>
+
+<Note>
+  **Best Practice**: Always evaluate your RAG system's retrieval quality before focusing on generation. Poor retrieval cannot be fixed by better prompts.
+</Note>

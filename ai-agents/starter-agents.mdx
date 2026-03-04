@@ -1,0 +1,500 @@
+---
+title: 'Starter AI Agents'
+description: 'Single-agent applications for learning agent fundamentals'
+icon: 'rocket'
+---
+
+## Overview
+
+Starter agents are single-agent applications that demonstrate core agent capabilities like tool use, reasoning, and task completion. These agents are perfect for learning agent development fundamentals before moving to more complex multi-agent systems.
+
+## Research & Analysis Agents
+
+### OpenAI Research Agent
+
+A multi-agent research application that conducts comprehensive research on any topic using coordinated AI agents.
+
+<Card title="Features" icon="star">
+  - **Triage Agent**: Plans research approach and coordinates workflow
+  - **Research Agent**: Searches web and gathers relevant information
+  - **Editor Agent**: Compiles facts into comprehensive reports
+  - Automatic fact collection with source attribution
+  - Structured report generation with citations
+  - Interactive Streamlit UI with tracing
+</Card>
+
+```bash
+# Setup and run
+git clone https://github.com/Shubhamsaboo/awesome-llm-apps.git
+cd starter_ai_agents/openai_research_agent
+pip install -r requirements.txt
+export OPENAI_API_KEY='your-api-key-here'
+streamlit run openai_researcher_agent.py
+```
+
+**Research Process:**
+1. Enter research topic or select example
+2. Triage agent plans the approach
+3. Research agent gathers information from web
+4. Editor agent compiles comprehensive report
+5. View process in real-time and download report
+
+### AI Startup Trend Analysis Agent
+
+Generates actionable insights by identifying nascent trends, market gaps, and growth opportunities in startup sectors.
+
+<Card title="Key Capabilities" icon="chart-line">
+  - News collection using DuckDuckGo
+  - Article summarization with Newspaper4k
+  - Pattern identification in startup funding
+  - Technology adoption trend analysis
+  - Market opportunity detection
+  - Built with Claude 3.5 Sonnet
+</Card>
+
+```python
+# Example usage pattern
+# 1. Input specific startup sector (e.g., "AI healthcare")
+# 2. Agent gathers recent news and funding data
+# 3. Generates summaries of verified information
+# 4. Identifies emerging patterns across stories
+```
+
+### AI Reasoning Agent
+
+Leverages advanced AI models for complex reasoning and decision-making tasks.
+
+**Features:**
+- Advanced reasoning with Ollama models
+- Interactive playground interface
+- Markdown-formatted outputs
+- Customizable for different scenarios
+- Local execution support
+
+```bash
+cd starter_ai_agents/ai_reasoning_agent
+pip install -r requirements.txt
+python local_ai_reasoning_agent.py
+```
+
+## Data & Analysis Agents
+
+### AI Data Analysis Agent
+
+An AI data analyst built with Agno and OpenAI's GPT-4o that analyzes CSV and Excel files through natural language queries.
+
+<CardGroup cols={2}>
+  <Card title="File Support" icon="file">
+    - CSV and Excel uploads
+    - Automatic schema inference
+    - Multiple file format support
+    - Data type detection
+  </Card>
+  
+  <Card title="Analysis Features" icon="magnifying-glass">
+    - Natural language to SQL
+    - Complex aggregations
+    - Statistical summaries
+    - Data visualizations
+  </Card>
+</CardGroup>
+
+```bash
+# Quick start
+cd starter_ai_agents/ai_data_analysis_agent
+pip install -r requirements.txt
+streamlit run ai_data_analyst.py
+```
+
+**Powered by DuckDB:**
+```python
+# Example natural language queries:
+# "What are the top 5 products by revenue?"
+# "Show me the average sales by region"
+# "Create a visualization of monthly trends"
+```
+
+<Tip>
+No SQL knowledge required - the agent converts natural language questions into efficient SQL queries using DuckDB.
+</Tip>
+
+### AI Data Visualization Agent
+
+Your personal data visualization expert that generates charts and insights from natural language questions.
+
+**Multi-Model Support:**
+- Meta-Llama 3.1 405B (complex analysis)
+- DeepSeek V3 (detailed insights)
+- Qwen 2.5 7B (quick analysis)
+- Meta-Llama 3.3 70B (advanced queries)
+
+**Capabilities:**
+- Automatic chart type selection
+- Dynamic visualization generation
+- Statistical analysis
+- Custom plot formatting
+- Interactive follow-up questions
+
+<Note>
+Requires Together AI API key and E2B API key for sandbox execution.
+</Note>
+
+## Web & Automation Agents
+
+### Web Scraping AI Agent
+
+AI-powered web scraping using ScrapeGraph AI - extract structured data with natural language prompts.
+
+<Tabs>
+  <Tab title="Local Library">
+    **Pros:**
+    - Free to use (no API costs)
+    - Full control over execution
+    - Privacy-friendly (data stays local)
+    - Supports GPT-4o, GPT-5, local models
+    
+    **Cons:**
+    - Requires local installation
+    - Limited by hardware
+    - Manual updates needed
+    
+    ```bash
+    cd starter_ai_agents/web_scraping_ai_agent
+    pip install -r requirements.txt
+    streamlit run ai_scrapper.py
+    ```
+  </Tab>
+  
+  <Tab title="Cloud SDK">
+    **Pros:**
+    - No setup required (just API key)
+    - Scalable and fast
+    - Advanced features (SmartCrawler, SearchScraper)
+    - Always up-to-date
+    
+    **Cons:**
+    - Pay-per-use (credit-based)
+    - Requires internet connection
+    
+    ```bash
+    cd scrapegraph_ai_sdk/
+    export SGAI_API_KEY='your-api-key'
+    python quickstart.py
+    ```
+  </Tab>
+</Tabs>
+
+**Use Cases:**
+```python
+# E-commerce scraping
+prompt = "Extract product names, prices, and availability"
+
+# Content aggregation
+prompt = "Extract article title, author, date, and main content"
+
+# Competitive intelligence
+prompt = "Extract pricing, features, and updates"
+
+# Lead generation
+prompt = "Find company names, emails, and phone numbers"
+```
+
+### AI Meme Generator Agent
+
+Browser automation agent that creates memes using AI and direct website interaction.
+
+**Multi-LLM Support:**
+- Claude 3.5 Sonnet (Anthropic)
+- GPT-4o (OpenAI)
+- Deepseek v3 (Deepseek)
+- Automatic model switching
+
+**Browser Automation Features:**
+- Direct interaction with imgflip.com
+- Automated template search
+- Dynamic caption insertion
+- Image link extraction
+- Multi-step quality validation
+
+```bash
+cd starter_ai_agents/ai_meme_generator_agent_browseruse
+pip install -r requirements.txt
+python -m playwright install --with-deps
+streamlit run ai_meme_generator_agent.py
+```
+
+## Specialized Domain Agents
+
+### Medical Imaging Diagnosis Agent
+
+AI-assisted analysis of medical images powered by Gemini 2.0 Flash built on Agno framework.
+
+<Card title="Analysis Components" icon="stethoscope">
+  **Image Analysis:**
+  - Image type identification (X-ray, MRI, CT, ultrasound)
+  - Anatomical region detection
+  - Key findings observation
+  - Abnormality detection
+  - Quality assessment
+  
+  **Diagnostic Output:**
+  - Potential diagnoses ranking
+  - Differential diagnoses
+  - Severity assessment
+  - Patient-friendly explanations
+  - Visual reference points
+</Card>
+
+```bash
+cd starter_ai_agents/ai_medical_imaging_agent
+pip install -r requirements.txt
+streamlit run ai_medical_imaging.py
+```
+
+<Warning>
+For educational purposes only. Not a replacement for professional medical diagnosis. Always consult qualified healthcare professionals.
+</Warning>
+
+### Life Insurance Coverage Advisor Agent
+
+Helps estimate term life insurance needs and surfaces available policy options.
+
+**Technology Stack:**
+- Agno agent framework
+- OpenAI GPT-5 for reasoning
+- E2B sandbox for calculations
+- Firecrawl for web research
+
+**Features:**
+- Minimal intake form (age, income, dependents, debt, etc.)
+- Python code execution in E2B sandbox
+- Discounted cash-flow income replacement model
+- Latest term-life product research
+- Coverage breakdown with source links
+
+```bash
+cd starter_ai_agents/ai_life_insurance_advisor_agent
+pip install -r requirements.txt
+streamlit run life_insurance_advisor_agent.py
+```
+
+### xAI Finance Agent
+
+Financial analysis agent powered by xAI's Grok model with real-time stock data.
+
+**Capabilities:**
+- Powered by Grok-4 Fast model
+- Real-time stock data via YFinance
+- Web search with DuckDuckGo
+- Formatted tables for financial data
+- Interactive playground interface
+
+```bash
+cd starter_ai_agents/xai_finance_agent
+pip install -r requirements.txt
+export XAI_API_KEY='your-api-key-here'
+python xai_finance_agent.py
+```
+
+**AgentOS Integration:**
+Connect to AgentOS Control Plane for monitoring and management. See [Connecting Your OS](https://docs.agno.com/agent-os/connecting-your-os).
+
+## Multimodal Agents
+
+### Multimodal AI Agent
+
+Combines video analysis and web search using Google's Gemini 2.5 model.
+
+**Features:**
+- Video analysis (Gemini 2.5 Flash/Pro)
+- Web research integration (DuckDuckGo)
+- Multiple video formats (MP4, MOV, AVI)
+- Real-time video processing
+- Combined visual and textual analysis
+
+```bash
+cd starter_ai_agents/multimodal_ai_agent
+pip install -r requirements.txt
+export GOOGLE_API_KEY='your-api-key'
+streamlit run multimodal_agent.py
+```
+
+## Creative Content Agents
+
+### AI Music Generator Agent
+
+Generates music using ModelsLab API and OpenAI's GPT-4 for prompt optimization.
+
+**Features:**
+- Detailed prompt input (genre, instruments, mood)
+- MP3 format output
+- In-browser playback and download
+- Simple Streamlit interface
+
+```bash
+cd starter_ai_agents/ai_music_generator_agent
+pip install -r requirements.txt
+streamlit run models_lab_music_generator_agent.py
+```
+
+**Required API Keys:**
+- OpenAI API key
+- ModelsLab API key
+
+### Blog to Podcast Agent
+
+Converts blog posts into podcasts using GPT-4, Firecrawl, and ElevenLabs.
+
+**Workflow:**
+1. Blog scraping with Firecrawl API
+2. Summary generation with GPT-4 (max 2000 chars)
+3. Audio podcast creation with ElevenLabs
+4. Playback and download capabilities
+
+```bash
+cd starter_ai_agents/ai_blog_to_podcast_agent
+pip install -r requirements.txt
+streamlit run blog_to_podcast_agent.py
+```
+
+## Emotional Support Agents
+
+### Breakup Recovery Agent Team
+
+Multi-agent system for emotional recovery support powered by Gemini 2.0 Flash.
+
+<CardGroup cols={2}>
+  <Card title="Therapist Agent" icon="heart">
+    Empathetic support and coping strategies with DuckDuckGo research tools.
+  </Card>
+  
+  <Card title="Closure Agent" icon="envelope">
+    Writes unsent emotional messages for cathartic release.
+  </Card>
+  
+  <Card title="Routine Planner" icon="calendar">
+    Daily recovery routines with balanced activities.
+  </Card>
+  
+  <Card title="Brutal Honesty Agent" icon="comment">
+    Direct, objective feedback with no sugar-coating.
+  </Card>
+</CardGroup>
+
+**Features:**
+- Chat screenshot analysis
+- Parallel agent execution
+- Secure API key management
+- Team leader coordination
+
+```bash
+cd starter_ai_agents/ai_breakup_recovery_agent
+pip install -r requirements.txt
+streamlit run ai_breakup_recovery_agent.py
+```
+
+## Getting Started Guide
+
+<Steps>
+  <Step title="Choose an Agent">
+    Select an agent based on your use case:
+    - Research: OpenAI Research Agent
+    - Data Analysis: Data Analysis Agent
+    - Web Scraping: Web Scraping Agent
+    - Specialized: Medical, Finance, or Insurance agents
+  </Step>
+  
+  <Step title="Setup Environment">
+    ```bash
+    # Clone repository
+    git clone https://github.com/Shubhamsaboo/awesome-llm-apps.git
+    cd starter_ai_agents/<agent-directory>
+    
+    # Install dependencies
+    pip install -r requirements.txt
+    ```
+  </Step>
+  
+  <Step title="Configure API Keys">
+    Set required environment variables:
+    ```bash
+    export OPENAI_API_KEY='your-key'
+    export GOOGLE_API_KEY='your-key'  # if needed
+    export ANTHROPIC_API_KEY='your-key'  # if needed
+    ```
+  </Step>
+  
+  <Step title="Run the Agent">
+    ```bash
+    # For Streamlit apps
+    streamlit run <agent-file>.py
+    
+    # For CLI apps
+    python <agent-file>.py
+    ```
+  </Step>
+</Steps>
+
+## Common Patterns
+
+### Single Agent with Tools
+```python
+from agno import Agent
+from agno.tools.duckduckgo import DuckDuckGoTools
+from agno.tools.yfinance import YFinanceTools
+
+agent = Agent(
+    name="Financial Analyst",
+    role="Analyze stocks and market trends",
+    tools=[DuckDuckGoTools(), YFinanceTools()],
+    show_tool_calls=True,
+    markdown=True
+)
+
+response = agent.run("What's the current price of AAPL?")
+```
+
+### Agent with Memory
+```python
+from agno.storage import SqlAgentStorage
+
+agent = Agent(
+    storage=SqlAgentStorage(
+        table_name="agent_sessions",
+        db_url="sqlite:///agent_data.db"
+    ),
+    add_history_to_messages=True
+)
+```
+
+### Streaming Responses
+```python
+agent.print_response(
+    "Analyze this data",
+    stream=True
+)
+```
+
+<Tip>
+Start with research or data analysis agents to understand core patterns, then explore specialized agents for domain-specific implementations.
+</Tip>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Advanced Agents" icon="brain" href="/ai-agents/advanced-agents">
+    Explore more complex single-agent implementations
+  </Card>
+  
+  <Card title="Multi-Agent Teams" icon="users" href="/ai-agents/multi-agent-teams">
+    Learn agent coordination and teamwork
+  </Card>
+  
+  <Card title="Voice Agents" icon="microphone" href="/ai-agents/voice-agents">
+    Add voice capabilities to your agents
+  </Card>
+  
+  <Card title="MCP Agents" icon="plug" href="/ai-agents/mcp-agents">
+    Integrate with external services via MCP
+  </Card>
+</CardGroup>

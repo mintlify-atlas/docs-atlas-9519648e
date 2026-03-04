@@ -1,0 +1,503 @@
+---
+title: 'AI Data Analysis Agent'
+description: 'Build an intelligent data analyst that queries CSV and Excel files using natural language powered by GPT-4o and DuckDB'
+icon: 'chart-column'
+---
+
+## Overview
+
+The AI Data Analysis Agent is a powerful tool that makes data analysis accessible to everyone, regardless of SQL expertise. Built with the Agno Agent framework and OpenAI's GPT-4o, it converts natural language questions into SQL queries, executes them against your data using DuckDB, and returns clear, actionable insights.
+
+<Tip>
+  **FREE Tutorial Available**: [Follow the complete step-by-step tutorial](https://www.theunwindai.com/p/build-an-ai-data-analysis-agent) to learn how to build this from scratch with detailed code walkthroughs and best practices.
+</Tip>
+
+## Features
+
+<CardGroup cols={2}>
+  <Card title="File Upload Support" icon="file-arrow-up">
+    - Upload CSV and Excel files
+    - Automatic data type detection
+    - Schema inference
+    - Multiple format support (.csv, .xlsx)
+  </Card>
+  
+  <Card title="Natural Language Queries" icon="message">
+    - Convert plain English to SQL
+    - No SQL knowledge required
+    - Complex aggregations and filters
+    - Instant answers about your data
+  </Card>
+  
+  <Card title="Advanced Analysis" icon="microscope">
+    - Complex data aggregations
+    - Filtering and sorting
+    - Statistical summaries
+    - Data visualizations
+  </Card>
+  
+  <Card title="Interactive UI" icon="window">
+    - User-friendly Streamlit interface
+    - Real-time query processing
+    - Clear result presentation
+    - Data preview tables
+  </Card>
+</CardGroup>
+
+## How It Works
+
+<Steps>
+  <Step title="Data Upload">
+    Users upload CSV or Excel files through the Streamlit interface
+  </Step>
+  
+  <Step title="Preprocessing">
+    The agent automatically:
+    - Detects data types (dates, numbers, strings)
+    - Handles missing values
+    - Infers schema
+    - Loads data into DuckDB
+  </Step>
+  
+  <Step title="Natural Language Query">
+    Users ask questions in plain English:
+    - "What are the top 5 products by revenue?"
+    - "Show me average sales by region"
+    - "Which customers made purchases over $1000?"
+  </Step>
+  
+  <Step title="SQL Generation & Execution">
+    The AI agent:
+    - Converts natural language to SQL
+    - Executes query against DuckDB
+    - Processes results
+    - Returns formatted answers
+  </Step>
+</Steps>
+
+## Setup
+
+<Steps>
+  <Step title="Clone the Repository">
+    ```bash
+    git clone https://github.com/Shubhamsaboo/awesome-llm-apps.git
+    cd awesome-llm-apps/starter_ai_agents/ai_data_analysis_agent
+    ```
+  </Step>
+  
+  <Step title="Install Dependencies">
+    ```bash
+    pip install -r requirements.txt
+    ```
+    
+    **Required packages:**
+    - `streamlit==1.41.1` - Web interface
+    - `openai==1.58.1` - OpenAI API client
+    - `duckdb>=1.4.1` - In-memory SQL database
+    - `pandas` - Data manipulation
+    - `numpy==1.26.4` - Numerical computing
+    - `agno>=2.2.10` - Agent framework
+  </Step>
+  
+  <Step title="Configure API Keys">
+    Get your OpenAI API key from [OpenAI Platform](https://platform.openai.com)
+    
+    You'll enter it in the Streamlit sidebar when running the app (no environment variables needed)
+  </Step>
+  
+  <Step title="Run the Application">
+    ```bash
+    streamlit run ai_data_analyst.py
+    ```
+    
+    Open your browser to `http://localhost:8501`
+  </Step>
+</Steps>
+
+## Usage
+
+### Quick Start
+
+<Steps>
+  <Step title="Enter API Key">
+    Provide your OpenAI API key in the sidebar
+  </Step>
+  
+  <Step title="Upload Data">
+    Upload your CSV or Excel file using the file uploader
+  </Step>
+  
+  <Step title="Preview Data">
+    The app displays your data in an interactive table with column names
+  </Step>
+  
+  <Step title="Ask Questions">
+    Type your questions in natural language and click "Submit Query"
+  </Step>
+</Steps>
+
+### Example Queries
+
+<AccordionGroup>
+  <Accordion title="Sales Analysis" icon="dollar-sign">
+    ```
+    What are the total sales by region?
+    Show me the top 10 products by revenue
+    Which month had the highest sales?
+    What's the average order value?
+    ```
+  </Accordion>
+  
+  <Accordion title="Customer Insights" icon="users">
+    ```
+    How many customers made repeat purchases?
+    What's the customer retention rate?
+    Show me customers with lifetime value over $5000
+    Which customers haven't purchased in 90 days?
+    ```
+  </Accordion>
+  
+  <Accordion title="Product Analytics" icon="box">
+    ```
+    What are the most popular products?
+    Show me products with declining sales
+    Which category has the highest margins?
+    List products that are frequently bought together
+    ```
+  </Accordion>
+  
+  <Accordion title="Time-based Analysis" icon="calendar">
+    ```
+    Show me year-over-year growth
+    What are the seasonal trends?
+    Compare Q1 vs Q2 performance
+    Show daily active users over the last month
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Code Example
+
+### Data Preprocessing
+
+```python
+import tempfile
+import csv
+import pandas as pd
+
+def preprocess_and_save(file):
+    """Preprocess and save uploaded file with proper type detection."""
+    try:
+        # Read the uploaded file
+        if file.name.endswith('.csv'):
+            df = pd.read_csv(file, encoding='utf-8', 
+                           na_values=['NA', 'N/A', 'missing'])
+        elif file.name.endswith('.xlsx'):
+            df = pd.read_excel(file, 
+                             na_values=['NA', 'N/A', 'missing'])
+        else:
+            return None, None, None
+        
+        # Ensure string columns are properly quoted
+        for col in df.select_dtypes(include=['object']):
+            df[col] = df[col].astype(str).replace({r'"': '""'}, regex=True)
+        
+        # Parse dates and numeric columns
+        for col in df.columns:
+            if 'date' in col.lower():
+                df[col] = pd.to_datetime(df[col], errors='coerce')
+            elif df[col].dtype == 'object':
+                try:
+                    df[col] = pd.to_numeric(df[col])
+                except (ValueError, TypeError):
+                    pass
+        
+        # Save to temporary CSV
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".csv") as temp_file:
+            temp_path = temp_file.name
+            df.to_csv(temp_path, index=False, quoting=csv.QUOTE_ALL)
+        
+        return temp_path, df.columns.tolist(), df
+        
+    except Exception as e:
+        st.error(f"Error processing file: {e}")
+        return None, None, None
+```
+
+### Agent Configuration
+
+```python
+from agno.agent import Agent
+from agno.models.openai import OpenAIChat
+from agno.tools.duckdb import DuckDbTools
+from agno.tools.pandas import PandasTools
+import streamlit as st
+
+# Initialize DuckDB tools
+duckdb_tools = DuckDbTools()
+
+# Load data into DuckDB
+duckdb_tools.load_local_csv_to_table(
+    path=temp_path,
+    table="uploaded_data",
+)
+
+# Create the AI Data Analyst Agent
+data_analyst_agent = Agent(
+    model=OpenAIChat(id="gpt-4o", api_key=openai_key),
+    tools=[duckdb_tools, PandasTools()],
+    system_message="""
+    You are an expert data analyst. Use the 'uploaded_data' table 
+    to answer user queries. Generate SQL queries using DuckDB tools 
+    to solve the user's query. Provide clear and concise answers 
+    with the results.
+    """,
+    markdown=True,
+)
+
+# Process user query
+user_query = "What are the top 5 customers by total purchase amount?"
+response = data_analyst_agent.run(user_query)
+
+# Display results
+st.markdown(response.content)
+```
+
+### Complete Streamlit App Structure
+
+```python
+import streamlit as st
+
+st.title("📊 Data Analyst Agent")
+
+# Sidebar for API keys
+with st.sidebar:
+    st.header("API Keys")
+    openai_key = st.text_input("Enter your OpenAI API key:", type="password")
+    if openai_key:
+        st.session_state.openai_key = openai_key
+        st.success("API key saved!")
+    else:
+        st.warning("Please enter your OpenAI API key to proceed.")
+
+# File upload
+uploaded_file = st.file_uploader("Upload a CSV or Excel file", 
+                                 type=["csv", "xlsx"])
+
+if uploaded_file and "openai_key" in st.session_state:
+    # Preprocess data
+    temp_path, columns, df = preprocess_and_save(uploaded_file)
+    
+    if temp_path:
+        # Display uploaded data
+        st.write("Uploaded Data:")
+        st.dataframe(df)
+        st.write("Columns:", columns)
+        
+        # Initialize agent (code shown above)
+        # ...
+        
+        # Query interface
+        user_query = st.text_area("Ask a query about the data:")
+        
+        st.info("💡 Check your terminal for clearer agent output")
+        
+        if st.button("Submit Query"):
+            if user_query.strip():
+                with st.spinner('Processing your query...'):
+                    response = data_analyst_agent.run(user_query)
+                    st.markdown(response.content)
+            else:
+                st.warning("Please enter a query.")
+```
+
+## Advanced Features
+
+### DuckDB Integration
+
+DuckDB provides fast, in-memory SQL analysis:
+
+<Tabs>
+  <Tab title="Benefits">
+    - **Fast**: OLAP-optimized for analytical queries
+    - **In-Memory**: No external database needed
+    - **SQL-Compatible**: Standard SQL syntax
+    - **Pandas Integration**: Seamless data exchange
+  </Tab>
+  
+  <Tab title="Supported Operations">
+    - Complex JOINs and subqueries
+    - Window functions
+    - Aggregations (SUM, AVG, COUNT, etc.)
+    - Filtering and sorting
+    - Date/time operations
+    - String manipulation
+  </Tab>
+</Tabs>
+
+### Automatic Type Detection
+
+The agent intelligently detects and converts:
+
+```python
+for col in df.columns:
+    # Date detection
+    if 'date' in col.lower():
+        df[col] = pd.to_datetime(df[col], errors='coerce')
+    
+    # Numeric conversion
+    elif df[col].dtype == 'object':
+        try:
+            df[col] = pd.to_numeric(df[col])
+        except (ValueError, TypeError):
+            pass  # Keep as string
+```
+
+**Handles:**
+- Date formats (YYYY-MM-DD, MM/DD/YYYY, etc.)
+- Numeric types (integers, floats)
+- Currency values ($1,234.56)
+- Missing values (NA, N/A, null)
+- String data with proper quoting
+
+## Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Sales Analytics" icon="chart-line">
+    Analyze sales trends, top products, regional performance, and revenue metrics
+  </Card>
+  
+  <Card title="Customer Analysis" icon="users">
+    Segment customers, analyze behavior, calculate lifetime value, identify churn
+  </Card>
+  
+  <Card title="Financial Reporting" icon="money-bill">
+    Generate P&L summaries, expense analysis, budget tracking, and forecasts
+  </Card>
+  
+  <Card title="Operations Data" icon="gears">
+    Inventory analysis, supply chain metrics, production efficiency, logistics
+  </Card>
+  
+  <Card title="Marketing Analytics" icon="bullhorn">
+    Campaign performance, conversion rates, ROI analysis, channel attribution
+  </Card>
+  
+  <Card title="HR Analytics" icon="id-badge">
+    Headcount analysis, turnover rates, compensation benchmarks, performance metrics
+  </Card>
+</CardGroup>
+
+## Best Practices
+
+<Tip>
+  **Clean Data**: Ensure your CSV/Excel files have clear column headers and consistent data formats for best results.
+</Tip>
+
+<Warning>
+  **Data Privacy**: All data processing happens locally or in your OpenAI account. Avoid uploading sensitive data without proper safeguards.
+</Warning>
+
+<Info>
+  **Terminal Output**: The app displays cleaner output in the terminal. Check your terminal for detailed agent reasoning and SQL queries.
+</Info>
+
+### Optimizing Queries
+
+<Steps>
+  <Step title="Be Specific">
+    Instead of "analyze sales", try "show me total sales by product category for Q1 2024"
+  </Step>
+  
+  <Step title="Reference Column Names">
+    If you know column names, include them: "sum the revenue_usd column by region"
+  </Step>
+  
+  <Step title="Specify Formats">
+    Request specific output: "show as a table", "sort by highest value", "limit to top 10"
+  </Step>
+</Steps>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="File Upload Errors">
+    **Issue**: File won't upload or shows errors
+    
+    **Solutions**:
+    - Ensure file is .csv or .xlsx format
+    - Check for special characters in column names
+    - Verify file isn't corrupted
+    - Try saving as CSV if Excel file fails
+  </Accordion>
+  
+  <Accordion title="Query Returns Empty Results">
+    **Issue**: Agent returns no data or "0 rows"
+    
+    **Solutions**:
+    - Verify data is loaded (check data preview)
+    - Check column names match your query
+    - Try simpler query first: "show me first 5 rows"
+    - Ensure filters aren't too restrictive
+  </Accordion>
+  
+  <Accordion title="Incorrect SQL Generated">
+    **Issue**: Agent misunderstands query
+    
+    **Solutions**:
+    - Rephrase query more explicitly
+    - Reference specific column names
+    - Break complex queries into simpler parts
+    - Check terminal for generated SQL
+  </Accordion>
+  
+  <Accordion title="API Rate Limits">
+    **Issue**: OpenAI API errors
+    
+    **Solutions**:
+    - Wait a moment between queries
+    - Check API key has credits
+    - Verify API key is valid
+    - Monitor OpenAI dashboard for usage
+  </Accordion>
+</AccordionGroup>
+
+## Performance Tips
+
+<CardGroup cols={2}>
+  <Card title="File Size" icon="file">
+    Works best with files under 100MB. For larger datasets, consider sampling or filtering data first.
+  </Card>
+  
+  <Card title="Query Complexity" icon="brain">
+    Simple aggregations are fast. Complex multi-step queries may take 5-10 seconds.
+  </Card>
+  
+  <Card title="Result Size" icon="table">
+    Limit large result sets: "show me top 100" instead of returning millions of rows.
+  </Card>
+  
+  <Card title="API Costs" icon="dollar-sign">
+    Each query uses OpenAI API tokens. Simple queries use ~500 tokens, complex ones may use 2000+.
+  </Card>
+</CardGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Tutorial" icon="book" href="https://www.theunwindai.com/p/build-an-ai-data-analysis-agent">
+    Follow the complete step-by-step tutorial
+  </Card>
+  
+  <Card title="More Examples" icon="compass" href="/examples/ai-music-generator">
+    Explore other AI agent examples
+  </Card>
+  
+  <Card title="Agno Framework" icon="wrench">
+    Learn more about the Agno agent framework
+  </Card>
+  
+  <Card title="GitHub" icon="github" href="https://github.com/Shubhamsaboo/awesome-llm-apps">
+    View source code and contribute
+  </Card>
+</CardGroup>

@@ -1,0 +1,83 @@
+---
+title: Environment Setup
+description: Configure your development environment for LLM applications
+---
+
+# Environment Setup
+
+Set up your development environment for building LLM applications.
+
+## Python Environment
+
+<Tabs>
+  <Tab title="venv">
+    ```bash
+    python3 -m venv venv
+    source venv/bin/activate  # On Windows: venv\Scripts\activate
+    pip install --upgrade pip
+    ```
+  </Tab>
+  
+  <Tab title="conda">
+    ```bash
+    conda create -n llm-apps python=3.11
+    conda activate llm-apps
+    ```
+  </Tab>
+</Tabs>
+
+## Environment Variables
+
+Create a `.env` file in your project root:
+
+```bash
+# OpenAI
+OPENAI_API_KEY=sk-...
+
+# Anthropic
+ANTHROPIC_API_KEY=sk-ant-...
+
+# Google
+GOOGLE_API_KEY=AIza...
+
+# Search APIs
+SERPAPI_KEY=...
+TAVILY_API_KEY=tvly-...
+
+# Vector Databases
+QDRANT_URL=http://localhost:6333
+QDRANT_API_KEY=...
+```
+
+<Warning>
+  Never commit `.env` files to version control. Add `.env` to your `.gitignore`.
+</Warning>
+
+## Load Environment Variables
+
+```python
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+openai_key = os.getenv("OPENAI_API_KEY")
+```
+
+## Docker Setup
+
+For services like vector databases:
+
+```bash
+# Qdrant
+docker run -p 6333:6333 qdrant/qdrant
+
+# ChromaDB
+docker run -p 8000:8000 chromadb/chroma
+```
+
+## Related Resources
+
+<Card title="Installation Guide" icon="download" href="/installation">
+  Complete installation instructions
+</Card>

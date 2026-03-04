@@ -1,0 +1,593 @@
+---
+title: 'AI Music Generator Agent'
+description: 'Generate custom music tracks in MP3 format using ModelsLab API and OpenAI GPT-4o'
+icon: 'music'
+---
+
+## Overview
+
+The AI Music Generator Agent is a Streamlit application that creates custom music tracks based on detailed text prompts. Powered by ModelsLab's music generation API and OpenAI's GPT-4o, it transforms your musical vision into high-quality MP3 files that you can listen to and download.
+
+## Features
+
+<CardGroup cols={2}>
+  <Card title="Text-to-Music Generation" icon="wand-magic-sparkles">
+    Generate music from detailed text descriptions:
+    - Genre and style specification
+    - Instrument selection
+    - Mood and tempo control
+    - Structure definition (intro, verse, chorus, etc.)
+  </Card>
+  
+  <Card title="High-Quality Output" icon="star">
+    - Professional MP3 format
+    - 30-second to full-length tracks
+    - Studio-quality audio
+    - Immediate playback
+  </Card>
+  
+  <Card title="Intelligent Agent" icon="robot">
+    - GPT-4o enhances your prompts
+    - Automatic musical element detection
+    - Optimized prompt engineering
+    - Rich, descriptive generation
+  </Card>
+  
+  <Card title="Easy to Use" icon="hand-pointer">
+    - Simple web interface
+    - Instant audio playback
+    - One-click download
+    - No music theory required
+  </Card>
+</CardGroup>
+
+## How It Works
+
+<Steps>
+  <Step title="Prompt Input">
+    User enters a music generation prompt describing:
+    - Genre (classical, jazz, electronic, rock, etc.)
+    - Instruments (piano, guitar, synthesizer, drums)
+    - Mood (upbeat, melancholic, energetic, calm)
+    - Structure (intro, verses, chorus, bridge, outro)
+  </Step>
+  
+  <Step title="AI Enhancement">
+    GPT-4o agent processes the prompt:
+    - Expands basic descriptions into rich prompts
+    - Adds musical context and details
+    - Ensures all necessary elements are specified
+    - Optimizes for ModelsLab API
+  </Step>
+  
+  <Step title="Music Generation">
+    ModelsLab API generates the music:
+    - Synthesizes audio based on prompt
+    - Creates instrumental composition
+    - Renders in MP3 format
+    - Returns high-quality audio file
+  </Step>
+  
+  <Step title="Playback & Download">
+    User receives the generated music:
+    - Instant in-app playback
+    - Download as MP3 file
+    - Save to local library
+  </Step>
+</Steps>
+
+## Setup
+
+<Steps>
+  <Step title="Clone the Repository">
+    ```bash
+    git clone https://github.com/Shubhamsaboo/awesome-llm-apps
+    cd awesome-llm-apps/starter_ai_agents/ai_music_generator_agent
+    ```
+  </Step>
+  
+  <Step title="Install Dependencies">
+    ```bash
+    pip install -r requirements.txt
+    ```
+    
+    **Required packages:**
+    - `agno>=2.2.10` - Agent framework
+    - `Requests==2.32.3` - HTTP library
+    - `streamlit==1.44.1` - Web interface
+    - `openai==2.8.1` - OpenAI API client
+  </Step>
+  
+  <Step title="Get API Keys">
+    **OpenAI API Key:**
+    - Sign up at [OpenAI Platform](https://platform.openai.com/api-keys)
+    - Generate an API key from your dashboard
+    
+    **ModelsLab API Key:**
+    - Sign up at [ModelsLab](https://modelslab.com/dashboard/api-keys)
+    - Get your API key for music generation
+  </Step>
+  
+  <Step title="Run the Application">
+    ```bash
+    streamlit run music_generator_agent.py
+    ```
+    
+    Navigate to `http://localhost:8501` in your browser
+  </Step>
+</Steps>
+
+## Usage
+
+### Generating Music
+
+<Steps>
+  <Step title="Enter API Keys">
+    In the sidebar, enter:
+    - OpenAI API Key
+    - ModelsLab API Key
+  </Step>
+  
+  <Step title="Write Prompt">
+    Describe the music you want to create:
+    ```
+    Generate a 30 second upbeat jazz piece featuring piano and 
+    saxophone, with a swing rhythm and cheerful mood
+    ```
+  </Step>
+  
+  <Step title="Generate">
+    Click "Generate Music" and wait while the AI creates your track
+  </Step>
+  
+  <Step title="Listen & Download">
+    - Play the generated music in your browser
+    - Download the MP3 file to your computer
+  </Step>
+</Steps>
+
+### Example Prompts
+
+<AccordionGroup>
+  <Accordion title="Classical Music" icon="violin">
+    ```
+    Generate a 30 second classical music piece featuring strings 
+    (violin, cello) with a gentle, flowing melody in the style of 
+    a baroque concerto
+    ```
+    
+    **Output**: Elegant orchestral piece with string instruments
+  </Accordion>
+  
+  <Accordion title="Electronic/EDM" icon="compact-disc">
+    ```
+    Create a 30 second electronic dance track with synthesizers, 
+    heavy bass, and energetic beats. Include a catchy lead melody 
+    and build-up to a drop
+    ```
+    
+    **Output**: High-energy EDM track with modern synths
+  </Accordion>
+  
+  <Accordion title="Ambient/Chill" icon="spa">
+    ```
+    Generate 30 seconds of ambient music with soft pads, gentle 
+    piano, and subtle nature sounds. Calm, meditative atmosphere 
+    perfect for relaxation
+    ```
+    
+    **Output**: Peaceful, atmospheric soundscape
+  </Accordion>
+  
+  <Accordion title="Rock/Guitar" icon="guitar">
+    ```
+    Create a 30 second rock instrumental with electric guitar riffs, 
+    driving drums, and bass. Energetic tempo with a powerful, 
+    rebellious attitude
+    ```
+    
+    **Output**: Energetic rock instrumental with guitar focus
+  </Accordion>
+  
+  <Accordion title="Jazz" icon="saxophone">
+    ```
+    Generate 30 seconds of smooth jazz featuring piano, upright bass, 
+    and soft drums. Medium tempo with a relaxed, sophisticated vibe. 
+    Include a short piano solo
+    ```
+    
+    **Output**: Smooth jazz piece with piano improvisation
+  </Accordion>
+  
+  <Accordion title="Lo-fi Hip Hop" icon="headphones">
+    ```
+    Create a 30 second lo-fi hip hop beat with mellow piano loops, 
+    vinyl crackle, soft drums, and warm bass. Nostalgic and 
+    study-friendly atmosphere
+    ```
+    
+    **Output**: Chill lo-fi beat with retro aesthetic
+  </Accordion>
+</AccordionGroup>
+
+## Code Example
+
+### Agent Configuration
+
+```python
+from agno.agent import Agent
+from agno.models.openai import OpenAIChat
+from agno.tools.models_labs import FileType, ModelsLabTools
+
+# Create the Music Generator Agent
+agent = Agent(
+    name="ModelsLab Music Agent",
+    agent_id="ml_music_agent",
+    model=OpenAIChat(id="gpt-4o", api_key=openai_api_key),
+    show_tool_calls=True,
+    tools=[
+        ModelsLabTools(
+            api_key=models_lab_api_key,
+            wait_for_completion=True,
+            file_type=FileType.MP3
+        )
+    ],
+    description="You are an AI agent that can generate music using the ModelsLabs API.",
+    instructions=[
+        "When generating music, use the `generate_media` tool with detailed prompts that specify:",
+        "- The genre and style of music (e.g., classical, jazz, electronic)",
+        "- The instruments and sounds to include",
+        "- The tempo, mood and emotional qualities",
+        "- The structure (intro, verses, chorus, bridge, etc.)",
+        "Create rich, descriptive prompts that capture the desired musical elements.",
+        "Focus on generating high-quality, complete instrumental pieces.",
+    ],
+    markdown=True,
+    debug_mode=True,
+)
+```
+
+### Music Generation Flow
+
+```python
+import os
+import requests
+from uuid import uuid4
+import streamlit as st
+
+# User prompt
+prompt = st.text_area(
+    "Enter a music generation prompt:",
+    "Generate a 30 second classical music piece",
+    height=100
+)
+
+if st.button("Generate Music"):
+    if prompt.strip():
+        with st.spinner("Generating music... 🎵"):
+            try:
+                # Run the agent
+                music = agent.run(prompt)
+                
+                if music.audio and len(music.audio) > 0:
+                    # Download the audio
+                    url = music.audio[0].url
+                    response = requests.get(url)
+                    
+                    # Validate response
+                    if not response.ok:
+                        st.error(f"Failed to download. Status: {response.status_code}")
+                        st.stop()
+                    
+                    content_type = response.headers.get("Content-Type", "")
+                    if "audio" not in content_type:
+                        st.error(f"Invalid file type: {content_type}")
+                        st.stop()
+                    
+                    # Save audio file
+                    save_dir = "audio_generations"
+                    os.makedirs(save_dir, exist_ok=True)
+                    filename = f"{save_dir}/music_{uuid4()}.mp3"
+                    
+                    with open(filename, "wb") as f:
+                        f.write(response.content)
+                    
+                    # Display audio player
+                    st.success("Music generated successfully! 🎶")
+                    audio_bytes = open(filename, "rb").read()
+                    st.audio(audio_bytes, format="audio/mp3")
+                    
+                    # Download button
+                    st.download_button(
+                        label="Download Music",
+                        data=audio_bytes,
+                        file_name="generated_music.mp3",
+                        mime="audio/mp3"
+                    )
+                else:
+                    st.error("No audio generated. Please try again.")
+                    
+            except Exception as e:
+                st.error(f"An error occurred: {e}")
+    else:
+        st.warning("Please enter a prompt first.")
+```
+
+### Complete Streamlit App
+
+```python
+import streamlit as st
+
+st.title("🎶 ModelsLab Music Generator")
+
+# Sidebar: API Keys
+st.sidebar.title("API Key Configuration")
+openai_api_key = st.sidebar.text_input("Enter your OpenAI API Key", type="password")
+models_lab_api_key = st.sidebar.text_input("Enter your ModelsLab API Key", type="password")
+
+# Prompt input
+prompt = st.text_area(
+    "Enter a music generation prompt:",
+    "Generate a 30 second classical music piece",
+    height=100
+)
+
+# Initialize agent only if both keys are provided
+if openai_api_key and models_lab_api_key:
+    # Agent configuration (shown above)
+    # ...
+    
+    if st.button("Generate Music"):
+        # Generation logic (shown above)
+        # ...
+else:
+    st.sidebar.warning("Please enter both API keys to use the app.")
+```
+
+## Advanced Features
+
+### ModelsLab Tools Integration
+
+The Agno framework provides seamless ModelsLab integration:
+
+```python
+from agno.tools.models_labs import FileType, ModelsLabTools
+
+tools = ModelsLabTools(
+    api_key=models_lab_api_key,
+    wait_for_completion=True,  # Wait for generation to finish
+    file_type=FileType.MP3      # Output format
+)
+```
+
+**Features:**
+- Automatic API handling
+- Built-in error handling
+- Progress tracking
+- Multiple format support
+
+### Debug Mode
+
+Enable debug mode for detailed agent output:
+
+```python
+agent = Agent(
+    # ... other config
+    debug_mode=True,
+    show_tool_calls=True,
+)
+```
+
+**Provides:**
+- Tool call information
+- API request details
+- Response parsing logs
+- Error traces
+
+### File Management
+
+```python
+import os
+from uuid import uuid4
+
+# Create output directory
+save_dir = "audio_generations"
+os.makedirs(save_dir, exist_ok=True)
+
+# Generate unique filename
+filename = f"{save_dir}/music_{uuid4()}.mp3"
+
+# Save audio
+with open(filename, "wb") as f:
+    f.write(response.content)
+```
+
+## Writing Effective Prompts
+
+<Tabs>
+  <Tab title="Genre & Style">
+    Be specific about the musical genre:
+    
+    ✅ **Good**: "Generate smooth jazz with piano and saxophone"
+    
+    ❌ **Too vague**: "Make some jazz"
+    
+    **Genres to try:**
+    - Classical (baroque, romantic, contemporary)
+    - Jazz (bebop, smooth, fusion)
+    - Electronic (house, techno, ambient)
+    - Rock (classic, indie, alternative)
+    - Hip hop (lo-fi, trap, boom bap)
+    - World music (flamenco, bossa nova, etc.)
+  </Tab>
+  
+  <Tab title="Instruments">
+    Specify which instruments to feature:
+    
+    ✅ **Good**: "Piano, acoustic guitar, soft drums, and upright bass"
+    
+    ❌ **Too vague**: "Some instruments"
+    
+    **Common instruments:**
+    - Strings: violin, cello, guitar, bass
+    - Keys: piano, organ, synthesizer
+    - Winds: flute, saxophone, trumpet
+    - Percussion: drums, cymbals, shakers
+    - Electronic: synths, pads, arpeggios
+  </Tab>
+  
+  <Tab title="Mood & Tempo">
+    Describe the emotional quality and speed:
+    
+    ✅ **Good**: "Upbeat and energetic with 120 BPM tempo"
+    
+    ❌ **Too vague**: "Nice music"
+    
+    **Mood descriptors:**
+    - Energetic, calm, melancholic, joyful
+    - Dark, bright, mysterious, playful
+    - Intense, relaxed, dramatic, peaceful
+    
+    **Tempo terms:**
+    - Slow (60-80 BPM), medium (90-120 BPM), fast (130+ BPM)
+  </Tab>
+  
+  <Tab title="Structure">
+    Define the composition structure:
+    
+    ✅ **Good**: "Start with gentle intro, build to energetic chorus, end with soft outro"
+    
+    ❌ **Too vague**: "Just make it good"
+    
+    **Structure elements:**
+    - Intro, verse, pre-chorus, chorus
+    - Bridge, breakdown, drop
+    - Solo sections, outro, fade
+  </Tab>
+</Tabs>
+
+## Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Content Creation" icon="video">
+    Generate background music for videos, podcasts, presentations, and social media content
+  </Card>
+  
+  <Card title="Game Development" icon="gamepad">
+    Create custom soundtracks and ambient music for indie games and interactive experiences
+  </Card>
+  
+  <Card title="Prototyping" icon="drafting-compass">
+    Quickly prototype musical ideas and explore different genres and styles
+  </Card>
+  
+  <Card title="Meditation & Wellness" icon="spa">
+    Generate calming soundscapes for meditation apps, yoga classes, and relaxation
+  </Card>
+  
+  <Card title="Education" icon="graduation-cap">
+    Create example tracks for music theory lessons and composition classes
+  </Card>
+  
+  <Card title="Personal Projects" icon="heart">
+    Make custom ringtones, alarm sounds, or personal mood playlists
+  </Card>
+</CardGroup>
+
+## Best Practices
+
+<Tip>
+  **Be Descriptive**: The more detailed your prompt, the better the results. Include genre, instruments, mood, tempo, and structure.
+</Tip>
+
+<Warning>
+  **API Costs**: Each music generation uses credits from both OpenAI (for prompt processing) and ModelsLab (for audio generation). Monitor your usage.
+</Warning>
+
+<Info>
+  **Generation Time**: Music generation typically takes 10-30 seconds depending on complexity. The app shows a spinner during generation.
+</Info>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="No Audio Generated">
+    **Issue**: Agent completes but no audio file is created
+    
+    **Solutions**:
+    - Check ModelsLab API key is valid
+    - Ensure you have credits in ModelsLab account
+    - Try a simpler, shorter prompt
+    - Check debug output for error messages
+  </Accordion>
+  
+  <Accordion title="Invalid File Type Error">
+    **Issue**: Downloaded file is not audio
+    
+    **Solutions**:
+    - Verify ModelsLab API returned audio URL
+    - Check content-type header in response
+    - Ensure FileType.MP3 is set in tools config
+    - Review debug logs for API response
+  </Accordion>
+  
+  <Accordion title="Generation Timeout">
+    **Issue**: Generation takes too long or times out
+    
+    **Solutions**:
+    - Request shorter tracks (30 seconds)
+    - Simplify prompt complexity
+    - Check ModelsLab service status
+    - Ensure `wait_for_completion=True`
+  </Accordion>
+  
+  <Accordion title="Poor Quality Results">
+    **Issue**: Generated music doesn't match expectations
+    
+    **Solutions**:
+    - Make prompt more specific and detailed
+    - Reference specific genres and artists
+    - Describe instruments explicitly
+    - Specify tempo and mood clearly
+  </Accordion>
+</AccordionGroup>
+
+## API Cost Considerations
+
+<CardGroup cols={2}>
+  <Card title="OpenAI API" icon="dollar-sign">
+    **Usage**: ~200-500 tokens per generation
+    
+    **Cost**: $0.01-0.03 per track with GPT-4o
+    
+    Used for prompt enhancement and agent reasoning
+  </Card>
+  
+  <Card title="ModelsLab API" icon="coins">
+    **Usage**: Credit-based system
+    
+    **Cost**: Varies by track length and quality
+    
+    Check ModelsLab pricing for current rates
+  </Card>
+</CardGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Experiment" icon="flask">
+    Try different genres, instruments, and moods to discover what works best
+  </Card>
+  
+  <Card title="Combine Agents" icon="link">
+    Use with other agents to create multimedia content (videos with custom soundtracks)
+  </Card>
+  
+  <Card title="More Examples" icon="compass" href="/examples/web-scraping-agent">
+    Explore other AI agent examples
+  </Card>
+  
+  <Card title="GitHub" icon="github" href="https://github.com/Shubhamsaboo/awesome-llm-apps">
+    View source code and contribute
+  </Card>
+</CardGroup>
